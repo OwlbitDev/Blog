@@ -1,32 +1,148 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jetpack on 低头沉思</title><link>https://hongui.github.io/tags/jetpack/</link><description>Recent content in Jetpack on 低头沉思</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 24 Mar 2021 18:18:30 +0800</lastBuildDate><atom:link href="https://hongui.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml"/><item><title>沉思篇-剖析Jetpack的ViewModel</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</link><pubDate>Wed, 24 Mar 2021 18:18:30 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</guid><description> ViewModel做为架构组件的三元老之一，是实现MVVM的有力武器。
-ViewModel的设计目标 ViewModel的基本功能就是管理UI的数据。其实，从职责上来说，这又是对Activity和Fragment的一次功能拆分。以前存储在它们内部的数据，需要它们自己处理创建，更新，存储，恢复的所有过程，同时它们还要处理UI的数据绑定，更新，动画等操作。职责的多元化就容易出现不好定位和调试的问题。另外，Activity和Fragment作为UI的承载者，很多时候需要共享数据和复用功能。而UI的差异让复用的粒度划分很难把控，容易写出扩展性差的代码。基于这些痛点，ViewModel被设计出来了。 同时ViewModel还将保存数据的功能强化了——它将设备配置变更后数据保存和恢复自动化了，在UI生命周期内都能保证数据的有效性，这大大减少了样板代码的编写，提高了开发效率。
-ViewModel的架构设计 *** ViewModel用了两种粒度划分来完成数据管理功能。*** 第一层是对ViewModel自身存储数据的管理。目标就是完成ViewModel的创建，对应的抽象实体是ViewModelProvider.Factory。第二层则是对已存在的ViewModel组的管理，目标就是保证意外情况下ViewModel的有效性，对应的抽象实体是ViewModelStore。当然，这些都只是概念上的抽象，还需要一个粘合剂把它们的抽象层级体现出来，这就是ViewModelProvider。这三个主体类共同搭建了ViewModel的体系框架。剩下的类都是对这三个概念的补充和完善。接下来我将分别以这些抽象为主线，逐层分析它们的实现逻辑。
-ViewModel的组管理 前面也提到过，ViewModelStore是完成组管理的，那么我们首先应该确定的是组的概念,也就是这些ViewModel都归属于谁的问题。这不难理解，要管理组，那就必须得找到组的主人啊，由此引申出了ViewModelStoreOwner，它代表着某个拥有组管理权限的对象，通过它提供的ViewModelStore对象就能对里面的ViewModel进行管理了，同时这些ViewModel也就共同形成了组。所以ViewModelStoreOwner其实就是组的抽象实体，它代表着某个组，也是管理分组的单位。 ViewModel有两个默认实现的组——ComponentActivity和Fragment。也就是说ComponentActivity和Fragment都实现了ViewModelStoreOwner这个接口。 先来看ComponentActivity的实现。根据接口，首先查看接口方法getViewModelStore的实现。里面主要涉及到两个对象，一个就是ViewModelStore的引用mViewModelStore，另一个就很有意思了，它是一个NonConfigurationInstances对象，这是一个简单类，就是保存ViewModelStore对象的。那么它特殊在什么地方呢？它是onRetainNonConfigurationInstance方法的返回对象。
-插一个课外知识科普，onRetainNonConfigurationInstance是Activity的一个方法，这个方法是设备配置发生变化（如横竖屏切换的时候）时被系统自动调用的，用于用户保存数据。只要这个方法返回的对象，在设备配置放生改变时都不会被销毁。稍后在重建完成后，可以通过getLastNonConfigurationInstance方法获取到。
-接着回到getViewModelStore的实现，刚才说到NonConfigurationInstances对象，它是通过调用getLastNonConfigurationInstance方法获得的。如果方法返回了有效的对象，说明Activity被重建了，就直接获取保存在NonConfigurationInstances对象中的值，然后更新mViewModelStore。否则就说明还没有有效的ViewModelStore对象，则直接创建。从这个逻辑不难看出，我们的ViewModel不会随着设备变化而重建，这正好满足了我们的设计目标。那么对于Fragment，它的实现又是怎样的呢。 Fragment的实现比较曲折，它直接委托给了FragmentManager,又委托给了FragmentManagerViewModel的getViewModelStore方法，方法实现也很简单，就是对HashMap查找，没有就创建新的。这显然不是我们想看到的，因为这里并没有和Activity类似的处理状态变更的逻辑。那么唯一的突破点就是那个HashMap对象了。搜索一圈发现，它会作为getSnapshot方法的返回值返回，有点Activity那味了。往上回溯，会发现它最终就是作为不销毁的对象，在Fragment销毁前保存下来了。 以上就是两种应用场景下ViewModelStore的创建逻辑，另外，还有清除逻辑没有讲到。这个逻辑本质上就是调用ViewModelStore的clear方法，唯一的问题就是确定调用时机。具体来说就是，Activity通过注册Lifecycle的状态监听，在Lifecycle.Event.ON_DESTROY的时候，调用了clear方法,而Fragment则是继续通过FragmentManager的desctory方法作为调用的入口点。在FragmentManagerViewModel里完成了方法调用。 总结一下，ViewModelStoreOwner是对ViewModel组的一种抽象。虽然对应着两个不同的实现，但是殊途同归，最终的目的就是保证在设备配置发生变化的时候对应ViewModelStore对象的有效性， 从而保证ViewModel对象的有效性。同时在真正需要销毁的时候做好清理工作。这就是这ViewModel的组管理功能。
-ViewModel的创建管理 ViewModel用ViewModelProvider.Factory来管理创建过程。具体来说就是怎样根据一个ViewModel子类的类信息创建对应的对象。这有两个难点——必要的依赖注入、数据的恢复。对于依赖注入，ViewModel还是耍了老把戏，和创建ViewModelStore类似，提供了HasDefaultViewModelProviderFactory的一个抽象，把依赖注入转移到了ComponentActivity和Fragment中。之所以这么做，是因为在创建ViewModel的过程中，可能需要使用到Application和Bundle等信息，而这些信息是只能在在Activity和Fragment中才能获取到的。数据恢复则是关注怎样利用现有的数据将对象恢复到原来的状态。当然这些过程其实都可以没有，不需要传递Application或者Bundle对象，不需要恢复ViewModel状态，则库提供了默认的实现。就是简单的调用反射创建对象而已。 针对刚才说的各种情况，ViewModelProvider.Factory有多个实现，那么实际上它到底是使用哪个实现呢，我们得从ViewModelProvider中寻找答案。在它的构造方法里，会对ViewModelStoreOwner做类型判断，假如它是HasDefaultViewModelProviderFactory的实例，则使用实例返回的对象，否则默认的实现。结合上面的分析，让我们继续到ComponentActivity和Fragment中寻找答案。不看不知道，一看吓一跳，它们竟然都是使用了SavedStateViewModelFactory类，那么我们一起来看看它是怎么实现的吧。 在构建SavedStateViewModelFactory对象的时候，会传入三个对象——Application,SavedStateRegistryOwner,Bundle,这三个对象中最重要的就是第二个，它的主要功能就是提供在SavedStateRegistry对象，这个对象会在合适的时候保存数据，然后在合适的时候再恢复过来。它也是生命周期感知的组件。在它的create方法里，也是通过反射构建ViewModel对象的，唯一的不同就是反射多了个参数。接着往下看，最终会利用这些信息构造出SavedStateHandle对象，这个对象就是真正对我们当前创建的ViewModel对象有用的信息。SavedStateHandle提供了根据键值对保存数据的方法，也提供了查询方法，所以ViewModel可以根据这个对象，恢复自己的LiveData数据，最重要的，这个类还提供了LiveData的另一个子类SavingStateLiveData，能自动处理数据保存的问题。 一句话总结，ComponentActivity和Fragment会使用SavedStateViewModelFactory对象作为ViewModelProvider中的Factory来创建ViewModel。只要ViewModel提供了带有Application或者SavedStateHandle的构造方法，就能享受从Bundle中恢复数据的便利。
-ViewModel的粘合剂ViewModelProvider 为什么说ViewModelProvider是粘合剂呢？因为这个类就做了一件事，把ViewModelStore和ViewModelProvider.Factory组合起来，实现了一个叫get的方法，这个方法的内部实现就是有两个步骤。
-调用ViewModelStore的get方法查询是否有创建好的对象，如果有就返回，方法结束，否则进入步骤2。
-调用ViewModelProvider.Factory的create方法创建对象，并将之保存到ViewModelStore中。
-所以当我们要使用ViewModel的时候，通常是创建ViewModelProvider对象，然后调用get方法获取真正的ViewModel对象，这样，我们的对象就具备了正确处理设备配置变更的能力。
-ViewModel的Fragment间通信功能 根据前面的梳理，我们知道，ViewModelStore是管理某个ViewModel组的，只要我们保证ViewModelStore存在，我们就可以保证ViewModel存活。再反推一步，要保证ViewModelStore存活，我们就要保证ViewModelStoreOwner在不同的地方都能返回同一个ViewModelStore对象，而ComponentActivity和Fragment是都实现了这个接口的。结合Activity的生命周期通常是大于Fragment这一事实，不难得出结论——在某个Fragment里面，用Activity对象创建ViewModelProvider对象，就能保证获取到和Activity一样的ViewModelStore对象，也就能保证获取到相同的ViewModel对象。只要Activity没有销毁，该Activity下的所有Fragment都能获取到相同的ViewModel对象，然后通过更改状态能方式完成通信。
-到此，对ViewModel的分析告一段落了，对创建过程的两次抽象是我觉得最精彩的环节，另外对现有条件（Activity和Fragment的生命周期）的利用也是它独到之处，真的是受益匪浅。青山不改，绿水长流，咱们下期见！</description></item><item><title>沉思篇-剖析Jetpack的LiveData</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</link><pubDate>Tue, 23 Mar 2021 18:14:09 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</guid><description> 上一篇我们讲到了架构组件中的Lifecycle，由于缺少具体的运用，可能缺少直观的感受，今天我们就用Lifecycle实战一回，看看Lifecycle是怎样运用到LiveData中的。
-LiveData的功能 根据LiveData的类注释，我们可以知道，LiveData是一个实现了观察者模式的数据容器，并且是可感知生命周期的。由这个功能描述，我们就能知道LiveData是由两部分功能合并而来的，一部分是数据容器，一部分是响应生命周期。在阅读源码的时候，我觉得功能拆解是个很有用的手段，合理的功能拆解，就是有目的的省略，有助于快速理清功能实现逻辑。 接下来，我将以这两个功能为突破点，逐一梳理LiveData的实现思路。
-LiveData的数据容器功能 数据容器的概念相信大家不会陌生，几乎每种语言都会有他们的身影，开发者用它们来保存数据对象。由于应用场景的不同，出现了各种各样的数据容器，如List,Set这些是保存数据集的，ThreadLocal是保存线程私有数据的。那么LiveData是保存什么数据的呢，它是保存可观察数据的。 对于数据容器的拆解，其实是有固定的模式可寻的，就是以添加数据为突破口，然后以数据流向为主线，逐步击破。所以我们就从LiveData添加数据的方法setValue开始分析。
-setValue方法的逻辑很少，主要就是两个，增加mVersion的版本，保存数据，然后就是调用dispatchingValue进行分发了。mVersion是个关键点，后面还会讲到，这里主要是混个脸熟。我们先进入到下一步。 dispatchingValue的功能很清楚，从名字上就能看出来，就是分发数据的。但是它的实现却是很巧妙的。为了阐述这个实现，我们需要一个合适的场景。假设当前LiveData保存的数据变动频繁，并且观察对象很多的情况，我们怎样快速，准确地把数据传递给观察者呢？或者换种说法，当我们正在分发数据的时候，又有新数据来了怎么办？通常来说有两种方案，掐头去尾。掐头就是在数据更新的时候不管新数据，先把分发操作执行完之后再处理新数据。去尾就是新数据来了，取消上一次数据分发，重新分发新数据。LiveData采用的是去尾的方式。明白了这点，再看dispatchingValue就很清晰了，它用mDispatchingValue标识分发状态，用mDispatchInvalidated来标识新数据状态，然后在使用for循环分发数据的时候检测mDispatchInvalidated的状态是不是更新了，由此确定是不是需要取消此次分发，进行新一轮的分发。其他的就没有更多奥秘可言了。 considerNotify是分发给具体的观察者之后的处理逻辑。这一步就是在步骤2中的for循环里完成的。所以这里就是数据的最后一站了。这个方法需要根据观察者的两个状态来确定是不是要通知。一个就是步骤1中提到的mVersion，因为观察者也有一份自己的mLastVersion,假如mVersion比mLastVersion小的话就没必要通知了，因为每次通知之后，它两的值是一样的。另一个就是和生命周期扯上关系的mActive了。这个状态标示着当前的观察者是否处于激活状态。假如不是，则直接返回了。搞了这两个判断之后就是简单的更新mLastVersion和执行onChanged回调了。 以上三步就是LiveData的数据更新过程，重点在于处理分发这个步骤上，在以后的项目中，我们可以借鉴这种思想，当然具体问题是需要具体分析的。 在上面的步骤3中我们知道了观察者的mActive是决定LiveData响应生命周期的关键，那么接下来我们来看看这个状态是怎么更新的吧。 LiveData的生命周期感知 联系上一篇文章沉思篇-剖析JetPack的Lifecycle,我们知道Lifecycle是专业干介个的（生命周期感知）。同时文章也提到了Lifecycle三个很重要的抽象，LifecycleOwner，Lifecycle，LifecycleObserver，这是引入生命周期感知三个很好的突破口。
-LifecycleOwner作为生命周期的动力源，是直接可以获得Lifecycle的，继而可以方便地读取状态和注册状态监听，由于出色的接口封装，不需要和其他类产生耦合，是个很好的引入对象。 Lifecycle作为Lifecycle的核心类，它完成了很多功能，是抽象类，只能继承使用。 LifecycleObserver，作为状态更新通知的最后一环，可以很方便地完成状态监听，但是需要注册到合适的Lifecycle上。 所以很显然，LiveData使用Lifecycle需要搞一个LifecycleOwner，用于引入生命周期的状态，还需要搞一个LifecycleObserver，用于响应状态更新。另外，由于我们是数据容器的定位，我们的数据是很可能供给给很多类使用的，所以假如将LifecycleOwner和LiveData绑定的话，一旦某个操作致使LiveData失活，其他所有的观察者就一摸黑了，啥也收不到了，这是有悖设计的。基于这个原因，LifecycleOwner只能和Observer绑定。结果就显而易见了，他们同时出现在了observe方法里，这也就解释了observe方法为啥需要两个参数。 很明显observe就是分析生命周期感知的突破口，我们再接再励，看看他们是怎么合力工作的。
-在observe内部，LifecycleOwner和Observer同时被LifecycleBoundObserver接收，用于构造对象了，逻辑继续转到LifecycleBoundObserver中.
-注意到LifecycleBoundObserver是实现了LifecycleEventObserver,并且继承自ObserverWrapper。ObserverWrapper不熟悉我们先放一边，上一篇中我们知道了LifecycleEventObserver是继承自LifecycleObserver的，它只有一个状态变更的回调。很显然，我们下一步就是去看看它是怎样处理状态变更的。
-来到onStateChanged方法，里面做了两件事，而且是互斥的，这就是说，其实它在某种条件下干一件事，其他条件干另一个事。先看简单的一件事，它在Lifecycle状态是DESTROYED``的时候移除了Observer，没有更多了。那么另一件事其实我们也能猜到了，就是状态不为DESTROYED的时候怎么搞。它委托给了父类ObserverWrapper`搞。
-逻辑来到ObserverWrapper的activeStateChanged方法里，里面就是对LiveData的状态进行设置而已，也就是根据现在是不是激活状态更新mActiveCount的值，并且在适当的条件下通知LiveData进入激活状态或者失活状态。另外就是上面我们心心念念的mActive了，这就接上了。当然，还有个极为关键的点，在激活状态下，会以自身为参数，进行一次数据数据，在某种情况下，这可能会引入数据问题。
-到这里，LiveData的生命周期感知就看完了.一句话就能总结，Lifecycle让LiveData有了在激活状态下分发数据，在失活后自动取消监听的能力。
-补充说明 虽然前面讲了那么多，还有一些内容是没有讲到的，比如数据的异步更新，Observer的注册过程，等等，但是已经不妨碍我们理解主流程了。为了加深印象，我还整理一个UML图，可以对照着图再次理解，回顾。</description></item><item><title>沉思篇-剖析JetPack的Lifecycle</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90JetPack%E7%9A%84Lifecycle.html</link><pubDate>Sun, 21 Mar 2021 15:56:53 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90JetPack%E7%9A%84Lifecycle.html</guid><description>这几年，对于Android开发者来说，最时髦的技术当属Jetpack了。谷歌官方从19年开始，就在极力推动Jetpack的使用，经过这几年的发展，Jetpack也基本完成了当时的设计目标——简单，一致，专注。而使得这一切成为可能的基石，我觉得当属架构组件了。最初架构组件作为单独的库和support库并没有太多联系，随着Jetpack的成型，给架构组件也注入了新的活力。在Jetpack库中，建构组件的使用随处可见，扮演着越来越重要的角色。今天，我就以作为架构组件基石的Lifecycle开始，尝试对架构组件进行剖析，向大家展示谷歌开发者是怎样设计一个高内聚，低耦合的库的。
-前言 要说阅读源码，我觉得和把大象装进冰箱的操作是一样的，就是再大的事，得分步骤。阅读源码的第一步就是站在库开发者的角度，提炼出库需要完成的功能。明确了功能，才能针对功能进行代码设计，这也是我们阅读源码的第二步，理清实现逻辑。我们可以通过画UML图的方式帮助理解。通常来说画完UML图，源码的理解也就七七八八了。这时我们就可以走到第三步，品读实现细节。有了前两步的基础，我们就可以针对性地选取一些感兴趣的内容研读实现了，而且可以做到收放自如，指哪打哪。 那我们开始吧！
-Lifecycle的源码思路 明确Lifecycle的设计目标 一句话概括，Lifecycle就是完成了生命周期感知的任务。生命周期感知是什么意思呢，就是一个类可以不依赖Activity或者Fragment的回调，正确处理状态更新的问题。那么我们为什么需要这样的一个类呢，这和我们直接在回调方法里面写逻辑有什么差别吗？为了回答这个问题，我们来设想一下这样一个场景：一个Activity需要获取用户实时的位置信息，同时需要使用相机，以往我们的做法是在Activity的某些回调里面设置位置，相机的监听及解监听。如果这时，Activity再加入其他的一些逻辑，它的代码就可能膨胀到不能忍受的地步，并且随着业务的增长，后续Activity的膨胀是不可预期的，这样是不利于调试和测试的，而且，从设计上来说，这样的设计也是脆弱的，耦合太紧了。但是我们的这些组件确确实实是需要响应生命周期回调的啊，那么怎样才能做到既能感知生命周期，又能降低耦合呢。计算机科学告诉我们这样一条真理，当找不到其他方法时，可以考虑加一层抽象。由此，Lifecycle诞生了。这就是Lifecycle的目标，很纯粹，就是生命周期感知，就是把专业的事情交给专业的去做。
-Lifecycle的工作流程 概括来说，Lifecycle就是完成了状态监听和状态分发的两个功能。为了完成这两个功能，Lifecycle抽象出了三个概念，也可以说是三个流程吧。
-拥有生命周期的对象，称为LifecycleOwner，这其实只是一个接口，只要能提供Lifecycle的都可以称为LifecycleOwner，这个类主要的功能就是提供原始的生命周期事件，供后续的操作提供数据，这是第一步——状态感知； 拥有生命周期状态，称为Lifecycle，这个类主要的功能就是提供状态抽象和提供状态信息，这是第二步——状态更新； 对生命周期状态感兴趣的观察者，称为LifecycleObserver，这个类主要的功能就是对状态信息进行响应，这是第三步——状态响应。 流程很简单，看着也很清晰的，就是观察者模式。但是Lifecycle库为了完成更好的解耦和提供更多的扩展，在这三个环节上衍生出了更多的类，这也是我以Lifecycle为剖析对象的原因。我觉得一个好的库，不仅仅要能够完成库的设计目标，同时还应该保持尽可能的扩展性和可读性。在这点上，Lifecycle无疑是我们很好的榜样。接下来，我们就一起以这三个阶段为主线，逐一剖析Lifecycle是怎样完成抽象，设计，及实现的。
-Lifecycle的状态感知 传统的状态感知就是重写Activity和Fragment的生命周期回调，在回调里面进行状态更新。这其实也是Lifecycle实现的基本思路，只是它将这些个回调抽象为了一个个的事件。那么怎么将生命周期转化为一个个事件呢？Lifecycle用了一个巧妙的方法，自定义了一个ReportFragment。ReportFragment作用很明确，就是监听生命周期，生成状态事件。 如图所示，本质上ReportFragment还是监听了Activity的生命周期，绑定关系就发生在injectIfNeededIn方法中。然后为了将监听到的状态传递出去给其他类使用，ReportFragment借助了dispatch方法。这里有个很巧妙的设计细节，dispatch并没有直接引用自己的组件，而是使用了Activity，但是为什么还是能将事件发送出去呢？因为这里面使用了动态类型判断及转换的操作，最终，转换成了分发器LifecycleRegistry来完成事件分发操作。从而顺利讲逻辑转到了第二阶段，状态更新。
-Lifecycle的状态更新 状态更新主要的逻辑还是放在了LifecycleRegistry类里，这个类是继承了Lifecycle的。 如图所示，这个类作为Lifecycle的子类完成了被观察对象的两个功能，接收和管理观察对象。其次作为核心类它又完成了状态更新的功能。事件在这里被转化为状态，保存了下来，然后通知给自己的观察者。从类缩略图中，我们也可以看出这些方法就是为了完成这两大功能而设计的。知道了这些，状态更新的步骤也就了解了。那么顺理成章的，我们马上进入第三个步骤。
-Lifecycle的状态响应 LifecycleObserver是个空接口，那么状态更新怎么做呢？这就还得从LifecycleRegistry开始看起。LifecycleRegistry在添加LifecycleObserver的时候做了包装，于是LifecycleObserver变成了多种LifecycleObserver的子类，在不同的子类里面其实都直接或者间接地继承自LifecycleEventObserver。所以最终状态是通过LifecycleEventObserver的onStateChanged方法通知给观察者的。但是我们很快发现不对劲，官方Demo是直接实现LifecycleObserver，并且只需要用注解对感兴趣的状态注册就可以了。这里完全没有体现哇。按照刚才的思路，我们还是从添加LifecycleObserver的方法开始，LifecycleObserver被包装成ObserverWithState对象，而在构造方法里面委托给了Lifecycling，所以最终的秘密藏在Lifecycling。Lifecycling里面对多种LifecycleObserver进行了处理，其中就包括了我们熟悉的注解的方式。所以，总结来看，我们通过注解定义LifecycleObserver观察者后，注册到LifecycleRegistry就会被包装成新的观察者对象。然后，在状态更新的时候，用过注解找到合适的方法来通知观察者。到这里其实整个Lifecycle的工作流程已经理清了，我根据这些整理出了一份UML图。 由UML图，我们可以直观地得出一句话的结论，LifecycleRegistry使用LifecycleOwner提供的Lifecycle，使用观察者的模式把状态传递给了LifecycleEventObserver，这就是我最开始说的三个抽象之间的联系。
-品读实现细节 经过多次的品读，我发现了Lifecycle的多个小细节值得我们细细品味，其一就是Lifecycle强大的抽象。Lifecycle使用了LifecycleOwner抽象了生命周期这个概念，生命周期不一定是和Activity绑定的，用户可以自己定义自己的LifecycleOwner，定制满足自己业务需求的Lifecycle。其次LifecycleRegistry是一个很好的高内聚，低耦合的实现典范——LifecycleRegistry依赖的都是LifecycleOwner和LifecycleObserver这样的顶层接口，遵循了依赖倒置原则、LifecycleRegistry内部对LifecycleObserver的包装又委托给了Lifecycling，遵循了单一职责原则，就连LifecycleRegistry的方法都是严格遵守单一职责原则的，不得不叹服开发者对代码强大的掌控力。 当然，还有其他也很不错的实现细节，我没有一一展开，因为代码是读不完的，我们抓住我们感兴趣的就行了，有些细节就是用来忽略的，我们不得不承认这个事实。
-青山不改，绿水长流，咱们下期见！</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jetpack on 低头沉思</title><link>https://hongui.github.io/tags/jetpack/</link><description>Recent content in Jetpack on 低头沉思</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 24 Mar 2021 18:18:30 +0800</lastBuildDate><atom:link href="https://hongui.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml"/><item><title>沉思篇-剖析Jetpack的ViewModel</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</link><pubDate>Wed, 24 Mar 2021 18:18:30 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</guid><description>&lt;blockquote>
+&lt;p>ViewModel做为架构组件的三元老之一，是实现MVVM的有力武器。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="viewmodel的设计目标">ViewModel的设计目标&lt;/h1>
+&lt;p>ViewModel的基本功能就是管理UI的数据。其实，从职责上来说，这又是对Activity和Fragment的一次功能拆分。以前存储在它们内部的数据，需要它们自己处理创建，更新，存储，恢复的所有过程，同时它们还要处理UI的数据绑定，更新，动画等操作。职责的多元化就容易出现不好定位和调试的问题。另外，Activity和Fragment作为UI的承载者，很多时候需要共享数据和复用功能。而UI的差异让复用的粒度划分很难把控，容易写出扩展性差的代码。基于这些痛点，ViewModel被设计出来了。
+同时ViewModel还将保存数据的功能强化了——它将设备配置变更后数据保存和恢复自动化了，在UI生命周期内都能保证数据的有效性，这大大减少了样板代码的编写，提高了开发效率。&lt;/p>
+&lt;h1 id="viewmodel的架构设计">ViewModel的架构设计&lt;/h1>
+&lt;p>*** ViewModel用了两种粒度划分来完成数据管理功能。*** 第一层是对ViewModel自身存储数据的管理。目标就是完成ViewModel的创建，对应的抽象实体是&lt;code>ViewModelProvider.Factory&lt;/code>。第二层则是对已存在的ViewModel组的管理，目标就是保证意外情况下ViewModel的有效性，对应的抽象实体是ViewModelStore。当然，这些都只是概念上的抽象，还需要一个粘合剂把它们的抽象层级体现出来，这就是ViewModelProvider。这三个主体类共同搭建了ViewModel的体系框架。剩下的类都是对这三个概念的补充和完善。接下来我将分别以这些抽象为主线，逐层分析它们的实现逻辑。&lt;/p>
+&lt;h1 id="viewmodel的组管理">ViewModel的组管理&lt;/h1>
+&lt;p>前面也提到过，ViewModelStore是完成组管理的，那么我们首先应该确定的是组的概念,也就是这些ViewModel都归属于谁的问题。这不难理解，要管理组，那就必须得找到组的主人啊，由此引申出了ViewModelStoreOwner，它代表着某个拥有组管理权限的对象，通过它提供的ViewModelStore对象就能对里面的ViewModel进行管理了，同时这些ViewModel也就共同形成了组。所以ViewModelStoreOwner其实就是组的抽象实体，它代表着某个组，也是管理分组的单位。
+ViewModel有两个默认实现的组——ComponentActivity和Fragment。也就是说ComponentActivity和Fragment都实现了ViewModelStoreOwner这个接口。
+先来看ComponentActivity的实现。根据接口，首先查看接口方法&lt;code>getViewModelStore&lt;/code>的实现。里面主要涉及到两个对象，一个就是ViewModelStore的引用&lt;code>mViewModelStore&lt;/code>，另一个就很有意思了，它是一个NonConfigurationInstances对象，这是一个简单类，就是保存ViewModelStore对象的。那么它特殊在什么地方呢？它是&lt;code>onRetainNonConfigurationInstance&lt;/code>方法的返回对象。&lt;/p>
+&lt;blockquote>
+&lt;p>插一个课外知识科普，&lt;code>onRetainNonConfigurationInstance&lt;/code>是Activity的一个方法，这个方法是设备配置发生变化（如横竖屏切换的时候）时被系统自动调用的，用于用户保存数据。只要这个方法返回的对象，在设备配置放生改变时都不会被销毁。稍后在重建完成后，可以通过&lt;code>getLastNonConfigurationInstance&lt;/code>方法获取到。&lt;/p>
+&lt;/blockquote>
+&lt;p>接着回到&lt;code>getViewModelStore&lt;/code>的实现，刚才说到NonConfigurationInstances对象，它是通过调用&lt;code>getLastNonConfigurationInstance&lt;/code>方法获得的。如果方法返回了有效的对象，说明Activity被重建了，就直接获取保存在NonConfigurationInstances对象中的值，然后更新&lt;code>mViewModelStore&lt;/code>。否则就说明还没有有效的ViewModelStore对象，则直接创建。从这个逻辑不难看出，我们的ViewModel不会随着设备变化而重建，这正好满足了我们的设计目标。那么对于Fragment，它的实现又是怎样的呢。
+Fragment的实现比较曲折，它直接委托给了FragmentManager,又委托给了FragmentManagerViewModel的&lt;code>getViewModelStore&lt;/code>方法，方法实现也很简单，就是对&lt;code>HashMap&lt;/code>查找，没有就创建新的。这显然不是我们想看到的，因为这里并没有和Activity类似的处理状态变更的逻辑。那么唯一的突破点就是那个HashMap对象了。搜索一圈发现，它会作为getSnapshot方法的返回值返回，有点Activity那味了。往上回溯，会发现它最终就是作为不销毁的对象，在Fragment销毁前保存下来了。
+以上就是两种应用场景下ViewModelStore的创建逻辑，另外，还有清除逻辑没有讲到。这个逻辑本质上就是调用ViewModelStore的clear方法，唯一的问题就是确定调用时机。具体来说就是，Activity通过注册&lt;code>Lifecycle&lt;/code>的状态监听，在&lt;code>Lifecycle.Event.ON_DESTROY&lt;/code>的时候，调用了&lt;code>clear&lt;/code>方法,而Fragment则是继续通过FragmentManager的&lt;code>desctory&lt;/code>方法作为调用的入口点。在FragmentManagerViewModel里完成了方法调用。
+总结一下，ViewModelStoreOwner是对ViewModel组的一种抽象。虽然对应着两个不同的实现，但是殊途同归，&lt;em>&lt;strong>最终的目的就是保证在设备配置发生变化的时候对应ViewModelStore对象的有效性，&lt;/strong>&lt;/em> 从而保证ViewModel对象的有效性。同时在真正需要销毁的时候做好清理工作。这就是这ViewModel的组管理功能。&lt;/p>
+&lt;h1 id="viewmodel的创建管理">ViewModel的创建管理&lt;/h1>
+&lt;p>ViewModel用&lt;code>ViewModelProvider.Factory&lt;/code>来管理创建过程。具体来说就是怎样根据一个ViewModel子类的类信息创建对应的对象。这有两个难点——必要的依赖注入、数据的恢复。对于依赖注入，ViewModel还是耍了老把戏，和创建ViewModelStore类似，提供了&lt;code>HasDefaultViewModelProviderFactory&lt;/code>的一个抽象，把依赖注入转移到了ComponentActivity和Fragment中。之所以这么做，是因为在创建ViewModel的过程中，可能需要使用到Application和Bundle等信息，而这些信息是只能在在Activity和Fragment中才能获取到的。数据恢复则是关注怎样利用现有的数据将对象恢复到原来的状态。当然这些过程其实都可以没有，不需要传递Application或者Bundle对象，不需要恢复ViewModel状态，则库提供了默认的实现。就是简单的调用反射创建对象而已。
+针对刚才说的各种情况，&lt;code>ViewModelProvider.Factory&lt;/code>有多个实现，那么实际上它到底是使用哪个实现呢，我们得从ViewModelProvider中寻找答案。在它的构造方法里，会对ViewModelStoreOwner做类型判断，假如它是&lt;code>HasDefaultViewModelProviderFactory&lt;/code>的实例，则使用实例返回的对象，否则默认的实现。结合上面的分析，让我们继续到ComponentActivity和Fragment中寻找答案。不看不知道，一看吓一跳，它们竟然都是使用了SavedStateViewModelFactory类，那么我们一起来看看它是怎么实现的吧。
+在构建SavedStateViewModelFactory对象的时候，会传入三个对象——Application,SavedStateRegistryOwner,Bundle,这三个对象中最重要的就是第二个，它的主要功能就是提供在SavedStateRegistry对象，这个对象会在合适的时候保存数据，然后在合适的时候再恢复过来。它也是生命周期感知的组件。在它的&lt;code>create&lt;/code>方法里，也是通过反射构建ViewModel对象的，唯一的不同就是反射多了个参数。接着往下看，最终会利用这些信息构造出SavedStateHandle对象，这个对象就是真正对我们当前创建的ViewModel对象有用的信息。SavedStateHandle提供了根据键值对保存数据的方法，也提供了查询方法，所以ViewModel可以根据这个对象，恢复自己的LiveData数据，最重要的，这个类还提供了LiveData的另一个子类SavingStateLiveData，能自动处理数据保存的问题。
+一句话总结，ComponentActivity和Fragment会使用SavedStateViewModelFactory对象作为ViewModelProvider中的&lt;code>Factory&lt;/code>来创建ViewModel。只要ViewModel提供了带有Application或者SavedStateHandle的构造方法，就能享受从Bundle中恢复数据的便利。&lt;/p>
+&lt;h1 id="viewmodel的粘合剂viewmodelprovider">ViewModel的粘合剂ViewModelProvider&lt;/h1>
+&lt;p>为什么说ViewModelProvider是粘合剂呢？因为这个类就做了一件事，把ViewModelStore和&lt;code>ViewModelProvider.Factory&lt;/code>组合起来，实现了一个叫get的方法，这个方法的内部实现就是有两个步骤。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>调用ViewModelStore的&lt;code>get&lt;/code>方法查询是否有创建好的对象，如果有就返回，方法结束，否则进入步骤2。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>调用&lt;code>ViewModelProvider.Factory&lt;/code>的&lt;code>create&lt;/code>方法创建对象，并将之保存到ViewModelStore中。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>所以当我们要使用ViewModel的时候，通常是创建ViewModelProvider对象，然后调用&lt;code>get&lt;/code>方法获取真正的ViewModel对象，这样，我们的对象就具备了正确处理设备配置变更的能力。&lt;/p>
+&lt;h1 id="viewmodel的fragment间通信功能">ViewModel的Fragment间通信功能&lt;/h1>
+&lt;p>根据前面的梳理，我们知道，ViewModelStore是管理某个ViewModel组的，只要我们保证ViewModelStore存在，我们就可以保证ViewModel存活。再反推一步，要保证ViewModelStore存活，我们就要保证ViewModelStoreOwner在不同的地方都能返回同一个ViewModelStore对象，而ComponentActivity和Fragment是都实现了这个接口的。结合Activity的生命周期通常是大于Fragment这一事实，不难得出结论——&lt;em>&lt;strong>在某个Fragment里面，用Activity对象创建ViewModelProvider对象，就能保证获取到和Activity一样的ViewModelStore对象，也就能保证获取到相同的ViewModel对象。只要Activity没有销毁，该Activity下的所有Fragment都能获取到相同的ViewModel对象，然后通过更改状态能方式完成通信。&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>到此，对ViewModel的分析告一段落了，对创建过程的两次抽象是我觉得最精彩的环节，另外对现有条件（Activity和Fragment的生命周期）的利用也是它独到之处，真的是受益匪浅。青山不改，绿水长流，咱们下期见！
+&lt;img src="https://hongui.github.io/post/viewmodel.webp"
+width="1080"
+height="515"
+srcset="https://hongui.github.io/post/viewmodel_hu1a3d262f0baed64d23f8cbca65f2577a_23416_480x0_resize_q75_h2_box_2.webp 480w, https://hongui.github.io/post/viewmodel_hu1a3d262f0baed64d23f8cbca65f2577a_23416_1024x0_resize_q75_h2_box_2.webp 1024w"
+loading="lazy"
+alt="viewmodel"
+class="gallery-image"
+data-flex-grow="209"
+data-flex-basis="503px"
+>&lt;/p></description></item><item><title>沉思篇-剖析Jetpack的LiveData</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</link><pubDate>Tue, 23 Mar 2021 18:14:09 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90Jetpack%E7%9A%84LiveData.html</guid><description>&lt;blockquote>
+&lt;p>上一篇我们讲到了架构组件中的Lifecycle，由于缺少具体的运用，可能缺少直观的感受，今天我们就用Lifecycle实战一回，看看Lifecycle是怎样运用到LiveData中的。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="livedata的功能">LiveData的功能&lt;/h1>
+&lt;p>根据&lt;code>LiveData&lt;/code>的类注释，我们可以知道，&lt;code>LiveData&lt;/code>是一个实现了观察者模式的数据容器，并且是可感知生命周期的。由这个功能描述，我们就能知道&lt;code>LiveData&lt;/code>是由两部分功能合并而来的，一部分是数据容器，一部分是响应生命周期。在阅读源码的时候，我觉得功能拆解是个很有用的手段，合理的功能拆解，就是有目的的省略，有助于快速理清功能实现逻辑。
+接下来，我将以这两个功能为突破点，逐一梳理&lt;code>LiveData&lt;/code>的实现思路。&lt;/p>
+&lt;h2 id="livedata的数据容器功能">LiveData的数据容器功能&lt;/h2>
+&lt;p>数据容器的概念相信大家不会陌生，几乎每种语言都会有他们的身影，开发者用它们来保存数据对象。由于应用场景的不同，出现了各种各样的数据容器，如&lt;code>List&lt;/code>,&lt;code>Set&lt;/code>这些是保存数据集的，&lt;code>ThreadLocal&lt;/code>是保存线程私有数据的。那么&lt;code>LiveData&lt;/code>是保存什么数据的呢，它是保存可观察数据的。
+对于数据容器的拆解，其实是有固定的模式可寻的，就是以添加数据为突破口，然后以数据流向为主线，逐步击破。所以我们就从&lt;code>LiveData&lt;/code>添加数据的方法&lt;code>setValue&lt;/code>开始分析。&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>setValue&lt;/code>方法的逻辑很少，主要就是两个，增加mVersion的版本，保存数据，然后就是调用&lt;code>dispatchingValue&lt;/code>进行分发了。&lt;code>mVersion&lt;/code>是个关键点，后面还会讲到，这里主要是混个脸熟。我们先进入到下一步。&lt;/li>
+&lt;li>&lt;code>dispatchingValue&lt;/code>的功能很清楚，从名字上就能看出来，就是分发数据的。但是它的实现却是很巧妙的。为了阐述这个实现，我们需要一个合适的场景。假设当前&lt;code>LiveData&lt;/code>保存的数据变动频繁，并且观察对象很多的情况，我们怎样快速，准确地把数据传递给观察者呢？或者换种说法，当我们正在分发数据的时候，又有新数据来了怎么办？通常来说有两种方案，掐头去尾。掐头就是在数据更新的时候不管新数据，先把分发操作执行完之后再处理新数据。去尾就是新数据来了，取消上一次数据分发，重新分发新数据。&lt;code>LiveData&lt;/code>采用的是去尾的方式。明白了这点，再看&lt;code>dispatchingValue&lt;/code>就很清晰了，它用&lt;code>mDispatchingValue&lt;/code>标识分发状态，用&lt;code>mDispatchInvalidated&lt;/code>来标识新数据状态，然后在使用&lt;code>for&lt;/code>循环分发数据的时候检测&lt;code>mDispatchInvalidated&lt;/code>的状态是不是更新了，由此确定是不是需要取消此次分发，进行新一轮的分发。其他的就没有更多奥秘可言了。&lt;/li>
+&lt;li>&lt;code>considerNotify&lt;/code>是分发给具体的观察者之后的处理逻辑。这一步就是在步骤2中的&lt;code>for&lt;/code>循环里完成的。所以这里就是数据的最后一站了。这个方法需要根据观察者的两个状态来确定是不是要通知。一个就是步骤1中提到的&lt;code>mVersion&lt;/code>，因为观察者也有一份自己的&lt;code>mLastVersion&lt;/code>,假如&lt;code>mVersion&lt;/code>比&lt;code>mLastVersion&lt;/code>小的话就没必要通知了，因为每次通知之后，它两的值是一样的。另一个就是和生命周期扯上关系的&lt;code>mActive&lt;/code>了。这个状态标示着当前的观察者是否处于激活状态。假如不是，则直接返回了。搞了这两个判断之后就是简单的更新&lt;code>mLastVersion&lt;/code>和执行&lt;code>onChanged&lt;/code>回调了。
+以上三步就是&lt;code>LiveData&lt;/code>的数据更新过程，重点在于处理分发这个步骤上，在以后的项目中，我们可以借鉴这种思想，当然具体问题是需要具体分析的。
+在上面的步骤3中我们知道了观察者的&lt;code>mActive&lt;/code>是决定&lt;code>LiveData&lt;/code>响应生命周期的关键，那么接下来我们来看看这个状态是怎么更新的吧。&lt;/li>
+&lt;/ol>
+&lt;h2 id="livedata的生命周期感知">LiveData的生命周期感知&lt;/h2>
+&lt;p>联系上一篇文章沉思篇-剖析JetPack的&lt;code>Lifecycle&lt;/code>,我们知道&lt;code>Lifecycle&lt;/code>是专业干介个的（生命周期感知）。同时文章也提到了&lt;code>Lifecycle&lt;/code>三个很重要的抽象，&lt;code>LifecycleOwner&lt;/code>，&lt;code>Lifecycle&lt;/code>，&lt;code>LifecycleObserver&lt;/code>，这是引入生命周期感知三个很好的突破口。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>LifecycleOwner&lt;/code>作为生命周期的动力源，是直接可以获得Lifecycle的，继而可以方便地读取状态和注册状态监听，由于出色的接口封装，不需要和其他类产生耦合，是个很好的引入对象。&lt;/li>
+&lt;li>&lt;code>Lifecycle&lt;/code>作为&lt;code>Lifecycle&lt;/code>的核心类，它完成了很多功能，是抽象类，只能继承使用。&lt;/li>
+&lt;li>&lt;code>LifecycleObserver&lt;/code>，作为状态更新通知的最后一环，可以很方便地完成状态监听，但是需要注册到合适的&lt;code>Lifecycle&lt;/code>上。&lt;/li>
+&lt;/ul>
+&lt;p>所以很显然，&lt;code>LiveData&lt;/code>使用&lt;code>Lifecycle&lt;/code>需要搞一个&lt;code>LifecycleOwner&lt;/code>，用于引入生命周期的状态，还需要搞一个&lt;code>LifecycleObserver&lt;/code>，用于响应状态更新。另外，由于我们是数据容器的定位，我们的数据是很可能供给给很多类使用的，所以假如将&lt;code>LifecycleOwner&lt;/code>和&lt;code>LiveData&lt;/code>绑定的话，一旦某个操作致使&lt;code>LiveData&lt;/code>失活，其他所有的观察者就一摸黑了，啥也收不到了，这是有悖设计的。基于这个原因，&lt;code>LifecycleOwner&lt;/code>只能和&lt;code>Observer&lt;/code>绑定。结果就显而易见了，他们同时出现在了&lt;code>observe&lt;/code>方法里，这也就解释了&lt;code>observe&lt;/code>方法为啥需要两个参数。
+很明显&lt;code>observe&lt;/code>就是分析生命周期感知的突破口，我们再接再励，看看他们是怎么合力工作的。&lt;/p>
+&lt;p>在&lt;code>observe&lt;/code>内部，&lt;code>LifecycleOwner&lt;/code>和&lt;code>Observer&lt;/code>同时被&lt;code>LifecycleBoundObserver&lt;/code>接收，用于构造对象了，逻辑继续转到&lt;code>LifecycleBoundObserver&lt;/code>中.&lt;/p>
+&lt;p>注意到&lt;code>LifecycleBoundObserver&lt;/code>是实现了&lt;code>LifecycleEventObserver&lt;/code>,并且继承自&lt;code>ObserverWrapper&lt;/code>。&lt;code>ObserverWrapper&lt;/code>不熟悉我们先放一边，上一篇中我们知道了&lt;code>LifecycleEventObserver&lt;/code>是继承自&lt;code>LifecycleObserver&lt;/code>的，它只有一个状态变更的回调。很显然，我们下一步就是去看看它是怎样处理状态变更的。&lt;/p>
+&lt;p>来到&lt;code>onStateChanged&lt;/code>方法，里面做了两件事，而且是互斥的，这就是说，其实它在某种条件下干一件事，其他条件干另一个事。先看简单的一件事，它在&lt;code>Lifecycle&lt;/code>状态是&lt;code>DESTROYED``的时候移除了&lt;/code>Observer&lt;code>，没有更多了。那么另一件事其实我们也能猜到了，就是状态不为&lt;/code>DESTROYED&lt;code>的时候怎么搞。它委托给了父类&lt;/code>ObserverWrapper`搞。&lt;/p>
+&lt;p>逻辑来到&lt;code>ObserverWrapper&lt;/code>的&lt;code>activeStateChanged&lt;/code>方法里，里面就是对&lt;code>LiveData&lt;/code>的状态进行设置而已，也就是根据现在是不是激活状态更新&lt;code>mActiveCount&lt;/code>的值，并且在适当的条件下通知&lt;code>LiveData&lt;/code>进入激活状态或者失活状态。另外就是上面我们心心念念的&lt;code>mActive&lt;/code>了，这就接上了。当然，还有个极为关键的点，在激活状态下，会以自身为参数，进行一次数据数据，在某种情况下，这可能会引入数据问题。&lt;/p>
+&lt;p>到这里，&lt;code>LiveData&lt;/code>的生命周期感知就看完了.一句话就能总结，&lt;code>Lifecycle&lt;/code>让&lt;code>LiveData&lt;/code>有了在激活状态下分发数据，在失活后自动取消监听的能力。&lt;/p>
+&lt;p>补充说明
+虽然前面讲了那么多，还有一些内容是没有讲到的，比如数据的异步更新，&lt;code>Observer&lt;/code>的注册过程，等等，但是已经不妨碍我们理解主流程了。为了加深印象，我还整理一个UML图，可以对照着图再次理解，回顾。
+&lt;img src="https://hongui.github.io/post/livedata.webp"
+width="898"
+height="996"
+srcset="https://hongui.github.io/post/livedata_hu5fe1c56aabf5e1118826b0d70e18969c_22476_480x0_resize_q75_h2_box_2.webp 480w, https://hongui.github.io/post/livedata_hu5fe1c56aabf5e1118826b0d70e18969c_22476_1024x0_resize_q75_h2_box_2.webp 1024w"
+loading="lazy"
+alt="livedata UML"
+class="gallery-image"
+data-flex-grow="90"
+data-flex-basis="216px"
+>&lt;/p></description></item><item><title>沉思篇-剖析JetPack的Lifecycle</title><link>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90JetPack%E7%9A%84Lifecycle.html</link><pubDate>Sun, 21 Mar 2021 15:56:53 +0800</pubDate><guid>https://hongui.github.io/post/%E6%B2%89%E6%80%9D%E7%AF%87-%E5%89%96%E6%9E%90JetPack%E7%9A%84Lifecycle.html</guid><description>&lt;blockquote>
+&lt;p>这几年，对于Android开发者来说，最时髦的技术当属Jetpack了。谷歌官方从19年开始，就在极力推动Jetpack的使用，经过这几年的发展，Jetpack也基本完成了当时的设计目标——简单，一致，专注。而使得这一切成为可能的基石，我觉得当属架构组件了。最初架构组件作为单独的库和support库并没有太多联系，随着Jetpack的成型，给架构组件也注入了新的活力。在Jetpack库中，建构组件的使用随处可见，扮演着越来越重要的角色。今天，我就以作为架构组件基石的Lifecycle开始，尝试对架构组件进行剖析，向大家展示谷歌开发者是怎样设计一个高内聚，低耦合的库的。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>要说阅读源码，我觉得和把大象装进冰箱的操作是一样的，就是再大的事，得分步骤。阅读源码的第一步就是站在库开发者的角度，提炼出库需要完成的功能。明确了功能，才能针对功能进行代码设计，这也是我们阅读源码的第二步，理清实现逻辑。我们可以通过画UML图的方式帮助理解。通常来说画完UML图，源码的理解也就七七八八了。这时我们就可以走到第三步，品读实现细节。有了前两步的基础，我们就可以针对性地选取一些感兴趣的内容研读实现了，而且可以做到收放自如，指哪打哪。
+那我们开始吧！&lt;/p>
+&lt;h1 id="lifecycle的源码思路">Lifecycle的源码思路&lt;/h1>
+&lt;p>明确Lifecycle的设计目标
+一句话概括，Lifecycle就是完成了生命周期感知的任务。生命周期感知是什么意思呢，就是一个类可以不依赖Activity或者Fragment的回调，正确处理状态更新的问题。那么我们为什么需要这样的一个类呢，这和我们直接在回调方法里面写逻辑有什么差别吗？为了回答这个问题，我们来设想一下这样一个场景：一个Activity需要获取用户实时的位置信息，同时需要使用相机，以往我们的做法是在Activity的某些回调里面设置位置，相机的监听及解监听。如果这时，Activity再加入其他的一些逻辑，它的代码就可能膨胀到不能忍受的地步，并且随着业务的增长，后续Activity的膨胀是不可预期的，这样是不利于调试和测试的，而且，从设计上来说，这样的设计也是脆弱的，耦合太紧了。但是我们的这些组件确确实实是需要响应生命周期回调的啊，那么怎样才能做到既能感知生命周期，又能降低耦合呢。计算机科学告诉我们这样一条真理，当找不到其他方法时，可以考虑加一层抽象。由此，Lifecycle诞生了。这就是Lifecycle的目标，很纯粹，就是生命周期感知，就是把专业的事情交给专业的去做。&lt;/p>
+&lt;h1 id="lifecycle的工作流程">Lifecycle的工作流程&lt;/h1>
+&lt;p>概括来说，Lifecycle就是完成了状态监听和状态分发的两个功能。为了完成这两个功能，Lifecycle抽象出了三个概念，也可以说是三个流程吧。&lt;/p>
+&lt;ol>
+&lt;li>拥有生命周期的对象，称为LifecycleOwner，这其实只是一个接口，只要能提供Lifecycle的都可以称为LifecycleOwner，这个类主要的功能就是提供原始的生命周期事件，供后续的操作提供数据，这是第一步——状态感知；&lt;/li>
+&lt;li>拥有生命周期状态，称为Lifecycle，这个类主要的功能就是提供状态抽象和提供状态信息，这是第二步——状态更新；&lt;/li>
+&lt;li>对生命周期状态感兴趣的观察者，称为LifecycleObserver，这个类主要的功能就是对状态信息进行响应，这是第三步——状态响应。&lt;/li>
+&lt;/ol>
+&lt;p>流程很简单，看着也很清晰的，就是观察者模式。但是Lifecycle库为了完成更好的解耦和提供更多的扩展，在这三个环节上衍生出了更多的类，这也是我以Lifecycle为剖析对象的原因。我觉得一个好的库，不仅仅要能够完成库的设计目标，同时还应该保持尽可能的扩展性和可读性。在这点上，Lifecycle无疑是我们很好的榜样。接下来，我们就一起以这三个阶段为主线，逐一剖析Lifecycle是怎样完成抽象，设计，及实现的。&lt;/p>
+&lt;h2 id="lifecycle的状态感知">Lifecycle的状态感知&lt;/h2>
+&lt;p>传统的状态感知就是重写Activity和Fragment的生命周期回调，在回调里面进行状态更新。这其实也是Lifecycle实现的基本思路，只是它将这些个回调抽象为了一个个的事件。那么怎么将生命周期转化为一个个事件呢？Lifecycle用了一个巧妙的方法，自定义了一个ReportFragment。ReportFragment作用很明确，就是监听生命周期，生成状态事件。
+&lt;img src="https://hongui.github.io/post/reportfragment.webp"
+width="749"
+height="658"
+srcset="https://hongui.github.io/post/reportfragment_hu8dc71e5f17ce61b71ba2cd161ed127f1_37502_480x0_resize_q75_h2_box_2.webp 480w, https://hongui.github.io/post/reportfragment_hu8dc71e5f17ce61b71ba2cd161ed127f1_37502_1024x0_resize_q75_h2_box_2.webp 1024w"
+loading="lazy"
+alt="ReportFragment接口列表"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="273px"
+>
+如图所示，本质上ReportFragment还是监听了Activity的生命周期，绑定关系就发生在injectIfNeededIn方法中。然后为了将监听到的状态传递出去给其他类使用，ReportFragment借助了dispatch方法。这里有个很巧妙的设计细节，dispatch并没有直接引用自己的组件，而是使用了Activity，但是为什么还是能将事件发送出去呢？因为这里面使用了动态类型判断及转换的操作，最终，转换成了分发器LifecycleRegistry来完成事件分发操作。从而顺利讲逻辑转到了第二阶段，状态更新。&lt;/p>
+&lt;h2 id="lifecycle的状态更新">Lifecycle的状态更新&lt;/h2>
+&lt;p>状态更新主要的逻辑还是放在了LifecycleRegistry类里，这个类是继承了Lifecycle的。
+&lt;img src="https://hongui.github.io/post/lifecycleregistry.webp"
+width="749"
+height="833"
+srcset="https://hongui.github.io/post/lifecycleregistry_hu9aa9a9c3b2b7f005ae4b2391a8f56d06_50360_480x0_resize_q75_h2_box_2.webp 480w, https://hongui.github.io/post/lifecycleregistry_hu9aa9a9c3b2b7f005ae4b2391a8f56d06_50360_1024x0_resize_q75_h2_box_2.webp 1024w"
+loading="lazy"
+alt="LifecycleRegistry接口列表"
+class="gallery-image"
+data-flex-grow="89"
+data-flex-basis="215px"
+>
+如图所示，这个类作为Lifecycle的子类完成了被观察对象的两个功能，接收和管理观察对象。其次作为核心类它又完成了状态更新的功能。事件在这里被转化为状态，保存了下来，然后通知给自己的观察者。从类缩略图中，我们也可以看出这些方法就是为了完成这两大功能而设计的。知道了这些，状态更新的步骤也就了解了。那么顺理成章的，我们马上进入第三个步骤。&lt;/p>
+&lt;h2 id="lifecycle的状态响应">Lifecycle的状态响应&lt;/h2>
+&lt;p>LifecycleObserver是个空接口，那么状态更新怎么做呢？这就还得从LifecycleRegistry开始看起。LifecycleRegistry在添加LifecycleObserver的时候做了包装，于是LifecycleObserver变成了多种LifecycleObserver的子类，在不同的子类里面其实都直接或者间接地继承自LifecycleEventObserver。所以最终状态是通过LifecycleEventObserver的onStateChanged方法通知给观察者的。但是我们很快发现不对劲，官方Demo是直接实现LifecycleObserver，并且只需要用注解对感兴趣的状态注册就可以了。这里完全没有体现哇。按照刚才的思路，我们还是从添加LifecycleObserver的方法开始，LifecycleObserver被包装成ObserverWithState对象，而在构造方法里面委托给了Lifecycling，所以最终的秘密藏在Lifecycling。Lifecycling里面对多种LifecycleObserver进行了处理，其中就包括了我们熟悉的注解的方式。所以，总结来看，我们通过注解定义LifecycleObserver观察者后，注册到LifecycleRegistry就会被包装成新的观察者对象。然后，在状态更新的时候，用过注解找到合适的方法来通知观察者。到这里其实整个Lifecycle的工作流程已经理清了，我根据这些整理出了一份UML图。
+&lt;img src="https://hongui.github.io/post/lifecycle.png"
+width="641"
+height="712"
+srcset="https://hongui.github.io/post/lifecycle_hu356aac92caa3fec0cee3418a7186b738_43477_480x0_resize_box_3.png 480w, https://hongui.github.io/post/lifecycle_hu356aac92caa3fec0cee3418a7186b738_43477_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Lifecycle UML图"
+class="gallery-image"
+data-flex-grow="90"
+data-flex-basis="216px"
+>
+由UML图，我们可以直观地得出一句话的结论，LifecycleRegistry使用LifecycleOwner提供的Lifecycle，使用观察者的模式把状态传递给了LifecycleEventObserver，这就是我最开始说的三个抽象之间的联系。&lt;/p>
+&lt;h1 id="品读实现细节">品读实现细节&lt;/h1>
+&lt;p>经过多次的品读，我发现了Lifecycle的多个小细节值得我们细细品味，其一就是Lifecycle强大的抽象。Lifecycle使用了LifecycleOwner抽象了生命周期这个概念，生命周期不一定是和Activity绑定的，用户可以自己定义自己的LifecycleOwner，定制满足自己业务需求的Lifecycle。其次LifecycleRegistry是一个很好的高内聚，低耦合的实现典范——LifecycleRegistry依赖的都是LifecycleOwner和LifecycleObserver这样的顶层接口，遵循了依赖倒置原则、LifecycleRegistry内部对LifecycleObserver的包装又委托给了Lifecycling，遵循了单一职责原则，就连LifecycleRegistry的方法都是严格遵守单一职责原则的，不得不叹服开发者对代码强大的掌控力。
+当然，还有其他也很不错的实现细节，我没有一一展开，因为代码是读不完的，我们抓住我们感兴趣的就行了，有些细节就是用来忽略的，我们不得不承认这个事实。&lt;/p>
+&lt;p>青山不改，绿水长流，咱们下期见！&lt;/p></description></item></channel></rss>
