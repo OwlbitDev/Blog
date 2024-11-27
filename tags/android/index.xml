@@ -1,4 +1,184 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Android on 低头沉思</title><link>https://deep-thinking.top/tags/android/</link><description>Recent content in Android on 低头沉思</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Tue, 09 May 2023 22:14:38 +0800</lastBuildDate><atom:link href="https://deep-thinking.top/tags/android/index.xml" rel="self" type="application/rss+xml"/><item><title>Android-OpenGLES学习-画个颜色</title><link>https://deep-thinking.top/posts/learning-opengles-on-the-android-fill-the-window/</link><pubDate>Tue, 09 May 2023 22:14:38 +0800</pubDate><guid>https://deep-thinking.top/posts/learning-opengles-on-the-android-fill-the-window/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Android on 低头沉思</title><link>https://deep-thinking.top/tags/android/</link><description>Recent content in Android on 低头沉思</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sun, 24 Nov 2024 13:55:45 +0800</lastBuildDate><atom:link href="https://deep-thinking.top/tags/android/index.xml" rel="self" type="application/rss+xml"/><item><title>Android音视频应用性能测试指南</title><link>https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/</link><pubDate>Sun, 24 Nov 2024 13:55:45 +0800</pubDate><guid>https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/</guid><description>&lt;p>随着Android平台的发展，Android应用规模越来越大，类型也越来越多，为了保证应用的质量，性能测试的作用愈加凸显。在进行性能测试的过程中，我们会发现不同类型的应用关注点不尽一致，因此需要针对应用类型制定合适的指标。同时性能测试工具也在不断进化，很多性能测试工具在2024年已经过时。所以本篇将结合项目实际，聊一聊音视频应用的性能测试指标，并给出一些性能测试的工具推荐。&lt;/p>
+&lt;h2 id="性能测试指标" class="relative group">性能测试指标 &lt;span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100">&lt;a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e6%80%a7%e8%83%bd%e6%b5%8b%e8%af%95%e6%8c%87%e6%a0%87" aria-label="">#&lt;/a>&lt;/span>&lt;/h2>&lt;p>性能测试指标选择的原则是：以核心业务为参照，着重关注用户感知明显的部分，用户感知不强的部分则可以适当忽略。音频频应用的主要业务就是音视频处理，需要处理大量的数据，处理大量数据需要占用大量CPU和GPU的时间，占用大量内存。CPU和GPU一直以高负荷的状态工作，则会导致发热量增大，增加电量消耗。所以，音视频应用的性能指标就很明朗了。&lt;/p>
+&lt;ol>
+&lt;li>CPU占用率&lt;/li>
+&lt;li>GPU占用率&lt;/li>
+&lt;li>内存占用率&lt;/li>
+&lt;li>比特率和帧率&lt;/li>
+&lt;li>温度变化&lt;/li>
+&lt;li>耗电量
+有了指标，接下来的主要任务就是获取这些指标数据。获取数据的方式有很多，大体可以分为应用内获取和应用外获取。应用内获取会比较直观，但是获取这些数据的过程中会影响到应用本身，影响指标数据。所以绝大部分情况下是采用应用外获取的方式。应用外获取最重要的工具就是ADB。&lt;/li>
+&lt;/ol>
+&lt;h2 id="adb" class="relative group">ADB &lt;span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100">&lt;a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#adb" aria-label="">#&lt;/a>&lt;/span>&lt;/h2>&lt;p>adb正如它名字蕴含的意义一样，它是PC和Android设备之间沟通的桥梁，是Android开发中极为重要的工具。我们不仅开发过程中需要用到它，性能测试更是少不了。通过它这个媒介，我们得以使用很多Android平台的工具，如本期性能测试的主角——&lt;code>dumpsys&lt;/code>。&lt;code>dumpsys&lt;/code>可以获取系统服务的很多信息。接下来我们将逐一介绍这些服务，并提供相应的Python脚本来解析这些服务数据，并将解析得到的数据保存在.&lt;code>csv&lt;/code>文件中。&lt;/p>
+&lt;h2 id="准备工作" class="relative group">准备工作 &lt;span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100">&lt;a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c" aria-label="">#&lt;/a>&lt;/span>&lt;/h2>&lt;p>通过前面的铺垫，我们明确了接下来要做的工作，但是在正式开始之前，我们先来总结一下需要做哪些准备：&lt;/p>
+&lt;ul>
+&lt;li>测试机-运行测试应用&lt;/li>
+&lt;li>PC-运行Python脚本&lt;/li>
+&lt;li>ADB-在PC上获取手机上的数据&lt;/li>
+&lt;li>Python-解析数据&lt;/li>
+&lt;/ul>
+&lt;h3 id="连接测试机和pc" class="relative group">连接测试机和PC &lt;span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100">&lt;a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e8%bf%9e%e6%8e%a5%e6%b5%8b%e8%af%95%e6%9c%ba%e5%92%8cpc" aria-label="">#&lt;/a>&lt;/span>&lt;/h3>&lt;p>很多人会疑问，我直接数据线插在手机上，配置好adb环境变量不就完成了吗，这有啥好展开说的。其实还真有，直接数据线连接，这种方式虽然简单快速，但是对于性能测试影响很大。首先是它无法得到电量消耗的数据。其次由于在充电状态，CPU和GPU的频率可能和使用电池时的频率差别很大，导致整个测试数据不可靠，所以需要采用无线连接的方式。
+无线连接也有两种方式可以选择。一种是Android11及以上的无线调试功能，这个功能我用着不是很稳定，况且对系统有限制，所以我使用第二种方法。第二种方法则是使用ADB WI-FI这个插件，可以直接在插件市场下载安装。下图就是它的详情图。
+
+
+
+
+
+
+
+ 
+ 
+&lt;figure>&lt;img src="adb_wifi.png" alt="adb Wi-Fi" class="mx-auto my-0 rounded-md" />&lt;figcaption class="text-center">ADB Wi-Fi&lt;/figcaption>
+&lt;/figure>
+
+这个插件第一次使用需要先用数据线连接成功一次，连接成功后页面会显示如下
+
+
+
+
+
+
+&lt;figure>
+ 
+ 
+
+
+
+
+
+
+
+
+ 
+ &lt;picture
+ class="mx-auto my-0 rounded-md"
+ 
+ >
+ 
+ 
+ 
+ 
+ &lt;source
+ 
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu7122000307785261281.webp 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu16676159757827291859.webp 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu9795437890836047099.webp 1024w
+ 
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu6509426226124795222.webp 1076w
+ 
+ "
+ 
+ sizes="100vw"
+ type="image/webp"
+ />
+ 
+ &lt;img
+ width="1076"
+ height="1136"
+ class="mx-auto my-0 rounded-md"
+ alt="adb Wi-Fi no device connected"
+ loading="lazy" decoding="async"
+ 
+ src="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu753898940375417646.png"
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu15436819717325159104.png 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu753898940375417646.png 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu5343957964770356028.png 1024w
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected.png 1076w
+ "
+ sizes="100vw"
+ 
+ />
+ &lt;/picture>
+ 
+
+&lt;figcaption class="text-center">ADB Wi-Fi no device connected&lt;/figcaption>
+&lt;/figure>
+
+它会显示两个设备，一个显示信号图标代表有线连接，一个显示Wi-Fi图标，代表无线连接。现在需要点击带有Wi-Fi图标设备右侧对应的connect按钮，开始连接。连接完成后，页面状态会变成Disconnect,显示如下
+
+
+
+
+
+
+
+ 
+ 
+&lt;figure>&lt;img src="adb%20Wi-Fi%20connnected%20a%20device.png" alt="adb Wi-Fi connnected a device" class="mx-auto my-0 rounded-md" />&lt;figcaption class="text-center">adb Wi-Fi connnected a device&lt;/figcaption>
+&lt;/figure>
+
+这时候就代表设备连接成功了。移除数据线，再次运行&lt;code>adb devices&lt;/code>命令，会显示已经连接的设备。结果类似于下图这种
+
+
+
+
+
+
+&lt;figure>
+ 
+ 
+
+
+
+
+
+
+
+
+ 
+ &lt;picture
+ class="mx-auto my-0 rounded-md"
+ 
+ >
+ 
+ 
+ 
+ 
+ &lt;source
+ 
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu6974142891576503149.webp 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu5924656702488863954.webp 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu14180893446170022563.webp 1024w
+ 
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu12761430981142511050.webp 1132w
+ 
+ "
+ 
+ sizes="100vw"
+ type="image/webp"
+ />
+ 
+ &lt;img
+ width="1132"
+ height="108"
+ class="mx-auto my-0 rounded-md"
+ alt="adb devices command"
+ loading="lazy" decoding="async"
+ 
+ src="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu461431289447161146.png"
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu9731077936867018761.png 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu461431289447161146.png 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command_hu14932742278956815081.png 1024w
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20devices%20command.png 1132w
+ "
+ sizes="100vw"
+ 
+ />
+ &lt;/picture>
+ 
+
+&lt;figcaption class="text-center">adb devices command&lt;/figcaption>
+&lt;/figure>
+
+这种就代表adb准备完成了。&lt;/p></description></item><item><title>Android-OpenGLES学习-画个颜色</title><link>https://deep-thinking.top/posts/learning-opengles-on-the-android-fill-the-window/</link><pubDate>Tue, 09 May 2023 22:14:38 +0800</pubDate><guid>https://deep-thinking.top/posts/learning-opengles-on-the-android-fill-the-window/</guid><description>&lt;blockquote>
 &lt;p>我们知道屏幕显示出内容是靠一个一个发光的RGB灯珠，而决定灯珠亮度的是一块内存区域，通过往这一块内存区域写入数据，我们就能在屏幕上观察到数据显示效果。这是个复杂又灵活的工作，为了方便完成这项工作，先驱们制定出了OpenGL标准，我们的故事也将从这里开始。&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="opengl-es" class="relative group">OpenGL ES &lt;span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100">&lt;a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#opengl-es" aria-label="">#&lt;/a>&lt;/span>&lt;/h3>&lt;p>OpenGL ES是OpenGL的精简版本，Android平台从发行伊始就提供了OpenGL ES的支持，只是不同的版本，支持的OpenGL ES版本不同，目前主流的版本还是2.0和3.0。OpenGL ES是一组API，为开发者提供配置数据，传输数据，绘制内容的能力。它的工作是和绘制严格相关的，所以光是OpenGL ES不会造成很大的理解障碍，问题出在配置OpenGL ES的配置环境上。为什么要将OpenGL ES API和配置环境分开呢，因为OpenGL ES是跨平台的API，但是实际运行的时候需要和特定平台绑定，如Android。平台间准备OpenGL ES环境所需要的条件不同，为了保证OpenGL ES的跨平台能力，就需要将配置环境单独拿出来和特定平台绑定。在Android上这个配置环境就是EGL。明确OpenGL ES API和配置OpenGL ES环境的区别不仅对理解这两个关键概念有很大帮助，更是对后期调试代码，排错帮助极大。&lt;/p>
