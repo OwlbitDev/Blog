@@ -25,10 +25,66 @@
 
 
 
+&lt;figure>
+ 
+ 
+
+
+
+
+
+
+
 
  
+ &lt;picture
+ class="mx-auto my-0 rounded-md"
  
-&lt;figure>&lt;img src="adb_wifi.png" alt="adb Wi-Fi" class="mx-auto my-0 rounded-md" />&lt;figcaption class="text-center">ADB Wi-Fi&lt;/figcaption>
+ >
+ 
+ 
+ 
+ 
+ &lt;source
+ 
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu15442713671799381545.webp 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu735392842479670477.webp 660w
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu4792012550016215299.webp 822w
+ 
+ 
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu4792012550016215299.webp 822w
+ 
+ "
+ 
+ sizes="100vw"
+ type="image/webp"
+ />
+ 
+ &lt;img
+ width="822"
+ height="1066"
+ class="mx-auto my-0 rounded-md"
+ alt="adb Wi-Fi"
+ loading="lazy" decoding="async"
+ 
+ src="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu16148909346628414716.png"
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu9775292770984504168.png 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi_hu16148909346628414716.png 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi.png 822w
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi.png 822w
+ "
+ sizes="100vw"
+ 
+ />
+ &lt;/picture>
+ 
+
+&lt;figcaption class="text-center">ADB Wi-Fi&lt;/figcaption>
 &lt;/figure>
 
 这个插件第一次使用需要先用数据线连接成功一次，连接成功后页面会显示如下
@@ -78,7 +134,7 @@
  width="1076"
  height="1136"
  class="mx-auto my-0 rounded-md"
- alt="adb Wi-Fi no device connected"
+ alt="adb Wi-Fi no device connect"
  loading="lazy" decoding="async"
  
  src="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-FI%20no%20device%20connected_hu753898940375417646.png"
@@ -105,10 +161,64 @@
 
 
 
+&lt;figure>
+ 
+ 
+
+
+
+
+
+
+
 
  
+ &lt;picture
+ class="mx-auto my-0 rounded-md"
  
-&lt;figure>&lt;img src="adb%20Wi-Fi%20connnected%20a%20device.png" alt="adb Wi-Fi connnected a device" class="mx-auto my-0 rounded-md" />&lt;figcaption class="text-center">adb Wi-Fi connnected a device&lt;/figcaption>
+ >
+ 
+ 
+ 
+ 
+ &lt;source
+ 
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu13108464419711832032.webp 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu11752774611748257366.webp 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu10579237283434009181.webp 1024w
+ 
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu17396940255916960380.webp 1076w
+ 
+ "
+ 
+ sizes="100vw"
+ type="image/webp"
+ />
+ 
+ &lt;img
+ width="1076"
+ height="1136"
+ class="mx-auto my-0 rounded-md"
+ alt="adb Wi-Fi connnected a device"
+ loading="lazy" decoding="async"
+ 
+ src="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu3288020292062024895.png"
+ srcset="https://deep-thinking.top/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu1424295582182547470.png 330w,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu3288020292062024895.png 660w
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device_hu2596381540298179210.png 1024w
+ 
+ 
+ ,/posts/a-guide-for-performance-testing-of-android-real-time-applications/adb%20Wi-Fi%20connected%20a%20device.png 1076w
+ "
+ sizes="100vw"
+ 
+ />
+ &lt;/picture>
+ 
+
+&lt;figcaption class="text-center">adb Wi-Fi connnected a device&lt;/figcaption>
 &lt;/figure>
 
 这时候就代表设备连接成功了。移除数据线，再次运行&lt;code>adb devices&lt;/code>命令，会显示已经连接的设备。结果类似于下图这种
