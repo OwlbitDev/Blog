@@ -43,7 +43,7 @@ adb正如它名字蕴含的意义一样，它是PC和Android设备之间沟通�
 很多人会疑问，我直接数据线插在手机上，配置好adb环境变量不就完成了吗，这有啥好展开说的。其实还真有，直接数据线连接，这种方式虽然简单快速，但是对于性能测试影响很大。首先是它无法得到电量消耗的数据。其次由于在充电状态，CPU和GPU的频率可能和使用电池时的频率差别很大，导致整个测试数据不可靠，所以需要采用无线连接的方式。
 无线连接也有两种方式可以选择。一种是Android11及以上的无线调试功能，这个功能我用着不是很稳定，况且对系统有限制，所以我使用第二种方法。第二种方法则是使用ADB WI-FI这个插件，可以直接在插件市场下载安装。下图就是它的详情图。
 ![adb Wi-Fi](adb%20Wi-Fi.png "ADB Wi-Fi")
-这个插件第一次使用需要先用数据线连接成功一次，连接成功后页面会显示如下
+这个插件第一次使用需要先用数据线连接成功一次，点击屏幕右侧的Wi-Fi图标后页面会显示如下
 ![adb Wi-Fi no device connect](adb%20Wi-Fi%20no%20device%20connected.png "ADB Wi-Fi no device connected")
 它会显示两个设备，一个显示信号图标代表有线连接，一个显示Wi-Fi图标，代表无线连接。现在需要点击带有Wi-Fi图标设备右侧对应的connect按钮，开始连接。连接完成后，页面状态会变成Disconnect,显示如下
 ![adb Wi-Fi connnected a device](adb%20Wi-Fi%20connected%20a%20device.png "adb Wi-Fi connnected a device")
@@ -176,13 +176,13 @@ Snapdragon Profiler不仅能获取到CPU，GPU等多种信息，还有着丰富�
 ![Snapdragon profiler connect device](Snapdragon%20Profiler%204.png "Snapdragon profiler connect device")
 等待几秒钟，如果一切顺利，下面三个选项则会变为可用
 ![Snapdragon profiler avaliable options](Snapdragon%20Profiler%205.png "Snapdragon profiler avaliable options")
-选择第二项Realtime performance analysis
+选择第二项Realtime performance analysis,在筛选框中输入包名来选取目标应用
 ![Snapdragon profiler realtime performance analysis](Snapdragon%20Profiler%206.png "Snapdragon profiler realtime performance analysis")
-在筛选框中输入包名来选取目标应用
-![Snapdragon profiler filter](Snapdragon%20Profiler%207.png "Snapdragon profiler filter")
 然后在下面的框中双击对应的GPU Busy指标
+![Snapdragon profiler filter](Snapdragon%20Profiler%207.png "Snapdragon profiler filter")
+页面的右上方就会实时绘制出当前应用的GPU占用率。
 ![Snapdragon profiler gpu busy](Snapdragon%20Profiler%208.png "Snapdragon profiler gpu busy")
-页面的右上方就会实时绘制出当前应用的GPU占用率。如果需要导出数据，则点击如下的按钮
+如果需要导出数据，则点击如下的按钮
 ![Snapdragon profiler export](Snapdragon%20Profiler%209.png "Snapdragon profiler export")
 然后导出为csv文件，可以直接使用里面的数据，也可用Python再做一次解析。
 
