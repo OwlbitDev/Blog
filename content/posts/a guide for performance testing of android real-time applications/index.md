@@ -283,8 +283,60 @@ class BatteryRecord(Record):
         return None
 ```
 
+## 融合起来
+现在我们确定的指标数据都定义好了，但是还没组装起来，使用起来不方便。理想的情况是，执行一次脚本，各个指标每隔一定的时间间隔执行一次，直到某种条件触发，脚本停止。所以需要找一个条件，能让应用运行时脚本一直运行。
+### 判断应用是否退出
+众所周知，Android有四大组件，Activity，Service，BroadcastReceiver和ContentProvider。但是，在Android中，Activity是唯一能直接和用户进行交互的组件，所以，判断应用是否退出，就意味着判断Activity是否退出。而恰巧的是`dumpsys`有`activity`命令。通过指定包名，观察输出，发现只要判断是否有对应的Activity就可以判断应用是否退出了。
+判断方式如下
+```python
+def can_be_continue(self):
+        lines=self.adb('adb shell dumpsys activity -p "{}" r'.format(PACKAGE))
+        for l in lines:
+            if "Activities" in l and PACKAGE in l:
+                return True
+        return False
+```
+### 判断应用是否处在前台
+而应用在前台也是类似的，Activity是一种方式，但是不好找判断条件。而和Activity类似的还有窗口，所以，判断应用是否处在前台，就意味着判断窗口是否处于前台。通过`dumpsys window`命令，可以获取窗口信息，通过筛选`mFocusedApp`属性的窗口，并比较包名就能确定应用是否在前台。
+```python
+lines=self.adb('adb shell dumpsys window d')
+        for l in lines:
+            if 'mFocusedApp' in l:
+                return PACKAGE in l
+        return False
+```
+### 多线程执行
+循环条件找到了，但是根据实测，发现有些命令执行比较耗时，为了能在短时间内获取数据，需要将各个指标的命令执行放在多线程中。同时为了保证每个命令执行的时间间隔尽可能相同，所以需要测量执行命令的时间，然后根据时间间隔选取合适的休眠时间。由此，整个脚本就串起来了。
+```python
+def run(record):
+    while record.can_be_continue():
+        before=time.time_ns()
+        record.execute()
+        usage=time.time_ns()-before
+        if usage>=S_UNIT:
+            continue
+        else:
+            time.sleep(1-usage/S_UNIT)
+
+def main():
+    records=[MemoryRecord("memory_stats.csv"),CPURecord('cpu_stats.csv'),FPSRecord('fps_stats.csv'),NetworkRecord('network_stats.csv'),BatteryRecord('battery_stats.csv'),TemperatureRecord('temperature_stats.csv')]
+
+    #init 
+    for record in records:
+        record.write_title()
+
+    threads=[]
+    for record in records:
+        thread=Thread(target=run,args=(record,))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+```
 ## 总结
-性能测试是大部分可以通过命令行获取的，但是对于一些特殊需求，命令行获取数据可能不够准确，这时就需要借助外部工具。对于不熟悉的命令
+性能测试有很多指标项，不同的指标项需要不同的处理方法。CPU，内存，电池可以直接通过`dumpsys`命令获取。而GPU数据目前我没有找到没有合适的命令，目前比较完备的解决方案是使用第三方工具：Snapdragon Profiler，但这个工具也对低版本的系统有限制。Python用来处理这些数据是个很好的选择，不仅有字符串，正则这些很强的工具可以用，还可以异步处理，是个性能测试的好帮手。
 ## 参考链接
 1. [dumpsys](https://developer.android.com/tools/dumpsys)
 2. [snapdragon profiler](www.qualcomm.com/developer/software/snapdragon-profiler)
+3. [script](https://github.com/hongui/RealtimePerformanceTest.git)
