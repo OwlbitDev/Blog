@@ -1,6 +1,6 @@
 ---
 title: "Android音视频应用性能测试指南"
-description: "JNI开发概念"
+description: "Android音视频应用性能测试指南"
 
 date: 2024-11-24T13:55:45+08:00
 lastmod: 2024-11-24T13:55:45+08:00
