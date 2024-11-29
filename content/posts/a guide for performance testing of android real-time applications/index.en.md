@@ -7,13 +7,13 @@ publishDate: 2024-11-24T13:55:45+08:00
 
 author: "hongui"
 categories:
-  - Performance 
+ - Performance 
 tags:
-  - Android 
-  - Performance Testing 
-  - ADB 
-  - Python 
-  - Audio-Video
+ - Android 
+ - Performance Testing 
+ - ADB 
+ - Python 
+ - Audio-Video
 
 toc: true 
 draft: false
