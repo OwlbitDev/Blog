@@ -1,8 +1,8 @@
 import { getCollection } from 'astro:content';
 
-export const getPosts = async () => {
+export const getPosts = async (lng:string|undefined=undefined) => {
     const posts = await getCollection('posts');
-    return posts.map(post => {
+    const formatPosts= posts.map(post => {
         let lng = 'zh'
         let id = post.id
         if (post.id.includes('indexen')) {
@@ -17,4 +17,9 @@ export const getPosts = async () => {
         }
     }
     )
+    formatPosts.sort((a, b) => b.data.publishDate -a.data.publishDate)
+    if(lng){
+        return formatPosts.filter(post => post.lng === lng)
+    }
+    return formatPosts
 };
