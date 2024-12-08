@@ -1,40 +1,31 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { getPosts } from './posts';
-import { useTranslations } from '../../i18n/utils';
+import Frame from "../../components/Frame.astro";
+import SimplePost from "../../components/SimplePost.astro";
+import Divider from "../../components/Divider.astro";
+import { getPosts } from "../../lib/posts";
+import { useTranslations, getStaticPaths } from "../../i18n/utils";
 
-export async function getStaticPaths() {
-	return ['zh','en'].map((lng) => ({
-		params: { lng }
-	}));
-}
+export { getStaticPaths };
 
-const {lng}=await Astro.params
-const t=useTranslations(lng)
-const posts=(await getPosts(lng)).slice(0,5)
+const { lng } = await Astro.params;
+const t = useTranslations(lng);
+const posts = (await getPosts(lng)).slice(0, 5);
 ---
-
-<!doctype html>
-<html lang={lng}>
-	<head>
-		<BaseHead title={t('title')} description={t('description')} />
-	</head>
-	<body>
-		<Header lng={lng} />
-		<main>
-			<h1>{t('welcome')}</h1>
-			<h2>{t('last_updates')}</h2>
-			{
-				posts.map((post) => (
-					<article>
-						<h3>{post.data.title}</h3>
-						<p>{`${post.data.publishDate.getFullYear()}/${post.data.publishDate.getMonth().toString().padStart(2,'0')}/${post.data.publishDate.getDate().toString().padStart(2,'0')}`}</p>
-					</article>
-				))
-			}
-		</main>
-		<Footer />
-	</body>
-</html>
+<Frame lng={lng} title={t("title")} description={t("description")}>
+	<img src="/background.png" alt="background" />
+	<h1 class="flex justify-center text-3xl m-8">{t("welcome")}</h1>
+	<h2 class="text-2xl my-8">{t("last_updates")}</h2>
+	{
+		posts.map((post, index) => (
+			<>
+				<SimplePost
+					key={post.id}
+					url={`/${lng}/post/${post.id}`}
+					title={post.data.title}
+					date={post.data.publishDate}
+				/>
+				{index !== posts.length - 1 && <Divider />}
+			</>
+		))
+	}
+</Frame>

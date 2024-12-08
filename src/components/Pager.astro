@@ -1,0 +1,19 @@
+---
+const { current, currentPage, lastPage } = Astro.props;
+const pages = [];
+for (let i = 1; i <= lastPage; i++) {
+    pages.push({url:current.replace(currentPage,i),index:i,active:i==currentPage});
+}
+console.log(pages);
+---
+<ul class="flex justify-center m-8">
+    {
+        pages.map((page) => (
+            <li>
+                <a href={page.url} class=`flex justify-center items-center size-8 rounded-full mx-2 ${page.active ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-on-surface-variant)]'}`>
+                    {page.index}
+                </a>
+            </li>
+        ))
+    }
+</ul>

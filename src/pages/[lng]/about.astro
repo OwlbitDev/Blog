@@ -1,5 +1,13 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Layout from '../../layouts/BlogPost.astro';
+import { useTranslations,getStaticPaths } from '../../i18n/utils';
+
+export {
+	getStaticPaths
+}
+
+const {lng}=await Astro.params
+const t=useTranslations(lng)
 ---
 
 <Layout

@@ -1,24 +1,20 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import { simpleLanguages } from '../i18n/ui';
 
 type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '')
+simpleLanguages.forEach(lang=>{
+	pathname=Astro.url.pathname.replace(`${import.meta.env.BASE_URL}/${lang}`, '');
+})
+
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+console.log(href, pathname, isActive);
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} {...props} class=`text-lg px-5 py-0.5 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'} ${isActive ? 'text-[var(--md-sys-color-on-secondary)]' : 'hover:text-[var(--md-sys-color-on-surface-variant)]'}`>
 	<slot />
 </a>
-<style>
-	a {
-		display: inline-block;
-		text-decoration: none;
-	}
-	a.active {
-		font-weight: bolder;
-		text-decoration: underline;
-	}
-</style>

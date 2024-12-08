@@ -3,31 +3,136 @@
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
 
-:root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+@layer base {
+	:root {
+		--md-sys-color-primary: rgb(27 101 133);
+		--md-sys-color-surface-tint: rgb(27 101 133);
+		--md-sys-color-on-primary: rgb(255 255 255);
+		--md-sys-color-primary-container: rgb(195 232 255);
+		--md-sys-color-on-primary-container: rgb(0 30 44);
+		--md-sys-color-secondary: rgb(78 97 109);
+		--md-sys-color-on-secondary: rgb(255 255 255);
+		--md-sys-color-secondary-container: rgb(209 229 244);
+		--md-sys-color-on-secondary-container: rgb(9 30 40);
+		--md-sys-color-tertiary: rgb(96 90 125);
+		--md-sys-color-on-tertiary: rgb(255 255 255);
+		--md-sys-color-tertiary-container: rgb(230 222 255);
+		--md-sys-color-on-tertiary-container: rgb(28 23 54);
+		--md-sys-color-error: rgb(186 26 26);
+		--md-sys-color-on-error: rgb(255 255 255);
+		--md-sys-color-error-container: rgb(255 218 214);
+		--md-sys-color-on-error-container: rgb(65 0 2);
+		--md-sys-color-background: rgb(246 250 254);
+		--md-sys-color-on-background: rgb(23 28 31);
+		--md-sys-color-surface: rgb(246 250 254);
+		--md-sys-color-on-surface: rgb(23 28 31);
+		--md-sys-color-surface-variant: rgb(220 227 233);
+		--md-sys-color-on-surface-variant: rgb(65 72 77);
+		--md-sys-color-outline: rgb(113 120 125);
+		--md-sys-color-outline-variant: rgb(192 199 205);
+		--md-sys-color-shadow: rgb(0 0 0);
+		--md-sys-color-scrim: rgb(0 0 0);
+		--md-sys-color-inverse-surface: rgb(44 49 52);
+		--md-sys-color-inverse-on-surface: rgb(237 241 245);
+		--md-sys-color-inverse-primary: rgb(143 206 243);
+		--md-sys-color-primary-fixed: rgb(195 232 255);
+		--md-sys-color-on-primary-fixed: rgb(0 30 44);
+		--md-sys-color-primary-fixed-dim: rgb(143 206 243);
+		--md-sys-color-on-primary-fixed-variant: rgb(0 76 104);
+		--md-sys-color-secondary-fixed: rgb(209 229 244);
+		--md-sys-color-on-secondary-fixed: rgb(9 30 40);
+		--md-sys-color-secondary-fixed-dim: rgb(181 201 215);
+		--md-sys-color-on-secondary-fixed-variant: rgb(54 73 85);
+		--md-sys-color-tertiary-fixed: rgb(230 222 255);
+		--md-sys-color-on-tertiary-fixed: rgb(28 23 54);
+		--md-sys-color-tertiary-fixed-dim: rgb(202 193 234);
+		--md-sys-color-on-tertiary-fixed-variant: rgb(72 66 100);
+		--md-sys-color-surface-dim: rgb(214 218 223);
+		--md-sys-color-surface-bright: rgb(246 250 254);
+		--md-sys-color-surface-container-lowest: rgb(255 255 255);
+		--md-sys-color-surface-container-low: rgb(240 244 248);
+		--md-sys-color-surface-container: rgb(234 238 242);
+		--md-sys-color-surface-container-high: rgb(229 233 237);
+		--md-sys-color-surface-container-highest: rgb(223 227 231);
+	}
+
+	@font-face {
+		font-family: 'Atkinson';
+		src: url('/fonts/atkinson-regular.woff') format('woff');
+		font-weight: 400;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: 'Atkinson';
+		src: url('/fonts/atkinson-bold.woff') format('woff');
+		font-weight: 700;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	:root:dark {
+		--md-sys-color-primary: rgb(143 206 243);
+		--md-sys-color-surface-tint: rgb(143 206 243);
+		--md-sys-color-on-primary: rgb(0 53 73);
+		--md-sys-color-primary-container: rgb(0 76 104);
+		--md-sys-color-on-primary-container: rgb(195 232 255);
+		--md-sys-color-secondary: rgb(181 201 215);
+		--md-sys-color-on-secondary: rgb(32 51 61);
+		--md-sys-color-secondary-container: rgb(54 73 85);
+		--md-sys-color-on-secondary-container: rgb(209 229 244);
+		--md-sys-color-tertiary: rgb(202 193 234);
+		--md-sys-color-on-tertiary: rgb(49 44 76);
+		--md-sys-color-tertiary-container: rgb(72 66 100);
+		--md-sys-color-on-tertiary-container: rgb(230 222 255);
+		--md-sys-color-error: rgb(255 180 171);
+		--md-sys-color-on-error: rgb(105 0 5);
+		--md-sys-color-error-container: rgb(147 0 10);
+		--md-sys-color-on-error-container: rgb(255 218 214);
+		--md-sys-color-background: rgb(15 20 23);
+		--md-sys-color-on-background: rgb(223 227 231);
+		--md-sys-color-surface: rgb(15 20 23);
+		--md-sys-color-on-surface: rgb(223 227 231);
+		--md-sys-color-surface-variant: rgb(65 72 77);
+		--md-sys-color-on-surface-variant: rgb(192 199 205);
+		--md-sys-color-outline: rgb(138 146 151);
+		--md-sys-color-outline-variant: rgb(65 72 77);
+		--md-sys-color-shadow: rgb(0 0 0);
+		--md-sys-color-scrim: rgb(0 0 0);
+		--md-sys-color-inverse-surface: rgb(223 227 231);
+		--md-sys-color-inverse-on-surface: rgb(44 49 52);
+		--md-sys-color-inverse-primary: rgb(27 101 133);
+		--md-sys-color-primary-fixed: rgb(195 232 255);
+		--md-sys-color-on-primary-fixed: rgb(0 30 44);
+		--md-sys-color-primary-fixed-dim: rgb(143 206 243);
+		--md-sys-color-on-primary-fixed-variant: rgb(0 76 104);
+		--md-sys-color-secondary-fixed: rgb(209 229 244);
+		--md-sys-color-on-secondary-fixed: rgb(9 30 40);
+		--md-sys-color-secondary-fixed-dim: rgb(181 201 215);
+		--md-sys-color-on-secondary-fixed-variant: rgb(54 73 85);
+		--md-sys-color-tertiary-fixed: rgb(230 222 255);
+		--md-sys-color-on-tertiary-fixed: rgb(28 23 54);
+		--md-sys-color-tertiary-fixed-dim: rgb(202 193 234);
+		--md-sys-color-on-tertiary-fixed-variant: rgb(72 66 100);
+		--md-sys-color-surface-dim: rgb(15 20 23);
+		--md-sys-color-surface-bright: rgb(53 58 61);
+		--md-sys-color-surface-container-lowest: rgb(10 15 18);
+		--md-sys-color-surface-container-low: rgb(23 28 31);
+		--md-sys-color-surface-container: rgb(28 32 35);
+		--md-sys-color-surface-container-high: rgb(38 43 46);
+		--md-sys-color-surface-container-highest: rgb(49 53 57);
+	}
 }
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+
+@layer components{
+	*{
+		margin: 0;
+	}
 }
 body {
 	font-family: 'Atkinson', sans-serif;
@@ -42,12 +147,14 @@ body {
 	font-size: 20px;
 	line-height: 1.7;
 }
+
 main {
 	width: 720px;
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 3em 1em;
 }
+
 h1,
 h2,
 h3,
@@ -58,78 +165,99 @@ h6 {
 	color: rgb(var(--black));
 	line-height: 1.2;
 }
+
 h1 {
 	font-size: 3.052em;
 }
+
 h2 {
 	font-size: 2.441em;
 }
+
 h3 {
 	font-size: 1.953em;
 }
+
 h4 {
 	font-size: 1.563em;
 }
+
 h5 {
 	font-size: 1.25em;
 }
+
 strong,
 b {
 	font-weight: 700;
 }
+
 a {
 	color: var(--accent);
 }
+
 a:hover {
 	color: var(--accent);
 }
+
 p {
 	margin-bottom: 1em;
 }
+
 .prose p {
 	margin-bottom: 2em;
 }
+
 textarea {
 	width: 100%;
 	font-size: 16px;
 }
+
 input {
 	font-size: 16px;
 }
+
 table {
 	width: 100%;
 }
+
 img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 8px;
 }
+
 code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));
 	border-radius: 2px;
 }
+
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
 }
-pre > code {
+
+pre>code {
 	all: unset;
 }
+
 blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
 	margin: 0px;
 	font-size: 1.333em;
 }
+
 hr {
 	border: none;
 	border-top: 1px solid rgb(var(--gray-light));
 }
+
 @media (max-width: 720px) {
 	body {
 		font-size: 18px;
 	}
+
 	main {
 		padding: 1em;
 	}
