@@ -1,11 +1,11 @@
 ---
 import Frame from "../../../components/Frame.astro";
 import { getTags } from "../../../lib/tags";
-import { simpleLanguages } from "../../../i18n/ui";
 import { useTranslations } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
 	const tags = await getTags();
+	if(!tags) return [];
 	return tags
 		.keys()
 		.map((lng) => ({
