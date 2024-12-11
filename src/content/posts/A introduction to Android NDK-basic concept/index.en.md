@@ -13,7 +13,7 @@ categories:
 tags:
  - Android
  - JNI
- - C/C++
+ - C++
  - NDK
 
 toc: true

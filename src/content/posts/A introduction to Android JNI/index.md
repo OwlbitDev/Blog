@@ -9,11 +9,11 @@ publishDate: 2021-09-12T21:34:45+08:00
 author: "hongui"
 
 categories:
- - C/C++
+ - C++
 tags:
  - Android
  - JNI
- - C/C++
+ - C++
 
 toc: true
 draft: false

@@ -9,11 +9,11 @@ publishDate: 2021-08-09T19:21:49+08:00
 author: hongui
 
 categories:
- - C/C++
+ - C++
 tags:
  - Android
  - JNI
- - C/C++
+ - C++
  - CMake
 
 toc: true
