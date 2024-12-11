@@ -13,10 +13,16 @@ export const ui = {
         'description': 'A home page for deep thinking',
         'website': 'Deep thinking',
         'welcome': 'Welcome to my website',
-        'posts': 'Posts',
-        'tags': 'Tags',
-        'about': 'About',
-        'last_updates': 'last updates',
+        'last_updates': 'Latest updates',
+        'menus.posts': 'Posts',
+        'menus.tags': 'Tags',
+        'menus.about': 'About',
+        'posts.title': 'Total Posts',
+        'posts.description': 'The posts relate to Android,OpenGLES,Python,HTML/CSS etc.',
+        'tags.title': 'Total Tags',
+        'tags.description': 'The tags of posts',
+        'about.title': 'About me',
+        'about.description': 'About me,my(Deep thinking) personal resume'
     },
     zh: {
         'title': '深度思考主页',
@@ -28,6 +34,10 @@ export const ui = {
         'menus.tags': '标签',
         'menus.about': '关于',
         'posts.title': '所有文章',
-        'posts.description': '包含Android开发相关文章，OpenGLES文章，脚本等'
+        'posts.description': '包含Android开发相关文章，OpenGLES文章，脚本等',
+        'tags.title': '所有标签',
+        'tags.description': '博客内容相关的一些主题',
+        'about.title': '关于我',
+        'about.description': '关于我，我（低头沉思）的个人简历'
     }
 }

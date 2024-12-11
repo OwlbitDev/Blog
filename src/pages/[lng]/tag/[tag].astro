@@ -1,0 +1,29 @@
+---
+import Frame from "../../../components/Frame.astro";
+import SimplePost from "../../../components/SimplePost.astro";
+import { useTranslations } from "../../../i18n/utils";
+import { getTags } from "../../../lib/tags";
+
+export async function getStaticPaths(){
+    const map=await getTags()
+    const result=[]
+    for(const [lng,tags] of map){
+        for(const [tag,posts] of tags){
+            result.push({params:{lng,tag},props:{posts}})
+        }
+    }
+    return result
+}
+
+const {lng,tag}=await Astro.params
+const {posts} = await Astro.props;
+const t=useTranslations(lng)
+---
+<Frame lng={lng} title={tag} description={tag}>
+	<h1>{t('welcome')}</h1>
+			<nav class="flex flex-col gap-4">
+			{
+				posts.map(post=><SimplePost key={post.id} title={post.data.title} url={`/${lng}/post/${post.id}`} date={post.data.publishDate}}/>)
+			}
+			</nav>
+</Frame>
