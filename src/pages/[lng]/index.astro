@@ -13,8 +13,8 @@ const posts = (await getPosts(lng)).slice(0, 5);
 ---
 <Frame lng={lng} title={t("title")} description={t("description")}>
 	<img src="/background.png" alt="background" />
-	<h1 class="flex justify-center text-3xl m-8">{t("welcome")}</h1>
-	<h2 class="text-2xl my-8">{t("last_updates")}</h2>
+	<h1 class="flex justify-center">{t("welcome")}</h1>
+	<h2>{t("last_updates")}</h2>
 	{
 		posts.map((post, index) => (
 			<>

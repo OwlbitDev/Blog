@@ -2,6 +2,7 @@
 import BaseHead from './BaseHead.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import Firebase from './Firebase.astro';
 
 const {lng,title,description}=Astro.props
 ---
@@ -12,9 +13,10 @@ const {lng,title,description}=Astro.props
 	</head>
 	<body class="bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)]">
 		<Header />
-		<main>
+		<main class="mx-4 lg:max-w-screen-lg lg:mx-auto">
 			<slot />
 		</main>
 		<Footer />
+		<Firebase {title}/>
 	</body>
 </html>

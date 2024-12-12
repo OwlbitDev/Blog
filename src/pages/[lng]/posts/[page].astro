@@ -23,7 +23,7 @@ const { page } = Astro.props;
 const t = useTranslations(lng);
 ---
 <Frame lng={lng} title={t("posts.title")} description={t("posts.description")}>
-    <h1>{t("posts.title")}</h1>
+    <h1 class="my-4 text-3xl">{t("posts.title")}</h1>
     {
         page.data.map((post, index) => (
             <>

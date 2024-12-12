@@ -2,9 +2,8 @@
 import Frame from "../components/Frame.astro";
 const { lng, title, description, publishDate } = Astro.props;
 ---
-
 <Frame lng={lng} title={title} description={description}>
-	<article class="prose dark:prose-invert">
+	<article class="prose dark:prose-invert mx-auto">
 		<h1>{title}</h1>
 		<slot />
 	</article>

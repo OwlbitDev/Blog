@@ -21,6 +21,7 @@ const { tags } = await Astro.props;
 ---
 
 <Frame lng={lng} title={t("tags.title")} description={t("tags.description")}>
+	<h1>{t("tags.title")}</h1>
 	<div class="flex flex-wrap gap-4">
 		{
 			tags.map((tag) => (
