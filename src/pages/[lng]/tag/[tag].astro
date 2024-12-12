@@ -1,7 +1,7 @@
 ---
 import Frame from "../../../components/Frame.astro";
 import SimplePost from "../../../components/SimplePost.astro";
-import { useTranslations } from "../../../i18n/utils";
+import Divider from "../../../components/Divider.astro";
 import { getTags } from "../../../lib/tags";
 
 export async function getStaticPaths(){
@@ -17,13 +17,20 @@ export async function getStaticPaths(){
 
 const {lng,tag}=await Astro.params
 const {posts} = await Astro.props;
-const t=useTranslations(lng)
 ---
 <Frame lng={lng} title={tag} description={tag}>
-	<h1>{t('welcome')}</h1>
+	<h1>{tag}</h1>
 			<nav class="flex flex-col gap-4">
 			{
-				posts.map(post=><SimplePost key={post.id} title={post.data.title} url={`/${lng}/post/${post.id}`} date={post.data.publishDate}}/>)
+				posts.map((post,index)=><>
+                <SimplePost 
+                    key={post.id} 
+                    lng={lng}
+                    id={post.id}
+                    title={post.data.title} 
+                    date={post.data.publishDate}/>
+                    {index!==posts.length-1 && <Divider/>}
+                </>)
 			}
 			</nav>
 </Frame>

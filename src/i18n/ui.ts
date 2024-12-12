@@ -10,7 +10,7 @@ export const defaultLanguage = 'zh';
 export const ui = {
     en: {
         'title': 'Deep thinking home page',
-        'description': 'A home page for deep thinking',
+        'description': 'A home page for deep thinking,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
         'website': 'Deep thinking',
         'welcome': 'Welcome to my website',
         'last_updates': 'Latest updates',
@@ -25,8 +25,8 @@ export const ui = {
         'about.description': 'About me,my(Deep thinking) personal resume'
     },
     zh: {
-        'title': '深度思考主页',
-        'description': '深度思考主页',
+        'title': '低头沉思博客主页',
+        'description': '低头沉思博客主页，分享有关Android，OpenGLES，Python，HTML/CSS等文章',
         'website': '低头沉思',
         'welcome': '欢迎来到我的网站',
         'last_updates': '最近更新',

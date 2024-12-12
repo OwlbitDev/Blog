@@ -1,5 +1,5 @@
 ---
-const { title, url, date } = Astro.props;
+const { lng, id,title, date } = Astro.props;
 
 function formatDate(date: Date) {
     const year = date.getFullYear();
@@ -11,8 +11,8 @@ function formatDate(date: Date) {
 const formattedDate = formatDate(date);
 ---
 <article class="h-[72px] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-on-surface-variant)]">
-    <a href={url} class="block px-4 py-2">
-        <h3 class="text-base mb-2">{title}</h3>
+    <a href={`/${lng}/post/${id}`} class="block px-4 py-2">
+        <h3 class="my-2">{title}</h3>
         <p class="text-sm text-[var(--md-sys-color-on-surface-variant)]">{formattedDate}</p>
     </a>
 </article>
