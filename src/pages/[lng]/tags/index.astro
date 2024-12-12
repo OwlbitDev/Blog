@@ -5,13 +5,14 @@ import { useTranslations } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
 	const tags = await getTags();
-	if(!tags||!tags.keys()) return [];
-	return tags
-		.keys()
-		.map((lng) => ({
-			params: { lng },
-			props: { tags: tags.get(lng).keys() },
-		})).toArray();
+	const result=[];
+        for (const [lng,tag] of tags){
+            result.push({
+              params : { lng },
+              props : { tags : Array.from(tag.keys())}
+             });
+        }
+	return result;
 }
 
 const { lng } = await Astro.params;
