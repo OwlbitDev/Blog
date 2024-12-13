@@ -13,9 +13,6 @@ const {lng,title,description}=Astro.props
 	</head>
 	<body class="bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)]">
 		<Header />
-		<section class="fixed w-[15%] mx-4">
-			<slot name="toc" />
-		</section>
 		<main class="mx-4 lg:max-w-screen-lg lg:mx-auto">
 			<slot />
 		</main>
