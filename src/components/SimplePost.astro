@@ -6,7 +6,7 @@ const { lng, id, title, date } = Astro.props;
 <article
     class="h-[72px] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-on-surface-variant)]"
 >
-    <a href={`/${lng}/post/${id}`} class="block px-4 py-2">
+    <a href={`/${lng}/posts/${id}`} class="block px-4 py-2">
         <h3 class="mt-0 mb-2">{title}</h3>
         <SimpleDate date={date} />
     </a>
