@@ -1,10 +1,22 @@
 ---
 import Frame from "../components/Frame.astro";
-const { lng, title,description } = Astro.props;
+import SimpleDate from "../components/SimpleDate.astro";
+const { lng, title, description, date } = Astro.props;
 ---
+
 <Frame lng={lng} title={title} description={description}>
-	<article class="prose dark:prose-invert mx-auto my-8">
-		<h1>{title}</h1>
-		<slot />
+	<article>
+		<header class="flex flex-col items-center">
+			<h1>{title}</h1>
+			<SimpleDate date={date} />
+		</header>
+		<div class="flex justify-center">
+			<aside class="order-2 hidden md:block static md:relative md:p-6">
+				<slot name="toc" />
+			</aside>
+			<section class="order-1 isolate prose dark:prose-invert my-8">
+				<slot />
+			</section>
+		</div>
 	</article>
 </Frame>

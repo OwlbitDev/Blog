@@ -1,18 +1,13 @@
 ---
-const { lng, id,title, date } = Astro.props;
-
-function formatDate(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}/${month}/${day}`;
-}
-
-const formattedDate = formatDate(date);
+import SimpleDate from "./SimpleDate.astro";
+const { lng, id, title, date } = Astro.props;
 ---
-<article class="h-[72px] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-on-surface-variant)]">
+
+<article
+    class="h-[72px] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-on-surface-variant)]"
+>
     <a href={`/${lng}/post/${id}`} class="block px-4 py-2">
-        <h3 class="my-2">{title}</h3>
-        <p class="text-sm text-[var(--md-sys-color-on-surface-variant)]">{formattedDate}</p>
+        <h3 class="mt-0 mb-2">{title}</h3>
+        <SimpleDate date={date} />
     </a>
 </article>

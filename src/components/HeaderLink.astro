@@ -12,6 +12,7 @@ simpleLanguages.forEach(lang=>{
 
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+console.log(href, pathname, subpath,isActive);
 ---
 
 <a href={href} {...props} class=`text-lg px-2 lg:px-4 py-0.5 lg:py-1 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'}`>
