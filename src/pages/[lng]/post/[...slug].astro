@@ -1,6 +1,6 @@
 ---
 import { getPosts } from "../../../lib/content";
-import Frame from "../../../components/Frame.astro";
+import BlogPost from "../../../layouts/BlogPost.astro";
 import { render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -12,25 +12,8 @@ export async function getStaticPaths() {
 }
 
 const post = await Astro.props;
-const {
-	lng,
-	data: { title, description },
-} = post;
-
 const { Content, headings } = await render(post);
 ---
-<Frame lng={lng} title={title} description={description}>
-	<ul slot="toc">
-		{
-		headings.map((heading) => (
-			<li>
-				<a href={`#${heading.slug}`} class=`indent-${heading.depth-2}`>{heading.text}</a>
-			</li>
-		))
-		}
-	</ul>
-	<article class="prose dark:prose-invert mx-auto my-8">
-		<h1>{title}</h1>
-		<Content />
-	</article>
-</Frame>
+BlogPost  lng={lng} title={post.data.title} description={post.data.description}>
+	<Content />
+</BlogPost>
