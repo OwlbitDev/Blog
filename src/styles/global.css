@@ -76,7 +76,7 @@
 		font-display: swap;
 	}
 
-	:root:dark {
+	:root .dark {
 		--md-sys-color-primary: rgb(143 206 243);
 		--md-sys-color-surface-tint: rgb(143 206 243);
 		--md-sys-color-on-primary: rgb(0 53 73);
