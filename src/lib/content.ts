@@ -17,7 +17,7 @@ export const getPosts = async (lng:string|undefined=undefined) => {
         }
     }
     ).filter(post=>post.data.draft !== true)
-    formatPosts.sort((a, b) => b.data.publishDate -a.data.publishDate)
+    formatPosts.sort((a, b) => b.data.date -a.data.date)
     if(lng){
         return formatPosts.filter(post => post.lng === lng)
     }

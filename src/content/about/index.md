@@ -1,16 +1,8 @@
 ---
 title: "关于我"
-description: ""
+description: "关于低头沉思的博客"
 
 date: 2022-07-26T23:35:00+08:00
-lastmod: 2022-07-26T23:35:00+08:00
-publishDate: 2022-07-26T23:35:00+08:00
-
-share: false
-followme: false
-nav: false
-copyright: false
-url: about.html
 ---
 
 # 个人简介

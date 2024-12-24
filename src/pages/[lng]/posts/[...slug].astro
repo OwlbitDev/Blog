@@ -15,7 +15,7 @@ const post = await Astro.props;
 const { Content, headings } = await render(post);
 const base=headings[0].depth
 ---
-<BlogPost  lng={post.lng} title={post.data.title} description={post.data.description} date={post.data.publishDate}>
+<BlogPost  lng={post.lng} title={post.data.title} description={post.data.description} date={post.data.date}>
 	<ul slot="toc" class="h-screen fixed border-l-2">
 		{headings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-6 pr-2 py-0.5 indent-${4*(h.depth-base)}`>{h.text}</a></li>))}
 	</ul>

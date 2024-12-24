@@ -2,7 +2,7 @@
 title: "从Hugo迁移到Astro你该知道的一切"
 description: "本文讲述怎么从Hugo迁移到Astro，经历哪些步骤，遇到哪些问题，如何解决这些问题，最终得到可以正常访问的博客"
 
-publishDate: 2024-12-13T20:50:30+08:00
+date: 2024-12-13T20:50:30+08:00
 
 author: "hongui"
 
@@ -128,7 +128,7 @@ const posts = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
-		publishDate: z.coerce.date(),
+		date: z.coerce.date(),
 		tags: z.array(z.string()),
 		draft: z.boolean().optional()
 	}),

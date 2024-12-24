@@ -1,16 +1,8 @@
 ---
 title: "About me"
-description: "about me"
+description: "about deep thinking"
 
 date: 2022-07-26T23:35:00+08:00
-lastmod: 2022-07-26T23:35:00+08:00
-publishDate: 2022-07-26T23:35:00+08:00
-
-share: false
-followme: false
-nav: false
-copyright: false
-url: about.html
 ---
 
 # Profile
