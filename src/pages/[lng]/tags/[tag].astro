@@ -27,8 +27,7 @@ const {posts} = await Astro.props;
                     key={post.id} 
                     lng={lng}
                     id={post.id}
-                    title={post.data.title} 
-                    date={post.data.date}/>
+                    {...post.data}/>
                     {index!==posts.length-1 && <Divider/>}
                 </>)
 			}

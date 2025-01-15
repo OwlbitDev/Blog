@@ -22,8 +22,7 @@ const posts = (await getPosts(lng)).slice(0, 5);
 					key={post.id}
 					lng={lng}
 					id={post.id}
-					title={post.data.title}
-					date={post.data.date}
+					{...post.data}
 				/>
 				{index !== posts.length - 1 && <Divider />}
 			</>
