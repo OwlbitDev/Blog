@@ -10,7 +10,7 @@ const { lng, id, title, date,tags,cover } = Astro.props;
 >
     <div class="flex">
         <Image class="w-48 h-36 mr-4" src={cover??Logo} alt="cover" />
-        <div class="flex flex-col justify-between  px-4 py-2">
+        <div class="flex flex-col justify-around">
             <ul class="flex flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
             {
                 tags.map(tag=> 

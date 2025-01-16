@@ -27,7 +27,7 @@ const { tags } = await Astro.props;
 			tags.map((tag) => (
 				<a
 					href={`/${lng}/tags/${tag}`}
-					class="px-4 bg-[var(--md-sys-color-surface-container-low)] border-[var(--md-sys-color-outline)] border-2 rounded-lg"
+					class="px-4 bg-[var(--md-sys-color-surface-container-low)] hover:bg-[var(--md-sys-color-outline)] hover:text-[var(--md-sys-color-on-outline)] border-[var(--md-sys-color-outline)] border-2 rounded-lg"
 				>
 					{tag}
 				</a>

@@ -1,14 +1,27 @@
 ---
+import { getPosts } from "../lib/content";
 import Frame from "../components/Frame.astro";
 import SimpleDate from "../components/SimpleDate.astro";
-const { lng, title, description, date } = Astro.props;
+const { id,lng, title, description, date,tags } = Astro.props;
+const posts = await getPosts(lng);
+const index=posts.findIndex(post=>post.id===id);
+const prevPost=index>0?posts[index-1]:null;
+const nextPost=index<posts.length-1?posts[index+1]:null;
 ---
 
 <Frame lng={lng} title={title} description={description}>
 	<article>
 		<header class="flex flex-col items-center">
 			<h1>{title}</h1>
+			<ul class="flex pb-4 flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
+				{
+					tags.map(tag=> 
+						(<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/${lng}/tags/${tag}`>{tag}</a></li>)
+					)
+				}
+				</ul>
 			<SimpleDate date={date} />
+
 		</header>
 		<div class="flex justify-center">
 			<aside class="order-2 hidden md:block static md:relative md:p-6">
@@ -16,7 +29,16 @@ const { lng, title, description, date } = Astro.props;
 			</aside>
 			<section class="order-1 isolate prose dark:prose-invert my-8">
 				<slot />
+				<nav class="flex justify-between">
+		{
+			prevPost?(<a href={`/${lng}/posts/${prevPost.id}`} class="text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">{prevPost.data.title}</a>):(<span></span>)
+		}
+		{
+			nextPost?(<a href={`/${lng}/posts/${nextPost.id}`} class="text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">{nextPost.data.title}</a>):(<span></span>)
+		}
+	</nav>
 			</section>
 		</div>
 	</article>
+	
 </Frame>
