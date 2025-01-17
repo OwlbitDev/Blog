@@ -1,5 +1,6 @@
 ---
-import BlogPost from '../../../layouts/BlogPost.astro';
+import type { ACTION_ERROR_CODES } from 'astro:actions';
+import Frame from "../../../components/Frame.astro";
 import { render,getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -13,7 +14,8 @@ const {lng}=await Astro.params;
 const post = await Astro.props;
 const { Content } = await render(post);
 ---
-
-<BlogPost  lng={lng} title={post.data.title} description={post.data.description} date={post.data.date}>
-	<Content />
-</BlogPost>
+<Frame lng={lng} title={post.data.title} description={post.data.description}>
+	<div class="min-w-[816px] mx-auto">
+		<Content />
+	</div>
+</Frame>
