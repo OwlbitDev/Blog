@@ -9,10 +9,11 @@ const {lng,title,description}=Astro.props
 <!doctype html>
 <html lang={lng}>
 	<head>
+		<link rel="sitemap"  href="/sitemap-index.xml">
 		<BaseHead title={title} description={description} />
 	</head>
 	<body class="bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)]">
-		<Header />
+		<Header {lng}/>
 		<main class="mx-4 lg:max-w-screen-lg lg:mx-auto">
 			<slot />
 		</main>

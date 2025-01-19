@@ -1,20 +1,23 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
+import Post from "../assets/post.svg";
+import Tag from "../assets/tag.svg";
+import Person from "../assets/person.svg";
 import { useTranslations } from "../i18n/utils";
 
-const { lng } = Astro.params;
+const { lng } = Astro.props;
 const t = useTranslations(lng);
 ---
 <header class="bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)]">
 	<nav class="flex justify-between items-center p-4">
 		<a href="/" class="flex items-center gap-4 ml-2 lg:ml-4">
-			<img src="/android-chrome-512x512.png" alt="logo" class="size-10" />
+			<img src="/favicon.svg" alt="logo" class="size-10" />
 			<p class="text-2xl m-0">{t("website")}</p>
 		</a>
 		<div class="flex flex-row gap-2">
-			<HeaderLink href=`/${lng}/posts`>{t("menus.posts")}</HeaderLink>
-			<HeaderLink href=`/${lng}/tags`>{t("menus.tags")}</HeaderLink>
-			<HeaderLink href=`/${lng}/about`>{t("menus.about")}</HeaderLink>
+			<HeaderLink href=`/${lng}/posts` Logo={Post} content={t("menus.posts")} />
+			<HeaderLink href=`/${lng}/tags` Logo={Tag} content={t("menus.tags")} />
+			<HeaderLink href=`/${lng}/about` Logo={Person} content={t("menus.about")} />
 		</div>
 	</nav>
 </header>

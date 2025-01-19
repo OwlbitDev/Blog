@@ -6,7 +6,14 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
     site: 'https://deep-thinking.top',
-    integrations: [mdx(), sitemap(), tailwind()],
+    integrations: [mdx(), sitemap(
+        {
+            i18n: {
+                defaultLocale: 'zh',
+                locales: {zh:'zh-CN', en:'en-US'},
+            },
+        }
+    ), tailwind()],
     i18n: {
         defaultLocale: 'zh',
         locales: ['zh', 'en'],

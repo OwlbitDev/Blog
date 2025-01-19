@@ -2,9 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import { simpleLanguages } from '../i18n/ui';
 
-type Props = HTMLAttributes<'a'>;
-
-const { href, class: className, ...props } = Astro.props;
+const { href,Logo,content } = Astro.props;
 let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '')
 simpleLanguages.forEach(lang=>{
 	pathname=Astro.url.pathname.replace(`${import.meta.env.BASE_URL}/${lang}`, '');
@@ -14,6 +12,7 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={href} {...props} class=`text-lg px-2 lg:px-4 py-0.5 lg:py-1 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'}`>
-	<slot />
+<a href={href} class=`flex justify-center items-center text-lg lg:px-4 py-0.5 lg:py-1 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'}`>
+	<Logo fill={isActive?"#ffffff":"#574393"}/>
+	<span class="invisible lg:visible">{content}</span>
 </a>
