@@ -1,6 +1,7 @@
 ---
 title: "Android开发中的线程模型和解决思路"
 description: "Android开发中使用C++线程，Java线程，JNI线程可能遇到的问题模型和解决思路"
+cover: "cover.webp"
 
 date: 2024-12-28T13:14:00+08:00
 
