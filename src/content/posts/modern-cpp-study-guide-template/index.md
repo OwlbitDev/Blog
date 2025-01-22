@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南 模板"
 description: "现代C++学习指南 模板"
+cover: "cover.webp"
 
 date: 2022-10-31T21:33:38+08:00
 

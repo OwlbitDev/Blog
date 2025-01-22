@@ -1,6 +1,7 @@
 ---
 title: "Modern C++ Study Guide - Inheritance and Polymorphism"
 description: "Modern C++ Study Guide - Inheritance and Polymorphism"
+cover: "cover.webp"
 
 date: 2022-09-31T21:33:38+08:00
 

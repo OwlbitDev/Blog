@@ -1,6 +1,7 @@
 ---
 title: "Modern C++ Study Guide - Standard Library"
 description: "Modern C++ Study Guide - Standard Library"
+cover: "cover.webp"
 
 date: 2022-07-20T22:15:05+08:00
 

@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南-类型系统"
 description: "现代C++学习指南-类型系统"
+cover: "cover.webp"
 
 date: 2022-06-26T11:11:59+08:00
 

@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南-标准库"
 description: "现代C++学习指南-标准库"
+cover: "cover.webp"
 
 date: 2022-07-20T22:15:05+08:00
 

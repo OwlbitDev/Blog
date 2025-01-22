@@ -1,6 +1,7 @@
 ---
 title: "Modern C++ study guide--Class"
 description: "Modern C++ study guide--Class"
+cover: "cover.webp"
 
 date: 2022-08-05T22:56:26+08:00
 
@@ -11,7 +12,7 @@ categories:
 tags:
  - C++
 
-draft: true
+draft: false
 ---
 
 > Classes, one of the important concepts in C++, have numerous features and are the most fascinating part!

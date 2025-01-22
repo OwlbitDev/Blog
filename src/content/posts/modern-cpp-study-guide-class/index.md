@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南 具体类"
 description: "现代C++学习指南 具体类"
+cover: "cover.webp"
 
 date: 2022-08-05T22:56:26+08:00
 
@@ -11,8 +12,7 @@ categories:
 tags:
  - C++
 
-toc: true
-draft: true
+draft: false
 ---
 
 > 类作为C++中重要的概念之一，有着众多的特性，也是最迷人的部分！

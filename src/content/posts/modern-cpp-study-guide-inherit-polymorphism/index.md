@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南 继承和多态"
 description: "现代C++学习指南 继承和多态"
+cover: "cover.webp"
 
 date: 2022-09-31T21:33:38+08:00
 

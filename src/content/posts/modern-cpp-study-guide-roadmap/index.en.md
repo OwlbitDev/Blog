@@ -1,6 +1,7 @@
 ---
 title: "Modern C++ Study Guide-roadmap"
 description: "Modern C++ Study Guide-roadmap"
+cover: "cover.webp"
 
 date: 2022-06-25T08:51:01+08:00 
 

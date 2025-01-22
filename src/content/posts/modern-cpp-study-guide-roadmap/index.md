@@ -1,6 +1,7 @@
 ---
 title: "现代C++学习指南-方向篇"
 description: "现代C++学习指南-方向篇"
+cover: "cover.webp"
 
 date: 2022-06-25T08:51:01+08:00
 
