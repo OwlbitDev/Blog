@@ -28,4 +28,7 @@ const posts = (await getPosts(lng)).slice(0, 5);
 			</>
 		))
 	}
+	<h2 class="flex justify-center">
+		<a href=`/${lng}/posts/1` class="text-[var(--md-sys-color-primary)] text-xl">{t("load_more")}</Link>
+	</h2>
 </Frame>

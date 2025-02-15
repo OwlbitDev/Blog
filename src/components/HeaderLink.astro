@@ -12,7 +12,7 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={href} class=`flex justify-center items-center text-lg lg:px-4 py-0.5 lg:py-1 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'}`>
+<a href={href} class=`flex justify-center items-center text-lg p-2 lg:px-4 rounded-full no-underline ${isActive ? 'bg-[var(--md-sys-color-secondary)] text-[var(--md-sys-color-on-secondary)]' : 'hover:bg-[var(--md-sys-color-surface-variant)]'}`>
 	<Logo fill={isActive?"#ffffff":"#574393"}/>
-	<span class="invisible lg:visible">{content}</span>
+	<span class="hidden lg:inline">{content}</span>
 </a>
