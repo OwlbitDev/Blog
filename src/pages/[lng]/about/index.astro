@@ -15,7 +15,7 @@ const post = await Astro.props;
 const { Content } = await render(post);
 ---
 <Frame lng={lng} title={post.data.title} description={post.data.description}>
-	<div class="min-w-[816px] mx-auto">
+	<div class="base-content">
 		<Content />
 	</div>
 </Frame>

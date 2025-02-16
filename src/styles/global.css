@@ -148,3 +148,10 @@
 		@apply my-3;
 	}
 }
+
+@layer components {
+	.base-content{
+		max-width: 768px;
+		margin: 0 auto;
+	}
+}

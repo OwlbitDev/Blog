@@ -16,17 +16,15 @@ const { Content, headings } = await render(post);
 const base=headings[0].depth
 ---
 <BlogPost id= {post.id} lng={post.lng} {...post.data}>
-	<ul slot="toc" class="h-screen fixed border-l-2">
+	<ul slot="toc" class="h-screen fixed border-r-2">
 		{headings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-6 pr-2 py-0.5 indent-${4*(h.depth-base)}`>{h.text}</a></li>))}
 	</ul>
-	<div class="max-w-3xl">
-		<Content />
-	</div>
+	<Content />
 	<script>
 		type TocLink = HTMLAnchorElement;
 		type TocHeading = HTMLElement;
 		const selector='li a'
-		const activeClass=['bg-[var(--md-sys-color-secondary-container)]', 'text-[var(--md-sys-color-on-secondary-container)]','border-l-2','border-[var(--md-sys-color-secondary)]']
+		const activeClass=['bg-[var(--md-sys-color-secondary-container)]', 'text-[var(--md-sys-color-on-secondary-container)]','border-r-2','border-[var(--md-sys-color-secondary)]']
 
 		// 滚动事件监听器
 		window.addEventListener('scroll', throttle(updateActiveSection, 100));

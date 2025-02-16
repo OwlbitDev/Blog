@@ -8,7 +8,7 @@ import { useTranslations } from "../i18n/utils";
 const { lng } = Astro.props;
 const t = useTranslations(lng);
 ---
-<header class="bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)]">
+<header class="fixed left-0 right-0 top-0 z-50 bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)]">
 	<nav class="flex justify-between items-center">
 		<a href="/" class="flex items-center gap-4 m-2 lg:m-4">
 			<img src="/favicon.svg" alt="logo" class="size-10" />
