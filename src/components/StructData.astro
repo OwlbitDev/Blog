@@ -1,0 +1,18 @@
+---
+const { title, publishDate } = Astro.props;
+const isoDate = new Date(publishDate).toISOString();
+---
+
+<script is:inline type="application/ld+json" set:html={`
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": ${JSON.stringify(title)},
+    "datePublished": "${isoDate}",
+    "author": {
+      "@type": "Person",
+      "name": "低头沉思",
+      "url": "https://deep-thinking.top/zh/about/"
+    }
+  }
+`}></script>
