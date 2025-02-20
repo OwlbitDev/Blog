@@ -12,7 +12,7 @@ const nextPost=index<posts.length-1?posts[index+1]:null;
 ---
 
 <Frame lng={lng} title={title} description={description} date={date}>
-	<aside class="hidden md:block md:pr-2 md:min-w-0 md:w-[calc((100vw_-_768px)/2)]">
+	<aside class="hidden md:block md:pr-2 md:min-w-0 md:max-w-[calc((100vw_-_768px)/2)]">
 		<slot name="toc" />
 	</aside>
 

@@ -14,10 +14,18 @@ export async function getStaticPaths() {
 const post = await Astro.props;
 const { Content, headings } = await render(post);
 const base=headings[0].depth
+const indentMap = {
+  0: 'indent-0',
+  1: 'indent-2',
+  2: 'indent-4',
+  3: 'indent-6',
+  4: 'indent-8',
+};
+const formatHeadings=headings.map(h=>({...h,indentClass:indentMap[2*(h.depth-base)]}))
 ---
 <BlogPost id= {post.id} lng={post.lng} {...post.data}>
-	<ul slot="toc" class="h-screen fixed border-r-2 md:w-[calc((100vw_-_768px)/2_-_1.3rem)]">
-		{headings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-6 pr-2 py-0.5`>{h.text}</a></li>))}
+	<ul slot="toc" class="h-screen fixed border-r-2 md:max-w-[calc((100vw_-_768px)/2_-_1.5rem)]">
+		{formatHeadings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-4 pr-2 py-0.5 ${h.indentClass}`>{h.text}</a></li>))}
 	</ul>
 	<Content />
 	<script>
