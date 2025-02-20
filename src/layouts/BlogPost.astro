@@ -12,41 +12,39 @@ const nextPost=index<posts.length-1?posts[index+1]:null;
 ---
 
 <Frame lng={lng} title={title} description={description} date={date}>
-	<div>
-		<aside class="hidden md:block md:px-2 overflow-scroll">
-			<slot name="toc" />
-		</aside>
+	<aside class="hidden md:block md:pr-2 md:min-w-0 md:w-[calc((100vw_-_768px)/2)]">
+		<slot name="toc" />
+	</aside>
 
-		<article class="flex-1 flex flex-col items-center">
-			<header class="flex flex-col items-center">
-				<h1>{title}</h1>
-				<ul class="flex pb-4 flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
-					{
-						tags&&tags.map(tag=> 
-							(<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/${lng}/tags/${tag}`>{tag}</a></li>)
-						)
-					}
-					</ul>
-				<SimpleDate date={date} />
-	
-			</header>
-			<section class="isolate prose dark:prose-invert my-8 max-w-full lg:base-content">
-					<slot />
-					<nav class="flex justify-between">
-			{
-				prevPost?(<a href={`/${lng}/posts/${prevPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
-					<Left fill="var(--md-sys-color-primary)"/>
-					{prevPost.data.title}
-					</a>):(<span></span>)
-			}
-			{
-				nextPost?(<a href={`/${lng}/posts/${nextPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
-					{nextPost.data.title}
-					<Right fill="var(--md-sys-color-primary)"/>
-					</a>):(<span></span>)
-			}
-				</nav>
-			</section>
-		</article>
-	</div>
+	<article class="mx-auto">
+		<header class="flex flex-col items-center">
+			<h1>{title}</h1>
+			<ul class="flex pb-4 flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
+				{
+					tags&&tags.map(tag=> 
+						(<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/${lng}/tags/${tag}`>{tag}</a></li>)
+					)
+				}
+				</ul>
+			<SimpleDate date={date} />
+
+		</header>
+		<section class="isolate prose dark:prose-invert my-8 md:base-content">
+				<slot />
+				<nav class="flex justify-between">
+		{
+			prevPost?(<a href={`/${lng}/posts/${prevPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
+				<Left fill="var(--md-sys-color-primary)"/>
+				{prevPost.data.title}
+				</a>):(<span></span>)
+		}
+		{
+			nextPost?(<a href={`/${lng}/posts/${nextPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
+				{nextPost.data.title}
+				<Right fill="var(--md-sys-color-primary)"/>
+				</a>):(<span></span>)
+		}
+			</nav>
+		</section>
+	</article>
 </Frame>

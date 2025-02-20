@@ -16,8 +16,8 @@ const { Content, headings } = await render(post);
 const base=headings[0].depth
 ---
 <BlogPost id= {post.id} lng={post.lng} {...post.data}>
-	<ul slot="toc" class="h-screen fixed border-r-2">
-		{headings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-6 pr-2 py-0.5 indent-${4*(h.depth-base)}`>{h.text}</a></li>))}
+	<ul slot="toc" class="h-screen fixed border-r-2 md:w-[calc((100vw_-_768px)/2_-_1.3rem)]">
+		{headings.map(h=>(<li><a href=`#${h.slug}` class=`block pl-6 pr-2 py-0.5`>{h.text}</a></li>))}
 	</ul>
 	<Content />
 	<script>
