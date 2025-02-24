@@ -11,7 +11,7 @@ const { lng } = await Astro.params;
 const t = useTranslations(lng);
 const posts = (await getPosts(lng)).slice(0, 5);
 ---
-<Frame lng={lng} title={t("title")} description={t("description")}>
+<Frame lng={lng} title={t("title")} description={t("description")} category="home">
 	<div class="base-content">
 		<img src="/background.png" alt="background" />
 		<h1 class="flex justify-center">{t("welcome")}</h1>

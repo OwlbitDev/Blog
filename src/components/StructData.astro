@@ -1,9 +1,9 @@
 ---
-const { title, publishDate } = Astro.props;
+let { title, publishDate,category } = Astro.props;
+let content=''
+if(publishDate){
 const isoDate = new Date(publishDate).toISOString();
----
-
-<script is:inline type="application/ld+json" set:html={`
+  content=`
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -15,4 +15,24 @@ const isoDate = new Date(publishDate).toISOString();
       "url": "https://deep-thinking.top/zh/about/"
     }
   }
-`}></script>
+`
+}else if(category==='about'){
+  content=`{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "低头沉思",
+  "jobTitle": "Android工程师",
+  "url": "https://deep-thinking.top/zh/about/",
+  "sameAs": ["https://github.com/hongui"]
+}`
+}else if(category==='home'){
+  content=`{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "低头沉思",
+  "url": "https://deep-thinking.top/"
+}`
+}
+---
+
+<script is:inline type="application/ld+json" set:html={content}></script>

@@ -5,14 +5,14 @@ import Footer from './Footer.astro';
 import Firebase from './Firebase.astro';
 import StructData from './StructData.astro';
 
-const {lng,title,description,date}=Astro.props
+const {lng,title,description,date,category}=Astro.props
 ---
 <!doctype html>
 <html lang={lng}>
 	<head>
 		<link rel="sitemap"  href="/sitemap-index.xml">
 		<BaseHead title={title} description={description} />
-		{date&&<StructData title={title} publishDate={date}/>}
+		{<StructData {title} publishDate={date} {category}/>}
 	</head>
 	<body class="bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)]">
 		<Header {lng}/>

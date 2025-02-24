@@ -14,7 +14,7 @@ const {lng}=await Astro.params;
 const post = await Astro.props;
 const { Content } = await render(post);
 ---
-<Frame lng={lng} title={post.data.title} description={post.data.description}>
+<Frame lng={lng} title={post.data.title} description={post.data.description} category="about">
 	<div class="base-content">
 		<Content />
 	</div>
