@@ -16,11 +16,11 @@ draft: false
 ---
 
 ## 通过Android Studio
-如果我们能得到Apk文件，那么直接将Apk拖进Android Studio中，Android Studio就会自动解析文件，解析成功后会打开一个新标签，在标签的顶部就能看到包名
+如果我们能得到Apk文件，那么直接将Apk拖进Android Studio中，Android Studio就会自动解析文件，解析成功后会打开一个新标签，在标签的顶部就能看到包名。
 ![Android Studio resolve package](android-studio.png)
 
 ## 通过pm list packages命令
-如果我们没有Apk文件，想查看手机上的应用包名，也有一些大概的信息，则可以使用`pm list packages`命令，它能列举出所有的应用。配合`grep(Linux/MacOS)`或者`findstr(Windows)`就能快速定位到目标应用了.
+如果我们没有Apk文件，想查看手机上的应用包名，也有一些大概的信息，则可以使用`pm list packages`命令，它能列举出所有的应用。配合`grep(Linux/MacOS)`或者`findstr(Windows)`就能快速定位到目标应用了。
 ```bash
 adb shell pm list packages | grep com.example.app
 ```
@@ -31,7 +31,7 @@ adb shell pm list packages | grep com.example.app
 ![adb shell top](top.png)
 
 ## 通过adb shell dumpsys window命令
-其实上面两个命令虽然不用运行应用，但是对于定位应用还是太慢了，最快的方法是直接使用`dumpsys window`。同样我们运行应用，不过这一次不是看应用的资源占用，而是直接根据当前的窗口焦点定位应用，而窗口相关的肯定就是找`dumpsys window`了。不同版本的系统输出可能是不一样的，但是一样的是，在输出的某一行会有类似下面的输出
+其实上面两个命令对于定位应用还是太慢了，最快的方法是直接使用`dumpsys window`。同样我们运行应用，不过这一次不是看应用的资源占用，而是根据当前的窗口焦点定位应用，而窗口相关的肯定就是找`dumpsys window`了。不同版本的系统输出可能是不一样的，但是一样的是，在输出的某一行会有类似下面的输出
 ```bash
 mFocusedApp=ActivityRecord{1970a93 u0 com.tencent.mm/.plugin.account.ui.WelcomeActivity t77}
 ```
