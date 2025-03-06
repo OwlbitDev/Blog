@@ -36,4 +36,4 @@ adb shell pm list packages | grep com.example.app
 mFocusedApp=ActivityRecord{1970a93 u0 com.tencent.mm/.plugin.account.ui.WelcomeActivity t77}
 ```
 以`mFocusedApp`打头，`u0`后、`/`前就是包名，`/`后则是`Activity`的名字。
-![adb shell dumpsys window](window.png)
+![adb shell dumpsys window](windows.png)
