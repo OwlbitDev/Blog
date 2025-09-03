@@ -9,9 +9,9 @@ export const defaultLanguage = 'zh';
 
 export const ui = {
     en: {
-        'title': 'Deep thinking home page',
-        'description': 'A home page for deep thinking,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
-        'website': 'Deep thinking',
+        'title': 'CoreDiveDev home page',
+        'description': 'A home page for CoreDiveDev,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
+        'website': 'CoreDiveDev',
         'welcome': 'Welcome to my website',
         'last_updates': 'Latest updates',
         'load_more': 'Load more',
@@ -24,7 +24,7 @@ export const ui = {
         'tags.title': 'Total Tags',
         'tags.description': 'The tags of posts',
         'about.title': 'About me',
-        'about.description': 'About me,my(Deep thinking) personal resume'
+        'about.description': 'About me,my(CoreDiveDev) personal resume'
     },
     zh: {
         'title': '低头沉思博客主页',

@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-    site: 'https://deep-thinking.top',
+    site: 'https://coredive.dev',
     integrations: [mdx(), sitemap(
         {
             i18n: {

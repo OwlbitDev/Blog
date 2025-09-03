@@ -219,8 +219,8 @@ return Astro.rewrite("/zh")
 ```typescript
 export const ui = {
     en: {
-        'title': 'Deep thinking home page',
-        'description': 'A home page for deep thinking,share some articles about Android,OpenGLES,Python,HTML/CSS etc.'
+        'title': 'CoreDiveDev home page',
+        'description': 'A home page for CoreDiveDev,share some articles about Android,OpenGLES,Python,HTML/CSS etc.'
     },
     zh: {
         'title': '低头沉思博客主页',
@@ -351,7 +351,7 @@ export async function getStaticPaths({ paginate }) {
 这里的关键点是提供`posts`的同时，提供`params`,不然会出现`Missing parameter: lng`的错误。
 ## 总结
 从Hugo迁移到Astro总体来说是比较简单的，但是迁移过程需要按照一定的流程和方法进行，抓大放小，可以大大增强自信心，保证迁移成功。在迁移过程中，首先需要关注的是内容，所以要先将内容导入成功，导入的过程需要接触到路由和页面相关的知识,可以多去官网看看这两部分的内容。其次是个性化的过程中，要首先搞清楚自己的需求，选择合适的工具，做好规划，不然个性化进行到一半，发现有些需求不好实现，推倒重来的代价就比较大了，这部分我推荐使用`Tailwind CSS`。
-如果你有看得不明白的地方，欢迎到 https://github.com/hongui/hongui.github.io 查看我对应的源码。我尽可能地减少了封装，保证了代码的纯粹度。也欢迎大家去我的博客网站 (https://deep-thinking.top/) 上看看实际的显示效果。
+如果你有看得不明白的地方，欢迎到 https://github.com/hongui/hongui.github.io 查看我对应的源码。我尽可能地减少了封装，保证了代码的纯粹度。也欢迎大家去我的博客网站 (https://coredive.dev/) 上看看实际的显示效果。
 
 ## 参考
 1. [Astro](https://docs.astro.build/)
