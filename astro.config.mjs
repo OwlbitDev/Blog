@@ -2,7 +2,7 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
     site: 'https://coredive.dev',
@@ -13,7 +13,7 @@ export default defineConfig({
                 locales: {zh:'zh-CN', en:'en-US'},
             },
         }
-    ), tailwind()],
+    )],
     i18n: {
         defaultLocale: 'zh',
         locales: ['zh', 'en'],
@@ -21,10 +21,7 @@ export default defineConfig({
     image: {
         service: passthroughImageService(),
     },
-    experimental:{
-        svg: {
-            mode: 'sprite'
-        }
-    }
-},
-);
+    vite: {
+        plugins: [tailwindcss()],
+    },
+},);
