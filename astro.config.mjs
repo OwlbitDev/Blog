@@ -2,21 +2,13 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-    site: 'https://deep-thinking.top',
-    integrations: [mdx(), sitemap(
-        {
-            i18n: {
-                defaultLocale: 'zh',
-                locales: {zh:'zh-CN', en:'en-US'},
-            },
-        }
-    ), tailwind()],
-    i18n: {
-        defaultLocale: 'zh',
-        locales: ['zh', 'en'],
+    site: 'https://litlab.dev',
+    integrations: [mdx(), sitemap()],
+    vite: {
+        plugins: [tailwindcss()],
     },
     image: {
         service: passthroughImageService(),

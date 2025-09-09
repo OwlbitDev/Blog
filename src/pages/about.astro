@@ -1,0 +1,10 @@
+---
+import Frame from "../components/Frame.astro";
+import {Content} from '../content/about.mdx';
+import {ui} from '../lib/ui'
+---
+<Frame title={ui.about_title} description={ui.about_description} category="about">
+	<div class="base-content">
+		<Content />
+	</div>
+</Frame>

@@ -1,12 +1,6 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
-import { simpleLanguages } from '../i18n/ui';
-
 const { href,Logo,content } = Astro.props;
 let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '')
-simpleLanguages.forEach(lang=>{
-	pathname=Astro.url.pathname.replace(`${import.meta.env.BASE_URL}/${lang}`, '');
-})
 
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');

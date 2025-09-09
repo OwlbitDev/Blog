@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import Logo from "../assets/logo.svg"
 import SimpleDate from "./SimpleDate.astro";
-const { lng, id, title, date,tags,cover } = Astro.props;
+const { id, title, date,tags,cover } = Astro.props;
 ---
 
 <article
@@ -14,11 +14,11 @@ const { lng, id, title, date,tags,cover } = Astro.props;
             <ul class="flex flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
             {
                 tags.map(tag=> 
-                    (<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/${lng}/tags/${tag}`>{tag}</a></li>)
+                    (<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/blog/tags/${tag}`>{tag}</a></li>)
                 )
             }
             </ul>
-            <h3 class="mt-0 mb-2"><a href={`/${lng}/posts/${id}`}>{title}</a></h3>
+            <h3 class="mt-0 mb-2"><a href={`/blog/${id}`}>{title}</a></h3>
             <SimpleDate date={date} />
         </div>
     </div>

@@ -5,17 +5,17 @@ import Footer from './Footer.astro';
 import Firebase from './Firebase.astro';
 import StructData from './StructData.astro';
 
-const {lng,title,description,date,category}=Astro.props
+const {title,description,date,category}=Astro.props
 ---
 <!doctype html>
-<html lang={lng}>
+<html lang={'en'}>
 	<head>
 		<link rel="sitemap"  href="/sitemap-index.xml">
 		<BaseHead title={title} description={description} />
 		{<StructData {title} publishDate={date} {category}/>}
 	</head>
 	<body class="bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)]">
-		<Header {lng}/>
+		<Header/>
 		<main class="mx-4 mt-20">
 			<slot />
 		</main>

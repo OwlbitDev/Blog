@@ -1,17 +1,18 @@
 ---
-import { getPosts } from "../../../lib/content";
-import BlogPost from "../../../layouts/BlogPost.astro";
 import { render } from "astro:content";
-import {useTranslations} from "../../../i18n/utils"
+
+import { getPosts } from "../../lib/content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import {ui} from "../../lib/ui"
 
 export async function getStaticPaths() {
 	const posts = await getPosts();
 	return posts.map((post) => ({
-		params: { lng: post.lng, slug: post.id },
+		params: { slug: post.id },
 		props: post,
 	}));
 }
-const t=useTranslations(Astro.params.lng)
+
 const post = await Astro.props;
 const { Content, headings } = await render(post);
 const base=headings[0].depth
@@ -24,10 +25,10 @@ const indentMap = {
 };
 const formatHeadings=headings.map(h=>({...h,indentClass:indentMap[2*(h.depth-base)]}))
 ---
-<BlogPost id= {post.id} lng={post.lng} {...post.data}>
+<BlogPost id= {post.id} {...post.data}>
 	<nav slot="toc" class="fixed md:max-w-[calc((100vw_-_768px)/2_-_1.5rem)]">
 		<header>
-			<h2 class="text-xl font-bold">{t('posts.toc')}</h2>
+			<h2 class="text-xl font-bold">{ui.posts_toc}</h2>
 		</header>
 		<ul>
 		{formatHeadings.map(h=>(<li><a href=`#${h.slug}` class=`block border-r-2 pl-4 pr-2 py-2 text-sm ${h.indentClass}`>{h.text}</a></li>))}

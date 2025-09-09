@@ -7,25 +7,22 @@ import { getTags } from "../../../lib/tags";
 export async function getStaticPaths(){
     const map=await getTags()
     const result=[]
-    for(const [lng,tags] of map){
-        for(const [tag,posts] of tags){
-            result.push({params:{lng,tag},props:{posts}})
-        }
+    for(const [tag,posts] of map){
+        result.push({params:{tag},props:{posts}})
     }
     return result
 }
 
-const {lng,tag}=await Astro.params
+const {tag}=await Astro.params
 const {posts} = await Astro.props;
 ---
-<Frame lng={lng} title={tag} description={tag}>
+<Frame title={tag} description={tag}>
 	<h1>{tag}</h1>
 			<nav class="flex flex-col gap-4">
 			{
 				posts.map((post,index)=><>
                 <SimplePost 
                     key={post.id} 
-                    lng={lng}
                     id={post.id}
                     {...post.data}/>
                     {index!==posts.length-1 && <Divider/>}

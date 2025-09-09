@@ -4,14 +4,14 @@ import Frame from "../components/Frame.astro";
 import SimpleDate from "../components/SimpleDate.astro";
 import Left from "../assets/arrow_back.svg"
 import Right from "../assets/arrow_forward.svg"
-const { id,lng, title, description, date,tags } = Astro.props;
-const posts = await getPosts(lng);
+const { id, title, description, date,tags } = Astro.props;
+const posts = await getPosts();
 const index=posts.findIndex(post=>post.id===id);
 const prevPost=index>0?posts[index-1]:null;
 const nextPost=index<posts.length-1?posts[index+1]:null;
 ---
 
-<Frame lng={lng} title={title} description={description} date={date}>
+<Frame title={title} description={description} date={date}>
 	<aside class="hidden md:block md:pr-2 md:min-w-0 md:max-w-[calc((100vw_-_768px)/2)]">
 		<slot name="toc" />
 	</aside>
@@ -22,7 +22,7 @@ const nextPost=index<posts.length-1?posts[index+1]:null;
 			<ul class="flex pb-4 flex-wrap gap-4 text-[var(--md-sys-color-outline-variant)]">
 				{
 					tags&&tags.map(tag=> 
-						(<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/${lng}/tags/${tag}`>{tag}</a></li>)
+						(<li class="text-sm before:content-['#']  hover:text-[var(--md-sys-color-on-surface-variant)]"><a href=`/blog/tags/${tag}`>{tag}</a></li>)
 					)
 				}
 				</ul>
@@ -33,13 +33,13 @@ const nextPost=index<posts.length-1?posts[index+1]:null;
 				<slot />
 				<nav class="flex justify-between">
 		{
-			prevPost?(<a href={`/${lng}/posts/${prevPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
+			prevPost?(<a href={`/blog/${prevPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
 				<Left fill="var(--md-sys-color-primary)"/>
 				{prevPost.data.title}
 				</a>):(<span></span>)
 		}
 		{
-			nextPost?(<a href={`/${lng}/posts/${nextPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
+			nextPost?(<a href={`/blog/${nextPost.id}`} class="flex gap-2 items-center text-[var(--md-sys-color-primary)] hover:text-[var(--md-sys-color-primary-variant)]">
 				{nextPost.data.title}
 				<Right fill="var(--md-sys-color-primary)"/>
 				</a>):(<span></span>)
