@@ -1,115 +1,100 @@
 ---
-title: "现代C++学习指南-方向篇"
-description: "现代C++学习指南-方向篇"
+title: "Modern C++ Study Guide-roadmap"
+description: "Modern C++ Study Guide-roadmap"
 cover: "cover.webp"
 
-date: 2022-06-25T08:51:01+08:00
+date: 2022-06-25T08:51:01+08:00 
 
 author: "hongui"
 
 categories:
  - C++
 tags:
- - 学习指南
- - C++
-
+ - Study guide
+ - C++ 
 draft: false
 ---
+C++ is a forty-year-old language that has gone through four major version upgrades (Birth, 98, 11, 17(20), 14 counts as a minor upgrade). Each upgrade was a trade-off between many problems and solutions. Understanding this history can better help us to clarify the development of the language. So next I will borrow its development history, talk about my understanding of it, and finally give a guide to what I think is a more reasonable learning route.
 
-C++是一门有着四十年历史的语言，先后经历过四次版本大升级（诞生、98、11、17（20），14算小升级）。每次升级都是很多问题和解决方案的取舍。了解这些历史，能更好地帮助我们理清语言的发展脉络。所以接下来我将借它的发展历程，谈一谈我对它的理解，最后给出我认为比较合理的学习路线指南。
+## C++0——be born
+C++ was created to solve two main problems - performance and abstraction. Performance refers to the ability to have C-like underlying access and execution efficiency, while abstraction is meant to provide the ability to describe problems and ways of thinking at the language level. This is the foundation of C++ and the reason why C++ has endured. The solution that Bjarne Stroustrup came up with for both of these goals was to leverage existing C techniques and tools, and then provide classes to solve the abstraction problem. Based on this premise, we can see that classes are the first hurdle on the road to learning C++.
+C++ considers classes to be a form of abstract thinking, and the relevant features of classes are provided in the service of abstraction. So classes in C++ offer more capabilities than other object-oriented classes, and so have more complexity. In order to describe this complexity, it is necessary to mention two features of C++, static type safety, and resource management.
+Static type safety helps developers to define custom classes that are more reasonable and legal, e.g., through operator overloading, custom classes can be written with the same concise code as basic types. Runtime errors caused by implicit type conversions can be avoided through constructors, and one can stop one's classes from being abused by explicitly blocking certain operations. All autonomy is up to the developer. So if we are users of the library, we don't have to worry about these details, we just have to write the code as we would in a normal language, and if it doesn't make sense, the compiler will just tell us, and we don't have to worry that these problems will be hidden at some point in the program's runtime.
 
-## C++0——诞生
-C++诞生的目的是为了解决两个主要问题——性能和抽象。性能指的是拥有像C一样的底层访问能力和执行效率，抽象则意在语言层面提供对问题的描述能力和思考方法。这是C++的立命之本，也是C++经久不衰的原因。对于这两个目标，Bjarne Stroustrup想到的解决方法是充分利用现有的C的技术和工具，然后提供类来解决抽象问题。基于这个前提，我们就可以看出类是C++学习路上的第一个关卡。
+Resource management, on the other hand, can help developers provide guidance and support for resource management. There are many kinds of resources, and most of the resources in a computer are limited, and must be borrowed and returned, and the borrowing and returning must be one-to-one correspondence, otherwise it is a memory leak. In the C era, resource management relied on the developer's global control of resources, and no better support was provided at the language level. In order to better support resource management, C++ proposes constructors and destructors, which can correspond to the acquisition and recovery of resources. However, in many cases, resources are not only for your own use, but also need to be made available for external use. In order to support this kind of resource transfer, C++ provides move and copy operations.
+To summarize, C++ classes provide many features, but not all of them are needed by developers. ```The main question a developer needs to consider when defining a class is what support is provided for the class, and then choosing the appropriate syntactic features to implement among those provided.``` Constructors and destructors provide good one-to-one operations, moves and copies provide how resources can be shared among objects, and operator overloading allows classes to be used more concisely and elegantly.
 
-C++认为类是一种抽象思维，类的相关特性都是为抽象提供服务的。所以C++中的类比其他面向对象的类提供了更多的能力，所以也具有更多的复杂性。为了描述这种复杂性，就不得不提到C++的两个特点，静态类型安全，资源管理。
+## C++98——standardized
+The biggest upgrades to C++98 are templates and exceptions, and they are paired with a good standard library.
+The place of templates in C++ cannot be overemphasized. It is another abstraction mechanism. Classes in C++ address the abstraction of similar concepts, focusing more on the similarity between concepts, whereas templates address generic problems. While templates solve the abstraction of generic problems, focusing more on the generality of concepts. Together, they form the two cornerstones of abstraction in C++. We've 
 
-静态类型安全可以帮助开发者定义出更合理合法的自定义类，如通过操作符重载，自定义类可以写出和基本类型一样的简洁代码。可以通过构造函数避免隐式类型转换而造成的运行时错误，也可以通过明确阻止某些操作阻止自己的类被滥用。所有的自主权都由开发者决定。所以假如我们是库的使用者，完全可以不用关心这些细节，我们只需要按照一般的语言一样写代码，遇到不合理的，编译器会直接告诉我们，不用担心这些问题会隐匿在程序运行时的某个时刻。
+already talked about classes, so let's focus on templates.
+Thanks to C++'s strong static type safety, templates are easy to write, and they can be used to write ordinary functions in any way you like, just by replacing specific types with generic ones. But, on the other hand, templates can do much more. A template can support multiple parameters, multiple arguments, qualified parameters, and be type-safe. What's even more impressive is that it can also specify values. Using types and values together wisely basically solves most problems.
 
-资源管理则可以帮助开发者提供资源管理的指导和支撑。资源有很多种，而在计算机中的资源大部分都是有限的，必须有借有还，而且借和还必须一一对应，不然就是内存泄漏。在C时代，资源管理靠的是开发者对资源的全局掌控力，语言层面没有提供更好的支持。为了更好地支持资源管理，C++提出了构造函数和析构函数，两者分别可以对应资源的获取和回收。但是很多时候资源不仅仅供自己使用，还需要提供给外部使用。为了配合这种资源的转移，C++又提供了移动和复制两种操作来支持。
+Speaking of exceptions. They don't have much appeal to the average developer. This is because the main problem that exceptions solve is how to tell the caller that an error has occurred, what the error is, and transfer the ability to execute to the caller's side. And most of the time we develop business code, we know what happened, how to solve, most of the time is not much need for exceptions. Of course, it's not that exceptions are useless; they are exceptionally important to the library developer. The library developer needs to be able to tell the caller that an error has occurred and that the operation is not going to work when the exception occurs. Often, however, the library developer doesn't know what the caller should do with the error, whether to ignore it or clean up the mess. The exception mechanism provides both exception throwing and exception catching to support library developers and users.
 
-综上，总结一下，C++的类提供了很多特性，但是不是所有的特性都是开发者需要的。```开发者在定义类的时候需要考虑的主要问题是，对这个类提供哪些支持，然后再在这些提供的功能中选择合适的语法特性来实现。```构造函数和析构函数可以提供很好的一一对应的操作，移动和复制则提供了资源在对象中怎么共享，操作符重载则可以让类使用更加简洁和优雅。
+For newbies, you may not like the standard library much and tend to write your own. This is not a good idea. Standard libraries are industry-tested code that will work in most situations, whereas writing your own code by hand gives you a better sense of accomplishment, but is more likely to carry bugs.Early standard libraries offered limited functionality, with only `string`, input/output streams, bitwise arithmetic, the three main containers, and a few small algorithms. However, these are sufficient for our daily use, especially now that the standard library has become more and more complete, and most programming scenarios can be accomplished with the right tools, it is possible to give up writing specific code by hand.
 
+C++98 was more about standardization, templates were a standard, and the standard library was a standard. Since then, the three pillars of C++ have been completed: classes, templates, and standard libraries. Each of them brings unlimited possibilities and vitality to C++.
+## C++11——new language
+The changes in C++11 are revolutionary, but retaining incredible compatibility is not easy. We won't go into specific features and details here, just a general overview of the general direction.
 
-## C++98——标准化
-C++98最大的升级是模板和异常，并且搭配了好用的标准库。
+The first intuitive change is in the type system, which C++11 standardizes and unifies as much as possible.
+- C++11 has standardized and unified the type system as much as possible. It has standardized the form of initialization of objects by agreeing to initialize them;
+- The form of type declarations is simplified by `auto`;
+- Null pointers are standardized through `nullptr`;
+- Static type-safe enumerations are provided through `enum class`;
+- simplified type writing through aliases;
+- And much, much more.
 
-模板在C++中的地位怎么强调都不为过。它属于另一种抽象机制。所以它解决的也是抽象问题。C++中的类解决的是相似概念的抽象，更注重概念间的相似性。而模板解决的是通用问题的抽象，更注重概念的通用性。两者共同构成了C++的两大抽象基石。前面已经谈过了类，这里我们着重说一下模板。
+Improvements to the type system mean that developers can write cleaner, more standardized, and safer code, but the challenges to compilers are huge, so for a long time, C++11 was not well supported, and also hindered the development of C++.
+In addition to the type system, another big improvement is the provision of threading support. the standard library of C++11 provides threads, conditional objects, locks, and other threading-related tools, which is revolutionary for library developers. Cross-platform threading support is provided with almost no loss of performance, which greatly improves the stability and performance of the library and saves a lot of time in platform testing, which has to be top notch.
 
-得益于C++强大的静态类型安全，模板编写起来也很简单，普通的函数怎么写，它就可以怎么写，无非就是把特定类型换成泛型。但是，另一方面，模板还可以做得更多。模板可以支持多种参数，多个参数，限定参数，并且是类型安全的。更厉害的是，它还可以指定值。合理地配合使用类型和值，基本上就能解决大部分问题了。
+Another important upgrade is resource management. The standard library provides `unique_ptr`, `shared_ptr` to assist in resource management. Right-valued references and move semantics have also been introduced for better performance. Right references and move semantics may sound high end, but they actually solve the problem of avoiding the repetitive creation and destruction of large objects in favor of less expensive moves. The underlying idea is twofold: for direct quantities, right references are provided to increase their lifetime, allowing them to be passed through parameters like normal variables. And for variables, move semantics are provided to transfer resources managed by objects that no longer need to be used to another pair of imagines. Also added move constructs, copy constructs way to optimize the return value of the function. It can be said to drain every inch of memory from the computer.
 
-说起异常。对于普通开发者没有多大吸引力。因为异常主要解决的问题是怎样告诉调用者发生错误了，是什么错误，并将执行能力转移到调用者一方。而我们大部分时间开发的都是业务代码，我们知道发生了什么，该怎样解决，大部分情况下是不太需要异常的。当然，并非说异常一无是处，异常对库开发者来说异常重要。对于库开发者来说，他需要在异常发生后，告诉调用者发生了错误，操作没有办法顺利执行。但是很多时候，库开发者并不知道调用者该怎样处理这个错误，是忽略呢，还是清理现场。异常机制提供了抛异常和异常捕获两种方式来支持库开发者和使用者。
+C++11 is undoubtedly a landmark update to C++, and it carries on the role of cleaning up the historical legacy while leading the way for the rest of C++'s development. Improvements to the type system undoubtedly make up for some of the shortcomings inherited from C at the very beginning. It also took into account the development of modern computers and introduced threading support. It also took memory management to the next level, introducing smart pointers, move semantics, and right-valued references. It basically throws off the historical constraints, but still does not forget its mission, and still runs towards ``better static type support, more autonomy, more efficient resource management, and more restrained feature support``.
+## C++17，20——newborn
+C++17 and C++20 are supposed to complement each other, and the vast majority of features are already supported and improved. However, due to compiler limitations, there are fewer features that I use. one of the more anticipated features of C++17 is the cross-platform filesystem support, which is certainly exciting and delightful for most application developers. Another feature I like is structured binding, which I use a lot in Python, but of course it's supported by basically all modern languages now.
 
-对于新手来说，可能不太喜欢标准库，而倾向于自己写。这不是个好主意。标准库是经过工业级测试的代码，可以在绝大部分情况下正常工作，而自己手写虽然成就感更好，但是更可能携带BUG。早期的标准库提供的功能有限，只有`string`，输入输出流，位运算，三大容器，和一些小算法。不过，这些都足够我们日常使用了，尤其是现在标准库功能越来越完善了，大部分编程场景都能找到合适的工具来完成，完全可以放弃手写特定代码了。
+And for C++20 it's much less used, more of an example nature. I'm more concerned about modules and concurrency, but I won't go into details since I don't know much about them.
+## What are the fundamentals of C++
+From the first few chapters it is easy to see that I have emphasized boasting about C++ classes, templates, standard library, and type system. These are the more important aspects of learning C++ in my opinion. But for beginners, I think ``The type system and the standard library`` are enough.
 
-C++98更多着眼于标准化，模板是一种标准，标准库也是一种标准。自此，```C++的三座大山算是构筑完成了，类，模板，标准库。```每一项都为C++带来了无限可能和旺盛生命力。
+The type system is the smallest unit of a language. In C++, it includes type declarations, object initialization, function passing, and function return values. It's a lie how many features you learn at the beginning of the learning process, but in reality you need to start with the smallest unit of the language. For example, when declaring a variable, what type of variable should it be, can it be a pointer, can it be a reference. When defining a function, how to determine the parameter list, what is the return value, how to make the function pass parameters efficiently, how to prevent and avoid useless parameter checking, what type of return value should be, and so on, these are in the actual project need to directly face the problem. So learning about the type system is the first and most important step in writing efficient and usable code. The more in-depth and comprehensive consideration of the issue, the greater the return.
 
-## C++11——全新语言
-C++11的改动是革命性的，但是还保留着难以置信的兼容性，是非常不容易的。这里我们不细谈具体的特性和细节，只从大方向上来个笼统的概述。
+The standard library, on the other hand, provides good algorithmic support and container support that can help us write more robust code. Learning about the standard library interfaces promotes awareness of the type system on the one hand, and on the other hand, it is a place to build up good habits.
 
-首先直观的变化是在类型系统上，C++11将类型系统做了尽可能的规范化和统一化。
-- 通过同意初始化规范了对象的初始化形式；
-- 通过`auto`简化了类型声明的形式；
-- 通过`nullptr`规范化了空指针的形式；
-- 通过`enum class`提供了静态类型安全的枚举；
-- 通过别名简化了类型书写的方式；
-- 还有其他更多更多
+With these two skills in place, I feel like I've been able to write great applications. But for library designers, writing great libraries also requires a deeper understanding of classes and templates.
+A well-defined class needs to have tight control over the object lifecycle, construction, transfer, and destruction. For operations that need to be supported, the class designer should provide the most convenient and efficient support possible, and for operations that are prohibited by the class, the class designer should explicitly prohibit them to prevent misuse or hidden bugs. so for the class, the focus needs to be on the construction of the resources, as well as the transfer and sharing of resources among multiple objects. Problems are likely to occur in the function passing and return value, especially the function of the layer call, efficiency and safety is a must consider, so this is back to the type system mentioned earlier, only a more in-depth understanding of it, in order to design a better class.
 
-类型系统的改进意味着开发者可以写出更简洁，更规范，也更安全的代码，但是对编译器的挑战却是巨大的，所以，很长时间内，C++11都没有得到很好的支持，同时也妨碍了C++的发展。
+Templates are the other side of the class, it and the class concept is different, but the idea is similar. Templates are similar to generics in Java, but are more flexible and important, and are the same height as classes. Templates need to consider the question of what algorithms to provide, what objects can use this algorithm, how to avoid and prevent the misuse of the wrong object, in the process of use how to avoid run-time errors by using compilation errors as much as possible. So it is a further abstraction than a class, and has higher requirements for the developer than a class.
 
-除了类型系统，另一项大改进就是提供了对线程的支持。C++11的标准库中提供了线程，条件对象，锁等线程相关的工具，这对库开发者来说是革命性的。在几乎不损失性能的情况下，提供了跨平台的线程支持，这极大地提高了库的稳定性和性能，也节省了很多平台测试时间，不得不说是顶呱呱。
+## C++ Learning Roadmap
+From the previous section, you can see that my recommended learning path is the type system, to the standard library, to classes, and finally to templates. The other details of the language are not unimportant, but will be integrated into the learning process while learning the four main sections, there is no need to learn and understand separately, after all, the details are complex and scattered, will not increase the mastery of the language, but will disrupt the learning rhythm and distraction.
+The learning of the type system can in turn be carried out in the following steps
+- Variable declarations (constants and compile-time constants)
+- Initialization (uniform initialization, assignment)
+- Function definitions, function parameter definitions, return values (use of references, pointers)
+- Simple class definitions, not involving memory management, resource management
+Standard libraries can be performed in the following steps
+- Smart pointers (`shared_ptr`, `unique_ptr`, etc.)
+- Strings
+- Container class objects (`list`,`map`, etc.).
+- Standard input and output usage
+- Threaded library usage
+- Generic algorithms (`sort`, `find`, etc.)
+Classes can proceed as follows
+- Class constructors, move constructors, copy constructors
+- Class operator overloading
+- Inheritance
+- Virtual functions
+- Multiple Inheritance
+Templating can be done in the following steps
+- Template Functions
+- Template classes
+- Template recursion
+- Template specialization
+## Summary
+C++ is full of details, beginners can easily dive into the details of the syntax without realizing it, and end up wasting a lot of time, not to mention, but also a serious blow to the motivation to learn. The main purpose of this article is to help beginners clear the main vein of this language, and provide me with a more scientific learning route, I hope to help beginners.
 
-另一个重要升级就是资源管理了。标准库提供了`unique_ptr`，`shared_ptr`来协助资源管理。同时为了更出色的性能，引入了右值引用和移动语义。右值引用和移动语义听起来很高端，实际上就是解决一个问题，避免大对象的反复销创建和销毁，转而使用代价更低的移动。根本思路就是两条，对于直接量提供了右值引用，以增加它的生存时间，使之可以像普通变量一样通过参数传递。而对于变量来说，提供了移动语义，将不再需要使用的对象管理的资源转移到另一个对想象中。同时增加了移动构造，复制构造方式来优化函数的返回值。可谓是榨干了计算机的每一寸内存。
-
-C++11无疑是C++里程碑式的更新，在对历史遗留问题清理的同时，引领了接下来C++的发展方向，它的作用是承上启下的。对类型系统的改进无疑弥补了最开始从C继承来的一些缺陷。同时也充分考虑了现代计算机的发展，引入了线程支持。在内存管理上也是更上一层楼，引入了智能指针，移动语义，右值引用。它基本上抛开了历史束缚，但依旧是不忘使命，依旧是奔着```更好的静态类型支持，更多的自主性，更高效的资源管理，更克制的特性支持来展开的```。
-## C++17，20——新生
-C++17和C++20应该是相辅相成的，绝大部分特性都已经得到支持和完善了。但是由于编译器的限制，我用的特性比较少。C++17比较期待的是跨平台的文件系统支持，这对于大部分应用开发者来说无疑是激动和喜悦的。另一个我喜欢的特性是结构化绑定，这个特性我在Python里面用得很顺手，当然现在基本上所有现代语言都支持它了。
-
-而对于C++20就用得更少了，更多的是示例性质的。我比较在意的是模块和协程，但是由于了解得不深入，就不详谈了。
-
-## 什么是C++的基本面
-从前几个章节不难看出，我着重夸了C++的类，模板，标准库，类型系统。这些都是我觉得学习C++比较重要的方面。但对于初学者来说，我觉得```类型系统和标准库```就足够了。
-
-类型系统是一门语言最小的单元了，在C++中它包括类型声明，对象初始化，函数传参，函数返回值。在学习初期学多少特性都是骗人的，实际上手还是需要从这个最小的单元入手。比如声明一个变量，这个变量该是什么类型的，可以是指针吗，可以是引用吗。定义函数的时候，参数列表该怎样确定，返回值是什么，怎样才能让函数传参高效，怎样阻止和避免无用的参数检查，返回值该是什么类型，等等，这些都是在实际项目中需要直接面对的问题。所以对类型系统的学习，是写出高效可用代码的第一步，也是最重要的一步。考虑的问题越深入、全面，得到的回报就越大。
-
-标准库则是提供了很好的算法支持和容器支持，可以帮助我们写更健壮的代码。对标准库接口的学习，一方面可以促进对类型系统的认识，另一方面也是积累好习惯的地方。
-
-有了这两项技能的支持，我觉得已经能够写出很棒的应用程序了。但是对于库设计者来说，写出很好的库还需要对类和模板有着更深刻的理解。
-
-一个定义良好的类需要对对象的生命周期进行严格的控制，构造，转移，销毁都是需要控制的。对于需要支持的操作，类设计者应该提供尽可能便捷和高效的支持，对于类禁止的操作，类设计者应该明确禁止，防止发生误用或者隐藏BUG。所以对于类，着重需要关注的是资源的构造，以及在多个对象间的传递和共享。容易发生问题的地方在于函数传参和返回值上，特别是层层调用的函数上，高效和安全就是必须要考虑的了，所以这就回到了前面提到的类型系统，只有对它有了比较深入的了解，才能设计出比较好的类。
-
-模板则是类的另一方面，它和类的概念虽然是不同的，但是思路上却是相通的。模板和Java里面的泛型相似，却更加灵活和重要，是和类一样的高度。模板需要考虑的问题是，提供什么算法，什么对象可以使用这个算法，怎样避免和阻止错误对象的滥用，在使用过程中怎样尽可能利用编译错误来避免运行时错误。所以它是比类更进一步的抽象概念，对开发者有着比类更高的要求。
-
-## C++学习路线图
-从上一章节，可以看出我推荐的学习路线是类型系统，到标准库，到类，最后才到模板。其他的语言细节不是说不重要，而是在学习这四大板块的同时会融入到学习过程中，没必要单独去学习和理解，毕竟细节是繁杂而且散乱的，不会增加对语言的掌握，却会打乱学习节奏，分散注意力。
-
-类型系统的学习又可以按以下步骤进行
-- 变量声明（常量和编译时常量）
-- 初始化（统一初始化，赋值）
-- 函数定义，函数参数定义，返回值（引用，指针的使用）
-- 简单类定义，不涉及到内存管理，资源管理
-
-标准库可以按以下步骤进行
-- 智能指针（`shared_ptr`,`unique_ptr`等）
-- 字符串
-- 容器类对象（`list`,`map`等）。
-- 标准输入输出使用
-- 线程库使用
-- 通用算法（`sort`，`find`等）
-
-类可以按以下步骤进行
-- 类的构造函数，移动构造，复制构造
-- 类的运算符重载
-- 继承
-- 虚函数
-- 多继承
-
-模板可以按以下步骤进行
-- 模板函数
-- 模板类
-- 模板递归
-- 模板特化
-
-## 总结
-C++细节繁多，初学者容易一头扎进语法细节而不自知，最终白白浪费了大把时间不算，还严重打击了学习积极性。本篇的主旨是在帮初学者理清这门语言的主要脉络，并提供我认为比较科学的学习路线，希望对初学者有所帮助。
-
-C++语言是一门通用型语言，有着很长的发展历史。这导致了它有着不小的历史包袱，所以在引入语言特性和怎样引入的事情上一直保持着克制。但是为了更好地服务于现代硬件和简化开发者工作，又不得不引入新特性，遗弃一些老特性。基于这种原因，语言表现出了一定的复杂性和杂乱性。但是它的核心方向是明确的，就是为了更好地解决效率和抽象问题。抓住这两个核心，再结合这份指南，先难后易，抓大放小，再加上一点归纳和总结就能很好地掌握这门语言的大部分内容。对于指南外的特性，在实际项目中需要了再学习完全是来得及的，毕竟大部分时间我们用到的特性也是很少的一部分，应该把精力花在性价比最高的部分。
+C++ is a general-purpose language with a long history of development. It has a lot of historical baggage, so it has been restrained in introducing language features and how to introduce them. However, in order to better serve modern hardware and simplify the work of developers, new features have had to be introduced and old ones left behind. For this reason, the language exhibits some complexity and clutter. But its core direction is clear: to better address efficiency and abstraction. By grasping these two core aspects and combining them with this guide, you can get a good grasp of most of the language by starting with the hard ones and then moving on to the easy ones, and then adding a little generalization and summarization. For the features outside the guide, it's not too late to learn them when you need them in a real project. After all, most of the time the features we use are only a small part of the language, so we should spend our energy on the most cost-effective parts.

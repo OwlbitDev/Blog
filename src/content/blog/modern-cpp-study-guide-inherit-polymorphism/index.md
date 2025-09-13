@@ -1,6 +1,6 @@
 ---
-title: "现代C++学习指南 继承和多态"
-description: "现代C++学习指南 继承和多态"
+title: "Modern C++ Study Guide - Inheritance and Polymorphism"
+description: "Modern C++ Study Guide - Inheritance and Polymorphism"
 cover: "cover.webp"
 
 date: 2022-09-31T21:33:38+08:00
@@ -10,23 +10,29 @@ author: "hongui"
 categories:
  - C++
 tags:
- - 学习指南
+ - Study Guide
  - C++
 
 draft: false
 ---
-> 在前一章，我们学习了怎样将数据封装在一个类里，这一章我们将继续向前，学习数据和行为分散在不同类里的处理方式，领略面向对象的魅力。
->
+> In the previous chapter, we learned how to encapsulate data within a class. In this chapter, we will continue to explore how to handle data and behavior distributed across different classes and appreciate the charm of object-oriented programming.
+
+## Overview
+When I first started learning programming, many teachers explained object-oriented programming as encapsulating data internally and accessing it through member functions. I memorized this concept and strictly followed it. However, during use, I found that this approach was not much different from procedural programming. Whether the data was inside or outside the class made only a minor difference. It wasn't until I gained a deeper understanding and application of inheritance and polymorphism that I realized the essence of object-oriented programming is not just encapsulation but achieving inheritance and polymorphism through encapsulation. If inheritance is like upgrading from a handcart to a horse-drawn carriage, then polymorphism is like the leap from a horse-drawn carriage to an internal combustion engine.
+
+After implementing data encapsulation, you'll find many similar types of data that differ only slightly but are encapsulated in separate classes. This seems unreasonable. A straightforward solution would be to add another layer of abstraction before encapsulating the data. **Identify commonalities among these data types, provide a first-level common encapsulation, and then complete specific encapsulations based on this initial level. This approach is called inheritance**. The main purpose of inheritance is to achieve code reuse. Since these data types share commonalities, behaviors can be directly implemented in the parent class, while specific behaviors and data can be defined in the child classes. Child classes can achieve significant functionality with minimal code. Of course, this level of abstraction also has its limitations. For complex data, adding more intermediate layers can help manage complexity, but it may lead to unreadable code and maintenance challenges. Therefore, inheritance is not a panacea; it can only mitigate complexity to some extent, and overuse can increase complexity.
+
+So, the path of data abstraction reaches its limit with inheritance. We need to consider abstraction from another dimension. In Python, there's a widely circulated saying: **if an object can quack, it can be treated as a duck. The core idea is that we don't care about the actual data contained in the object; as long as it can perform the required actions, it can be considered part of a certain type**. Similarly, in many scenarios, what we need to control is not the data itself but the flow of data. Since member functions control the data, controlling the flow of data essentially means controlling member functions, i.e., controlling behavior. **This approach of abstracting behavior is called polymorphism**. Polymorphism breaks away from traditional data classification methods and extends the applicability of classes to a broader scope. Thus, the emergence of polymorphism has established the dominance of object-oriented programming for nearly two decades. Of course, it is not without flaws. Polymorphism's control over data is loose, and without strict control measures, it can lead to system paralysis.
 
 ## 概论
 在很早我初学编程之时，很多老师讲面向对象时都是说它是将数据封装在内部，然后用成员函数访问数据。当时我也把这些记住了，也严格按照这样做了。但是在使用的过程中，我发现这和面向过程没什么区别，数据在里面和外面，对于一个类来说，影响只能说是微乎其微。直到后面对继承和多态有了更深入的理解和应用，我回过头来才发现面向对象的实质不是这些封装，而是利用这些封装实现继承和多态。如果说继承只是从手拉车到马车的转变的话，多态就是从马车到内燃车的跨越。
 
-在实现数据的封装后，就会发现有很多同类型的数据，他们可能只有很少的差异，但是却把他们分开封装在不同的类里，这不合理，很容易想到的解决方案就是：那我再加一层抽象呢？**在封装数据之前，先找出这类数据的共性，先提供第一轮的共性封装，再在第一轮封装的基础上完成特性封装，这种做法就称为继承**。继承的主要目的就是实现代码复用。因为这些数据都有共性，行为都可以直接写在父类中，特性行为和数据再写在子类里，子类就可以用尽量少的代码量实现较大的功能。当然，这种抽象维度也只是一个小的跃升，体现出了面向对象中对代码复用的潜力。如果数据足够复杂，可以通过增加足够多的中间层来解决这种复杂度，但是随之而来的就是难于阅读的代码和无法想象的维护性，所以继承不是灵丹妙药，只能在一定程度上缓解问题的复杂度，过度滥用可能还会增加复杂度。
+在实现数据的封装后，就会发现有很多同类型的数据，他们可能只有很少的差异，但是却把他们分开封装在不同的类里，这不合理，很容易想到的解决方案就是：那我再加一层抽象呢？**在封装数据之前，先找出这类数据的共性，先提供第一轮的共性封装，再在第一轮封装的基础上完成特性封装，这种做法就称为继承**。继承的主要目的就是实现代码复用。因为这些数据都有共性，行为都可以直接写在父类中，特性行为和数据再写在子类里，子类就可以用尽量少的代码量实现较大的功能。当然，这种抽象维度也只是一个小的跃升，体现出了面向对象中对代码复用的潜力。如果数据足够复杂，可以通过增加足够多的中间层来解决这种负责度，但是随之而来的就是难于阅读的代码和无法想象的维护性，所以继承不是灵丹妙药，只能在一定程度上缓解问题的复杂度，过度滥用可能还会增加复杂度。
 
 所以数据抽象这条路在继承上是走到头了，我们需要从另一个维度来考虑抽象的问题。在Python中，有一个广为流传的语录，**一个对象只要能嘎嘎叫，那么就可以把它当作是鸭子类型。它的核心要义就是不看对象实际包含什么数据，只要能完成相应的动作，就可以把他们看成是一类数据**。同样的道理，很多场合，我们需要控制的不是数据本身，而是对数据流转进行控制。因为成员函数才能控制数据，所以控制数据流转相当于是控制成员函数，也就是控制行为。**这种以行为为抽象点的做法就是多态**。多态摆脱了固有的数据分类方式，将类的适用范围扩展到了整个宇宙。所以多态的出现算是正式确定了近二十多年来面向对象的统治地位。当然它也不是毫无缺点，多态对数据的控制是松散的，假如没有严格的控制手段，可能让系统陷入瘫痪。
 
-## 继承
-上一节，我说过继承就是找出共性。那么什么是共性呢？共性就是无论什么场合，都适用的属性。人就是最简单的例子。一个人的名字在任何场景都是他的一种标识，那么名字就可以作为人这个类的一个共性，放在父类里。
+## Inheritance
+In the previous section, I mentioned that inheritance involves identifying commonalities. So, what are commonalities? Commonalities are attributes that apply universally in any context. Take a person as a simple example. A person's name is an identifier in any scenario, so the name can be considered a commonality and placed in the parent class.
 
 ```cpp
 class Person {
@@ -48,20 +54,23 @@ int main() {
 	Person p{ "张三" };
 	p.introduction();
 }
-// 输出
-// Create person = 张三
-// My name is 张三
+int main() {
+	Person p{ "Zhang San" };
+	p.introduction();
+}
+// Output
+// Create person = Zhang San
+// My name is Zhang San
 ```
-
-这是很简单的类，运用的就是上一篇文章中所说的封装技术。现在我们的张三要去朋友家做客了，朋友家来了很多人，有熟悉的人，也有不熟悉的人。熟悉的人热情地叫他狗蛋，不熟悉的人还是叫他张三。然后问题出现了，狗蛋和张三都是指张三那个人，但是环境变了，对他的关注点也就变了，熟悉的环境关注点在他的绰号上，陌生的环境关注点在他的名字上。那么我们该再创建一个类来完成绰号这个环境下的封装吗？答案显然不是，这两个特性都是指的同一个人，他们应该统一在一个对象上。那么将这个特性放在`Person`类里吗？也不对！要始终记住，共性才能发在父类里，绰号显然称不上共性，它只在熟人圈里使用。既然两个单独的类也不行，放一起也不行，那应该怎么做呢？答案是继承。熟人圈是一种特定场景，所以也应该有个特性的类来描述这个场景下的人的性质。
+This is a simple class using the encapsulation techniques discussed in the previous article. Now, let's say Zhang San goes to a friend's house where there are many people, both familiar and unfamiliar. Familiar people call him Dog Egg, while strangers still call him Zhang San. Both Dog Egg and Zhang San refer to the same person, but the context changes, shifting the focus. In a familiar environment, the focus is on his nickname, while in an unfamiliar environment, the focus is on his name. Should we create another class to encapsulate the nickname under this context? Clearly not. These characteristics refer to the same person and should be unified in one object. Should we place this characteristic in the `Person` class? No! Remember, only commonalities belong in the parent class, and a nickname is not a commonality; it is used only in familiar circles. Since neither creating separate classes nor combining them works, what should we do? The answer is inheritance. A familiar circle is a specific scenario, so there should be a specialized class to describe the properties of a person in this context.
 
 ```cpp
-// Person类不变
-class Friends :public Person {
+// Person class remains unchanged
+class Friends : public Person {
 	std::string nickname;
 public:
-	Friends(const std::string name, const std::string nickname) :Person(name), nickname{ nickname }{
-		std::cout << "Create person = " << name << "with nickname " << nickname << std::endl;
+	Friends(const std::string name, const std::string nickname) : Person(name), nickname{ nickname } {
+		std::cout << "Create person = " << name << " with nickname " << nickname << std::endl;
 	}
 
 	void hi() {
@@ -70,32 +79,33 @@ public:
 };
 
 int main() {
-	Friends f{ "张三","狗蛋"};
-	//陌生人
+	Friends f{ "Zhang San", "Dog Egg" };
+	// Stranger
 	f.introduction();
-	//熟人
+	// Friend
 	f.hi();
 }
-// 输出
-// Create person = 张三
-// Create person = 张三with nickname 狗蛋
-// My name is 张三
-// My nickname is 狗蛋
+// Output
+// Create person = Zhang San
+// Create person = Zhang San with nickname Dog Egg
+// My name is Zhang San
+// My nickname is Dog Egg
 ```
+From the output, we can see that with almost the same structure as the `Person` class, we have achieved the functionality of two classes, demonstrating the power of inheritance. There are two key points in the code:
 
 从输出我们可以知道，几乎和`Person`类一样的结构，却完成了两个类的功能，这就是继承的威力。代码中有两个关键点
 
-1. 第1行`Friends`后面多出了`:public Person`这是一种继承语法，作用就是告诉编译器，`Friends`和`Person`是有共性的。它的出现使得我们**不再需要定义**自己的`introduction`成员函数。
-2. 第5行，成员初始化列表中，我用类名加实参的形式初始化了`Person`中的`name`成员变量，为的是继承来的`introduction`成员函数能按预期运行。这种形式称之为**委托构造**。
+1. On line 1, `Friends` is followed by : `:public Person`, which is the inheritance syntax. It tells the compiler that `Friends` shares commonalities with `Person`. This allows us to **avoid redefining** the `introduction` member function.
+2. On line 5, in the member initialization list, I used the class name with arguments to initialize the `name` member variable in `Person`, ensuring that the inherited `introduction` member function works as expected. This form is called **delegating constructor**.
 
-继承可以有效解决代码复用的问题，使得每个类都只需要关注自身特性的管理上，实现较好的单一原则。但是也不难发现他的弱点，从共性到特性的过渡并不总是那么完美，同时随着继承链的增长，类之间的依赖更加复杂和不可控，这使得修改父类的代价越来越大，甚至会对子类造成破坏性的更改，引发不可控的BUG。
+Inheritance effectively addresses code reuse issues, allowing each class to focus on managing its own specific characteristics, adhering to the single responsibility principle. However, the transition from commonalities to specifics is not always perfect. As the inheritance chain grows, dependencies between classes become more complex and uncontrollable, making modifications to the parent class increasingly costly and potentially causing destructive changes to child classes, leading to uncontrollable bugs.
 
-## 虚函数
-有了继承之后，很自然的一个需求就是改变父类的某个行为，这个需求和构造父类时改变父类成员变量一样自然。而**改变父类行为的方式就是虚函数**。虚函数也是成员变量，但是它有个特殊的功能，允许子类定义一个和父类成员函数名称，参数列表，返回值完全一样的函数。当子类的某个对象调用这个方法后，实际执行的就会是子类定义的成员函数，从而改变达到改变父类行为的目的。
+## Virtual Functions
+With inheritance, a natural requirement is to modify a behavior defined in the parent class. This need is as natural as changing a parent class member variable during construction. The way **to change a parent class behavior is through virtual functions**. Virtual functions are member functions with a special feature: they allow a subclass to define a function with the same name, parameter list, and return type as a parent class member function. When a subclass object calls this method, the actual execution will be the subclass-defined member function, thus modifying the parent class behavior.
 
-要实现修改父类行为的目的，有两个步骤：父类定义，子类修改。
+To achieve this goal, there are two steps: defining the parent class and overriding in the child class.
 
-父类定义的关键点就是为父类的成员函数打上`virtual`的标签。
+The key point in the parent class definition is to mark the member function with the `virtual` keyword.
 
 ```cpp
 class Person {
@@ -114,10 +124,8 @@ public:
 };
 ```
 
-1. 第2行我们将`private`换成了`protected`，代表从这一行开始到下一个权限限定符为止，里面定义的成员子类都可以访问。也就是说`name`可以在子类中直接使用。
-2. 第10行，我们在成员函数的函数头里加入了`virtual`关键字，为的就是标识`introduction`这个成员函数是虚函数，其函数体定义的行为可以被子类修改。
-
-我们再来看，子类修改：子类修改的关键就是定义一个和父类要修改的那个成员函数完全一样的函数，然后写自己的逻辑。此例中就是在子类中定义一个和`introduction`一模一样的成员函数。
+1. On line 2, we changed `private` to `protected`, meaning that members defined from this line to the next access specifier can be accessed by subclasses. Thus, `name` can be directly used in subclasses.
+2. On line 10, we added the `virtual` keyword to the member function header to indicate that `introduction` is a virtual function whose behavior can be modified by subclasses.
 
 ```cpp
 class Friends :public Person {
@@ -136,56 +144,53 @@ public:
     }
 };
 ```
+Compared to the previous example, this definition adds an `introduction` function with the `override` keyword, indicating to the compiler that this member function overrides a parent class function and not a new definition.
 
-这个定义和前面例子相比，就多了一个`introduction`的定义，并且在函数声明的最后还有个`override`的标识。此标识就是告诉编译器，当前定义的成员函数来自于父类，并非想重新定义一个新的，需要编译器保证父类存在一个一模一样（或者更宽泛）的成员函数。
-
-来看看使用`Friends`对象会发生什么情况
+Let's see what happens when using a `Friends` object:
 
 ```cpp
 int main() {
-	Friends f{ "张三","狗蛋"};
-	//陌生人
+	Friends f{ "Zhang San", "Dog Egg" };
+	// Stranger
 	f.introduction();
-	//熟人
+	// Friend
 	f.hi();
-    
-    return 0;
+
+	return 0;
 }
 
-// 输出
-// Create person = 张三
-// Create person = 张三with nickname 狗蛋
-// From Friends -> my name is 张三
-// My nickname is 狗蛋
+// Output
+// Create person = Zhang San
+// Create person = Zhang San with nickname Dog Egg
+// From Friends -> my name is Zhang San
+// My nickname is Dog Egg
 ```
+From the output, it's clear that calling `introduction` on a `Friends` object modifies the behavior of the function. This way of modifying parent class behavior is called overriding.
 
-从输出不难看出，通过`Friends`对象调用`introduction`函数时，函数的行为已经被修改了，这种子类修改父类行为的方式，我们称之为**重写。**
+Differences between overriding (override) and overloading (overload):
+- Overloading and overriding both require the same function name, but determining the function also includes the parameter list and return type. Overloading requires all three to be the same, while overloading requires different parameter lists and does not restrict return types.
+- Overriding can only exist in subclasses with inheritance relationships, used to change parent class behavior.
+- Overloading occurs within the same scope where function names are the same but parameter lists differ.
 
-重写（override)和重载(overload)的区别：
-- 重载和重写都要求函数名相同，但是除了函数名外，确定函数的还有参数列表和返回值。重载要求三者完全一样，重载要求参数列表不一样，对返回值没有要求。
-- 重写只能存在于有继承关系的子类中，用于改变父类的行为。
-- 重载只要是在同一个作用域中，函数名相同，参数列表不同就都属于。
-
-## 多态
-多态的基础也是继承，但是多态的继承关注点集中在了** **行为继承上。首先对于父类来说，它的主要功能就是规定可以执行什么动作，而不提供完成这项功能的数据。如拿几何图形来说，它们都能计算周长和面积。但是长方形和圆的周长面积计算方式却不一样，所以不能用父类来存储计算需要用到的基本字段，而是需要子类来自己定义。但是父类却能规定子类需要可以计算周长和面积才能继承自它。在使用这些类的时候，通常只使用类的动作来完成任务，而不再依赖它保存的数据。
+## Polymorphism
+Polymorphism builds on inheritance but focuses on behavior inheritance. For the parent class, its primary function is to define what actions can be performed without providing the data needed to complete these actions. For example, geometric shapes can all calculate perimeter and area, but rectangles and circles have different methods for calculating perimeter and area. Therefore, the parent class cannot store the basic fields needed for calculations but can specify that inheriting classes must implement methods to calculate perimeter and area. When using these classes, we typically rely on their actions rather than the data they store.
 
 ```cpp
-// 几何图形，规定继承自它的子类需要完成的动作
+// Geometric shape, defining actions that inheriting classes must implement
 class Shape {
 public:
-    // 计算面积的动作
+    // Action to calculate area
 	virtual float area() { return 0; }
 
-    // 计算周长的动作
+    // Action to calculate perimeter
 	virtual float perimeter() { return 0; }
 };
 
-class Rect :public Shape {
+class Rect : public Shape {
 	float x, y;
 public:
 
-	Rect(float x, float y) :x{ x }, y{ y } {
-	}
+	Rect(float x, float y) : x{ x }, y{ y } {}
 
 	float area() override {
 		return x * y;
@@ -194,7 +199,6 @@ public:
 	float perimeter() override {
 		return 2 * (x + y);
 	}
-
 };
 
 void calc(Shape& shape) {
@@ -203,60 +207,58 @@ void calc(Shape& shape) {
 }
 
 int main() {
-	Rect r{ 2,3 };
+	Rect r{ 2, 3 };
 	calc(r);
-  
+
 	return 0;
 }
 
-// 输出
+// Output
 // Area of this shape is 6
 // Perimeter of this shape is 10
 ```
+In this example, `calc` defines a calculation process without using specific classes, only using the parent class `Shape`. Polymorphism ensures that when this algorithm runs, it calls the specific (`Rect`) virtual functions (`area`, `perimeter`). This is the meaning of polymorphism: multiple subclasses inheriting from the same parent class, when calling virtual functions via pointers or references, invoke the subclass function bodies, not the parent class function bodies. Thus, the algorithm process remains the same, but the results differ. Using this characteristic, we can enhance software functionality without modifying the core algorithm.
 
-上例中，`calc`是定义的一种计算过程，但是我们没有使用具体的类，只是用了父类`Shape`。多态的存在可以保证在运行这个算法时运行到具体（`Rect`）的虚函数（`area`,`perimeter`）。这就是**多态的含义，继承自同一个父类的多个子类，在以指针或者引用对象调用虚函数的时候，调用的是子类的函数体，不是父类的函数体**，也就是算法过程是一样，但是算法结果不一样。利用多态这种特性，可以在不修改核心算法的情况下很方便地增强软件的功能。
+## Abstract Classes
+In the previous example, the main goal of `Shape` is to **define interfaces and ensure that subclasses implement those interfaces while preventing users from directly creating Shape objects**. However, the example did not achieve this goal. Subclasses could omit interface implementations, and the program would still work, and Shape objects could be created directly. To achieve this goal, we need a new feature: abstract classes.
 
-## 抽象类
-其实上例中，`Shape`的主要目标是**定义接口，并且保证子类都必须实现那些接口，同时还要阻止用户直接使用**`**Shape**`**创建对象**，显然上面的例子没有达到这个目标，子类没有重写接口，程序也能正常工作，也可以直接创建`Shape`对象。所以我们需要一种新的特性来帮助我们实现这个目标，这个特性就是抽象类。
-
-**抽象类的主要功能就是规定接口，并且阻止用户直接创建该类的对象。**其实现手段还是利用`virtual`关键字，只不过这次不光有`virtual`，还有`= 0;`。我们用这个思想来实现上一节的例子
+**Abstract classes primarily define interfaces and prevent users from directly creating objects of this class.** The implementation uses the `virtual` keyword along with = `= 0;`; Let's apply this idea to the previous example.
 
 ```cpp
-// 几何图形，规定继承自它的子类需要完成的动作
+// Geometric shape, defining actions that inheriting classes must implement
 class Shape {
 public:
-    // 计算面积的动作
+    // Action to calculate area
 	virtual float area() = 0;
 
-    // 计算周长的动作
+    // Action to calculate perimeter
 	virtual float perimeter() = 0;
 };
 
-// Rect,main函数，输出都不变
+// Rect, main function, and output remain unchanged
 ```
+In this improved version, the main changes are removing the virtual function bodies and replacing them with = 0;. = 0; is a fixed syntax telling the compiler that this virtual function is **a pure virtual function with no function body, and any subclass inheriting from this class must implement this virtual function.** Any class containing pure virtual functions automatically becomes an abstract class, preventing users from directly creating objects of this class.
 
-在这次改良版的代码中，我们的主要改变就是移除了虚函数的函数体，并用`= 0;`替代了。`= 0;`是一种固定写法，告诉编译器，这个虚函数是**纯虚函数，没有函数体，并且只要是继承自这个类的子类，必须实现这个虚函数。**同时存在纯虚函数的类也自动升级了，变成了抽象类，抽象类就可以保证用户不能直接创建该类对象，使用它的唯一方式就是继承它。
+## One More Thing — Virtual Destructors
+Previously, destructors were discussed as tools for cleaning up data. However, in classes with virtual functions, the situation is slightly different. When using virtual functions, we often use abstract classes to implement polymorphic behavior, but abstract classes cannot create objects. Therefore, the actual object must come from a subclass. When we finish using this object, we may need to clean up the space it occupies using the `delete` operator. The problem arises because the object's declared type is the parent class, but the actual type is the subclass. Thus, when calling `delete`, the form is to clean up the parent class, but our goal is to clean up the subclass. The solution is to make the parent class destructor virtual, ensuring that `delete` cleans up the correct target object.
 
-## One more thing——虚析构函数
-之前探讨过，析构函数是做数据清理的。但是在有虚函数的类中情况稍有不同。在使用虚函数时，我们通常使用抽象类来实现多态行为，但抽象类不能创建对象，那么这个实际对象肯定是来自某个子类。当我们使用完这个对象后，可能需要将它占用的空间通过`delete`操作符清理掉。那么问题就出现了：对象的调用类型是父类，实际类型是子类，所以调用`delete`清理的时候，调用形式就是清理父类，而实际我们的目的是清理子类。所以我们需要一种方案，从**父类指针调用到子类函数，这恰恰就是虚函数的目标**呀，所以解决方案也就呼之欲出，将父类的析构函数也定义为虚函数，也就是虚析构函数，它和普通的析构函数一样，能够保证`delete`清理对象时能清理到正确的目标对象。
+## When to Use Virtual Functions?
+In the previous article, we mainly discussed concrete classes, which are convenient for data encapsulation and some functional extensions but are not suitable for expansion. This article focuses on expansion capabilities. Therefore, using them depends on the business requirements.
 
-## 什么时候使用虚函数？
-在前一篇中，我们主要聊的是具体类，它能较方便地完成数据封装和有些功能扩展，但是不适合用来扩展。这一篇主要聊的是扩展能力。所以使用它们需要区分业务。
+If we only need a class to provide some functionalities, we can directly use concrete classes, which are simple, quick, reliable, and stable. If we need to abstract data or behavior, we should use virtual functions. Although virtual functions are convenient, they come with costs.
 
-假如我们只需要一个类来提供一些能力，则可以直接使用具体类的思路封装，简单快捷，可靠稳定。而假如需要对数据或者行为进行抽象，则就需要使用到虚函数，使用虚函数虽然方便，但是并非没有代价。
+Firstly, the power of virtual functions is unleashed through pointers or references, which introduce time and space overheads.
 
-其一，虚函数的功力需要通过指针或者引用才能发挥出来，而用指针和引用调用成员函数时，有时间和空间的代价。
+1. Pointers and references need to dereference to find the actual object.
+2. After finding the actual object, virtual functions need to look up the actual virtual function address through the virtual pointer.
+3. Finally, the function is called based on the looked-up address.
 
-1. 指针和引用需要首先解引用才能找到真正的对象
-2. 找到真正对象后，虚函数还需要通过虚指针查找到真正的虚函数调用地址
-3. 根据查找函数地址调用函数。
+These steps add overhead compared to regular member function calls, including additional virtual function tables and virtual pointers. Therefore, virtual functions are slightly slower than regular functions.
 
-这里相比普通的成员函数调用多了前面的两个步骤，同时还多了虚函数表和虚指针的空间开销。所以虚函数是比普通函数慢一点的。
+Secondly, virtual functions can be error-prone. Some behaviors are determined by subclasses, which act like black boxes. If these behaviors are not well-tested, they can introduce unpredictable bugs that are difficult to locate.
 
-其二，虚函数容易出错。虚函数的某些行为是子类确定的，这些子类就像黑盒一样，假如这些行为没有经过良好的测试，就会引发不可预知的BUG，且不太容易定位到问题。
+## Summary
+Inheritance and polymorphism are powerful features, but compared to concrete classes, they have a broader impact. In scenarios requiring extension capabilities, they can significantly reduce code volume and simplify understanding. However, they also come with time and space costs, so their use should be carefully considered based on business needs. Always remember to define virtual destructors to ensure objects are correctly cleaned up.
 
-## 总结
-继承和多态是很好的能力，但是相比于具体类，其影响的范围更宽更广了。在需要扩展能力的业务中，它们能发挥很好的作用，减少代码量，降低理解难度，但是使用它们也同样有空间和时间的代价，所以使用它需要视业务而定。同时不要忘了定义虚析构函数，保证对象能被正确清理。
-
-继承和多态都是抽象的语言解决方案，它并不是灵丹妙药，而是依赖开发者对问题的拆解，和对问题的抽象化转化，语言只能提供良好抽象的正确性保证。所以当代码出现问题时，我们可以先从实际问题入手，从抽象入手，也许问题就出现在抽象的过程中。
+Inheritance and polymorphism are abstract language solutions. They are not panaceas but depend on developers' ability to decompose problems and abstract them. Language provides guarantees for good abstractions. Therefore, when encountering issues, start by examining the actual problem and the abstraction process, as the problem may lie in the abstraction itself.
 

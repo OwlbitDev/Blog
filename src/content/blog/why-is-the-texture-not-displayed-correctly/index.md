@@ -1,18 +1,17 @@
 ---
-title: "CMake个人理解和使用"
-description: "CMake个人理解和使用"
+title: "Why is the texture not displayed correctly"
+description: "Why is the texture not displayed correctly"
 
-date: 2021-08-09T19:21:49+08:00
+date: 2023-12-19T22:00:00+08:00
 
 author: hongui
 
 categories:
- - C++
+ - OPenGLES
 tags:
  - Android
- - JNI
- - C++
- - CMake
+ - OPenGLES
+ - Texture
 
 draft: true
 ---

@@ -17,10 +17,10 @@ draft: false
 ---
 经过一周多的努力，终于把Hugo迁移到了Astro，并且可以正常访问了。这中间踩了很多坑，在此记录一下，希望对大家有所帮助。
 ## 网站预览
-![home](home.png)
-![posts](posts.png)
-![tabs](tabs.png)
-![content](content.png)
+![home](./home.png)
+![posts](./posts.png)
+![tabs](./tabs.png)
+![content](./content.png)
 
 ## 缘起
 之前的博客一直用Hugo生成，前前后后找了很久的主题，Hugo和主题文档反复看了好几遍终于将博客折腾上线了。上线后由于很久没更新博客，前不久更新了一篇，发现Hugo生成又失败了。于是又去Hugo官方查，发现Hugo更新了很多版本，有些特性去掉了或者优化了。无奈只能重新按照说明修改配置。配置修改后，发现还是生成失败，于是又去主题文档上查询了一波，发现主题并没有适配最新的0.138。无奈只能修改主题，同时更新了一下主题仓库。这一折腾不要紧，折腾后发现时间没有了，很多地方的样式也变了。当前要紧的是先把时间加上，折腾了一会，发现都不是很满意。于是起了重新找主题的想法。找了一圈下来，不是这里不满意就是那里不满意。于是心一横，想着直接换生成工具。这就找到了Astro。
@@ -41,7 +41,7 @@ draft: false
 pnpm create astro@latest -- --template blog
 ```
 命令开始执行后，工具会让你做一些交互，用于配置项目。其中我觉得需要注意的是Git配置这个，因为我们是迁移，希望还保存以前的提交记录，所以选择不新建Git仓库。稍后我们将使用原来的博客仓库来替代。我的配置选择如下
-![create astro project](create-astro-project.png)
+![create astro project](./create-astro-project.png)
 等待工具执行结束，根据它的提示，直接去到项目根地址，执行`pnpm dev`命令，点击链接地址，就可以在浏览器上看到博客效果了。后续我们更改内容时也是一直保持`pnpm dev`运行，可以及时看到哪些内容有问题。同时，在配置项目的时候，我们也本着效果第一点的原则，先修改内容，再修改样式。如果你坚持到这里，那么，我们就成功走完了第一步，让我们继续。
 ## 复制原始博客内容
 首先，让我们来看一看目前的项目结构。
@@ -100,7 +100,7 @@ static      =>  public
 content     =>  src/content
 ```
 做完这几步，我们的旧博客部分就全部迁移过来了，只是没有任何原来的样式了。这时，假如你开着开发模式，并且看到控制台，你就会发现它报错了，提示找不到`posts`目录。
-![can't find posts](cant-find-posts.png)
+![can't find posts](./cant-find-posts.png)
 因为此时我的`content`目录如下
 ```bash
 content
@@ -141,7 +141,7 @@ export const collections = { posts,about };
 ```
 `defineCollection`函数接收一个对象，对象中有两个属性，`loader`和`schema`。`loader`是一个函数，用于告诉它去哪里，找什么文件，`schema`是一个Zod对象，用于校验Markdown文件的frontmatter。原来Hugo的Markdown文件中刚好就有这些信息，我们只需要确定这些数据的格式就可以了。
 如果一切顺利，那么现在Markdown文件已经导入到项目里了。但是如果某一个Markdown文件的frontmatter格式不正确，就会报错，如下。
-![invalid frontmatter](invalid-format.png)
+![invalid frontmatter](./invalid-format.png)
 就对着路径一个一个改就行，如果实在太多，就在上面的`src/content.config.ts`中直接去掉验证就好。
 ## 访问Markdown文件
 上一步虽然我们已经导入了Markdown文件，但是现在我们访问不了，因为还没有路由，也就是Astro不知道输入某个地址后它该去哪里找显示的页面，显示的页面也不知道该使用哪一个Markdown文件。所以接下来为了能看到我们的文章，我们需要做两步：路由配置，页面配置。
@@ -316,7 +316,7 @@ pnpm astro add tailwind
 首先是路由，用户点击[文章]菜单，导航的地址是`lng/posts`，但是这个页面的数据是需要进行分页的，所以它应该要访问`lng/posts/1/`，这里用之前介绍的`Astro.reweite('/lng/posts/1')`就能解决。
 其次是分页功能，官方是有分页功能的说明的，但是例子不够丰富。我的博客不仅要显示分页，还要在考虑国际化的时候分页。
 在阐述解决思路前，先来看一下项目的文件结构。
-```base
+```
 ├── src
 │   ├── pages
 │   │   ├── blog

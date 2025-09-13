@@ -1,6 +1,6 @@
 ---
-title: "现代C++学习指南-类型系统"
-description: "现代C++学习指南-类型系统"
+title: "Modern C++ Study Guide - Type Systems"
+description: "Modern C++ Study Guide - Type System"
 cover: "cover.webp"
 
 date: 2022-06-26T11:11:59+08:00
@@ -10,215 +10,216 @@ author: hongui
 categories:
  - C++
 tags:
- - 学习指南
+ - Study guides
  - C++
 
 draft: false
 ---
 
-> 在前一篇，我们提供了一个方向性的指南，但是学什么，怎么学却没有详细展开。本篇将在前文的基础上，着重介绍下怎样学习C++的类型系统。
+> In the previous post, we provided a directional guide, but what and how to learn was not developed in detail. This article will build on the previous article and focus on how to learn C++'s type system.
 
-## 写在前面
-在进入类型系统之前，我们应该先达成一项共识——尽可能使用C++的现代语法。众所周知，出于兼容性的考虑，C++中很多语法都是合法的。但是随着新版本的推出，有些语法可能是不推荐或者是需要避免使用的。所以本篇也尽可能采用推荐的语法形式（基于C++11或以上版本），这也是现代C++标题的含义。
+## Before the start
+Before we get into the type system, there is one thing we should agree on - use the modern syntax of C++ whenever possible. It is well known that many syntaxes in C++ are legal for compatibility reasons. But as new versions are released, some syntax may not be recommended or needs to be avoided. So this post also uses the recommended form of syntax (based on C++11 or above) whenever possible, which is what the title Modern C++ means.
 
-采用现代语法有两点好处。其一，现代语法可以编译出更快更健壮的代码。编译器也是随着语言的发展而发展的，现代语法可以在一定程度上帮助编译器做更好的优化。其二，现代语法通常更简洁，更直观，也更统一，有助于增强可读性和可维护性。
-明确了这点后，让我们一起踏入现代C++的大门吧。
-## 类型系统
-**程序是一种计算工具，根据输入，和预定义的计算方法，产生计算结果**。当程序运行起来后，这三者都需要在内存中表示成合适的值才能让程序正常工作，负责解释的这套工具就是类型系统。数字，字符串，键盘鼠标事件等都是数据，而且在内存中实际存在的形式也是一样的，但是按我们人类的眼光来看的话，对它们的处理是不一样的。数字能进行加减乘除等算术运算，但是对字符串进行算术运算就没有意义，而键盘鼠标的值通常只是读取，不进行计算的。正是由于这些差异，编程语言的第一个任务就是需要定义一套类型系统，告诉计算机怎样处理内存中的数据。
-为了让编程语言尽可能简单，编程语言一般把类型系统分为两步实现，一部分是编译器，另一部分是类型。编译器那部分负责将开发者的代码解释成合适的形式，以便可以高效，准确在内存中表示。类型部分则定义一些编译器能处理的类型，以便开发者可以找到合适的数据来完成输入输出的表示和计算方法的描述。这两者相辅相成，相互成就。
-类型作为类型系统的重要表现形式，在编程语言中的重要性也就不言而喻了。如果把写程序看成是搭积木的话，那么程序的积木就是类型系统。类型系统是开发者能操作的最小单位，它限制了开发者的操作规则，但是提供了无限的可能。C++有着比积木更灵活的类型系统。
-## 类型
-***类型是编程语言的最小单位，任何一句代码都是一种内存使用形式。***
-而谈到C++的类型也就不得不谈到它的三种类型表现形式——普通类型，指针，引用。它们是三种不同的内存使用和解释形式，也是C++的最基础的形式。和大部分编程语言不同，C++对内置类型没有做特权处理，只要开发者愿意，所有的类型都可以有一致的语法形式（通过运算符重载），所以下面关于类型的举例适合所有的类型。
-普通类型就是没有修饰的类型，如`int`,`long`,`double`等。它们是按值传递的，也就是赋值和函数传参是拷贝一份值，对拷贝后的值进行操作，不会再影响到老值。
+There are two benefits to using modern syntax. One, modern syntax can compile faster and more robust code. Compilers evolve as languages evolve, and modern syntaxes can help compilers do better optimization to some extent. Second, modern syntaxes are often more concise, intuitive, and uniform, which helps increase readability and maintainability.
+With that clear, let's get our foot in the door of modern C++.
+## Type system
+**A program is a computational tool that produces computational results based on inputs, and predefined computational methods**. When the program is run, all three need to be represented in memory as appropriate values for the program to work properly, and the set of tools responsible for interpreting this is the type system. Numbers, strings, keyboard and mouse events, etc. are all data and actually exist in memory in the same form, but are treated differently when viewed through our human eyes. Numbers can be added, subtracted, multiplied, divided, and other arithmetic operations, but arithmetic operations on strings are meaningless, and keyboard and mouse values are usually just read, not calculated. It is because of these differences that the first task of a programming language is the need to define a type system that tells the computer what to do with the data in memory.
+In order to make programming languages as simple as possible, programming languages generally implement the type system in two steps, one for the compiler and the other for the types. The compiler part is responsible for interpreting the developer's code into a suitable form so that it can be efficiently and accurately represented in memory. The type part defines the types that the compiler can handle, so that the developer can find the right data to accomplish the representation of inputs and outputs and the description of computational methods. The two complement and fulfill each other.
+The importance of types as an important representation of the type system in a programming language cannot be overstated. If you think of writing a program as building blocks, then the blocks of the program are the type system. The type system is the smallest unit that the developer can manipulate, it limits the rules of operation, but provides unlimited possibilities. c++ has a type system that is more flexible than the building blocks.
+## Type
+***Types are the smallest unit of a programming language, and any sentence of code is a form of memory usage.***
+Talking about types in C++ also brings us to its three types of representation - normal types, pointers, and references. They are three different forms of memory usage and interpretation, and are the most basic forms of C++. Unlike most programming languages, C++ does not privilege built-in types, and all types can have a consistent syntax (via operator overloading) if the developer wants them to, so the following examples of types are suitable for all types.
+Common types are types without modifiers, such as `int`, `long`, `double`, etc. They are passed by value, i.e., assignments and function passes make a copy of the value. They are passed by value, which means that assignments and function passes make a copy of the value, and operations on the copied value do not affect the old value any further.
 
 ```cpp
-int a=1; //老值,存在地址1
-int b=a; //新值，存在地址2
-b=2; //改变新值，改变地址2
-//此时a还是1，b变成了2
+int a=1; //old value, exists at address 1
+int b=a; // new value, exists at address 2
+b=2; //change new value, change address 2
+// At this point a is still 1 and b becomes 2
 ```
 ![Pass by value](pass-by-value.jpg)
 
-那假如我们需要修改老值呢，有两种途径，一种是指针，另一种则是引用。
-指针是C/C++里面的魔法，一切皆可指针。指针包含两个方面，一方面它是指一块内存，另一方面它可以指允许对这块内存进行的操作。指针的值是一块内存地址，操作指针，操作的是它指向的那块地址。
+So what if we need to modify the old value, there are two ways to do this, one is a pointer and the other is a reference.
+Pointers are the magic inside C/C++, everything is a pointer. A pointer has two aspects, on the one hand it refers to a block of memory and on the other hand it can refer to the operations that are allowed to be performed on that block of memory. The value of a pointer is a block of memory address, and by manipulating a pointer, you manipulate the block of address it points to.
 
 ```cpp
-int a=1; //老值,存在地址1
-int* b=&a; //&代表取地址，从右往左读，取a的地址——地址1，存在地址2
-*b=2; //*是解引用，意思是把存在地址2(b)的值取出来，并把那个地址（地址1）的值改成2
-//此时a，*b变成了2
+int a=1; //old value, exists at address 1
+int* b=&a; //& stands for fetch address, read from right to left, fetch address of a - address 1, exist address 2
+*b=2; //* is dereferencing, meaning take out the value that exists at address 2(b) and change the value at that address (address 1) to 2
+// At this point a, *b becomes 2
 ```
 ![Pass by pointer](pass-by-pointer.jpg)
-引用则是指针的改进版，引用能避免无效引用，不过引用不能重设，比指针缺少一定的灵活性。
+References are an improved version of pointers. References avoid invalid references, but they cannot be reset and lack a certain degree of flexibility over pointers.
 ```cpp
-int a=1; //老值,存在地址1
-int& b=a; //&出现在变量声明的位置，代表该变量是引用变量，引用变量必须在声明时初始化
-b=2; //可以像普通变量一样操作引用变量，同时，对它的操作也会反应到原始对象上
-//此时a，b变成了2
+int a=1; //old value, exists at address 1
+int& b=a; //& appears at the position of the variable declaration, which means that the variable is a reference variable, and reference variables must be initialized at the time of declaration
+b=2; // you can manipulate a reference variable like a normal variable, and at the same time, operations on it will be reflected on the original object
+// At this point a, b becomes 2
 ```
 ![Pass by reference](pass-by-reference.jpg)
-## 变量定义
-类型仅仅是一种语法定义，而要真正使用这种定义，我们需要用类型来定义变量，即变量定义。
-C++变量定义是以下形式：
+## Variable definitions
+A type is just a syntactic definition, and to actually use that definition, we need to define variables in terms of types, i.e. variable definitions.
+C++ variable definitions are of the following form:
 ```cpp
 type name[{initial_value}]
 ```
-这里的关键在于`type`。`type`是类型和限定符的组合。看下面的例子：
+The key here is `type`. `type` is a combination of type and qualifier. Look at the following example:
 ```cpp
-int a; //普通整型
-int* b; //类型是int和*的组合，组成了整型指针
-const int* c; //从右往左读，*是指针，const int是常量整型，组成了指向常量整型的指针类型
-int *const d; //也是从右往左读，const是常量，后面是指针，说明这个指针是常量指针，指向最左边的int，组成常量指针指向整型
-int& e=a; //类型是int和&的组合，组成了整型引用
-constexpr int f=a+e; //constexpr代表这个变量需要在编译期求值，并且不再可变。
+int a; // Ordinary integer
+int* b; //The type is a combination of int and *, forming an integer pointer
+const int* c; //reading from right to left, * is a pointer and const int is a constant integer, making up the type of pointer to a constant integer
+int *const d; // also read from right to left, const is constant, followed by a pointer, indicating that this pointer is a constant pointer to the leftmost int, which consists of constant pointers to integers
+int& e=a; //The type is a combination of int and &, forming an integer reference
+constexpr int f=a+e; //constexpr means that this variable needs to be evaluated at compile time and is no longer mutable.
 ```
-以上，基本就是变量定义的所有形式了，类型确定了变量的基本属性，而限定符限定了变量的使用范围。
-定义变量也是按照这个步骤进行，**首先确定我们需要什么类型的变量，其次再进一步确定是否需要对这个变量添加限定，很多时候是需要的**。可以按以下步骤来确定添加什么样的限定符：
+Above, basically all the forms of variable definition, the type determines the basic attributes of the variable, and the qualifier limits the scope of the variable's use.
+Defining a variable follows this same procedure, **first determining what type of variable we need, and secondly further determining if we need to add a qualifier to that variable, which many times is required**. The following steps can be followed to determine what kind of qualifier to add:
 
-1. 是个大对象，可以考虑把变量声明成引用类型。通常引用类型是比指针类型更优的选择。
-2. 大对象可能需要被重置，可以考虑声明为指针。
-3. 只想要个常量，添加`constexpr`。
-4. 只想读这个变量，添加`const`。
-## 变量初始化
-变量定义往往伴随着初始化，这对于局部变量来说很重要，因为局部变量的初值是不确定的，在没有对变量进行有效初始化前就使用变量，会导致不可控的问题。所以严格来说，前面的变量定义是不完全正确的。
-C++11推出了全新的，统一的初始化方式，即在变量名后面跟着大括号，大括号里包着初始化的值。这种方式可以用在任何变量上，称之为统一初始化，如：
+1. is a large object, consider declaring the variable as a reference type. Usually reference types are a better choice than pointer types.
+2. Large objects may need to be reset, consider declaring them as pointers.
+3. Just want a constant, add `constexpr`.
+4. To read only this variable, add `const`.
+## Variable initialization
+Variable definitions are often accompanied by initialization, which is important for local variables because the initial value of a local variable is uncertain, and using a variable without effectively initializing it can lead to uncontrollable problems. So strictly speaking, the preceding variable definition is not entirely correct.
+C++11 introduced a new, unified way of initializing variables, where the variable name is followed by curly braces that enclose the initialized value. This approach can be used for any variable and is called uniform initialization, as in:
 ```cpp
-int a{9527}; //普通类型
-string b={"abc"}; //另一种写法，等价但是不推荐
-Student c{"张三","20220226",18}; //大括号中是构造函数参数
+int a{9527}; // common type
+string b={"abc"}; //another way to write, equivalent but not recommended
+Student c{"ZhangSan", "20220226",18}; //in curly brackets are constructor parameters
 ```
-当然，除了用类型名来定义变量外，还可以将定义和初始化合二为一，变成下面这种最简洁的形式：
+Of course, in addition to defining a variable by its type name, you can also combine definition and initialization into the cleanest form below:
 ```cpp
-auto a={1}; //推导为整型
+auto a={1}; // deduce to integer
 auto b=string{"abc"}; 
-auto c=Student{"张三","20220226",18}
+auto c=Student{"Zhang San", "20220226",18}
 ```
-这里`auto`是让编译器自己确定类型的意思。上面这种写法是完全利用了C++的类型推导，这也是好多现代语言推荐的形式。不过需要注意的是，使用类型推导后，`=`就不能省略了。
-有了初始化的变量后，我们就可以用它们完成各种计算任务了。C++为开发者实现了很多内置的计算支持。如数字的加减乘除运算，数组的索引，指针的操作等。还提供了分支`if`，`switch`，循环`while`，`for`等语句，为我们提供了更灵活的操作。
-## 函数
-变量是编程语言中的最小单位，随着业务的复杂度增加，有些时候中间计算会分散业务的逻辑，增加复杂度。为了更好地组织代码，类型系统增加了 函数来解决这个问题。
-函数也是类型，是一种复合类型。它的类型由参数列表，返回值组合而成，也就是说两个函数，假如参数列表和返回值一样，那么它们从编译器的角度来看是等价的。当然光有它们还不够，不然怎么能出现两个参数列表和返回值一样的函数呢。一个完整的函数还需要有个函数体和函数名。所以函数一般是下面这种形式：
+Here `auto` means to let the compiler determine the type itself. The above is written in a way that makes full use of C++'s type derivation, which is the recommended form for many modern languages. Note, however, that `=` cannot be omitted when type derivation is used.
+Once we have initialized variables, we can use them for a variety of computational tasks.C++ implements a lot of built-in computational support for developers. C++ implements a lot of built-in computational support for the developer, such as addition, subtraction, multiplication and division of numbers, indexing of arrays, pointer manipulation, etc. There are also branching `if`, `switch`, looping `while`, `for`, etc. statements which provide us with more flexibility.
+## Functions
+Variables are the smallest unit in a programming language, and as the complexity of a business increases, there are times when intermediate computations distract from the logic of the business and add complexity. In order to better organize the code, the type system adds functions to solve this problem.
+A function is also a type, a composite type. Its type consists of a combination of argument list and return value, which means that two functions, if they have the same argument list and return value, are equivalent from the compiler's point of view. Of course, they are not enough, otherwise how can there be two parameter list and return value of the same function. A complete function also needs to have a function body and function name. So a function is usually of the following form:
 ```cpp
-//常规函数形式
-[constexpr] 返回值 函数名(参数列表)[noexcept]{
-    函数体
-    }
+// Regular function form
+[constexpr] return value Function name (argument list) [noexcept]{
+    function body (math.)
+    }
 
-//返回值后置形式
-auto 函数名(参数列表)->返回值
+// Return value in postfixed form
+auto function name (argument list) -> return value
 ```
-当一个函数没有函数体的时候，我们通常称之为函数声明。加上函数体就是一个函数定义。
+When a function does not have a body, we usually call it a function declaration. Adding a function body is a function definition.
 ```cpp
-void f(int); //函数声明
-void fun(int value){  //函数定义，因为有大括号代表的函数体
-    
+void f(int); //function declaration
+void fun(int value){ // function definition as represented by curly braces function body
+    
 }
 ```
-以上就是函数的基本框架，接下来我们分别来看一看组成它的各部分。
-先说最简单的函数名，**它其实是函数这种类型的一个变量，这个变量的值表示从内存地址的某个位置开始的一段代码块**。前面也说过之所以能出现两个参数列表和返回值都相同的函数，但是编译器能识别，其主要功劳就在函数名上，所以函数名也和变量名一样，是一种标识符。那假如反过来，函数名相同，但是参数列表或者返回值不同呢，这种情况有个专有名词——函数重载。基于函数是复合类型的认识，它们中只要其中一种不同就算重载。另外，在C++11，还有一种没有名字的函数，称为lambda表达式。lambda表达式是一种类似于直接量的函数值，就像13，'c'这种，是一种不提前定义函数，直接在调用处定义并使用的函数形式。
-参数列表是前面类型定义的升级款。所有前面说的关于变量定义的都适用于它，三种形式的变量定义，多个变量，变量初始化等。不过，它们都有了新名词。参数列表的变量称为形式参数，初始化称为默认参数。同样形参在实际使用的时候需要初始化，不过初始化来自调用方。形式参数没有默认值就需要在调用的时候提供参数，有默认值的可以省略。
+This is the basic framework of a function, so let's take a look at each of the parts that make it up.
+First of all, the simplest function name, **it is actually a function of this type of a variable, the value of this variable represents a block of code starting from a certain location in the memory address**. As I said earlier, the reason why there can be two parameter lists and return values are the same function, but the compiler can identify, the main credit in the function name, so the function name is also the same as the name of the variable, is a kind of identifier. Then if the reverse, the same function name, but the parameter list or return value is different, this situation has a term - function overloading. Based on the understanding that functions are composite types, it is considered overloading if only one of them is different. In addition, in C++11, there is another kind of function without a name, called a lambda expression. lambda expressions are a kind of function value that is similar to a direct quantity, like 13, 'c', which is a kind of function that is not defined ahead of time, but is defined and used directly at the caller.
+The parameter list is an upgrade from the previous type definitions. All of what was said earlier about variable definitions applies to it, all three forms of variable definitions, multiple variables, variable initialization, etc. However, they all have new terms. Variables with a list of parameters are called formal parameters and initialization is called default parameters. Similarly formal parameters need to be initialized when they are actually used, but the initialization comes from the caller. Formal parameters without defaults need to be supplied at the time of calling and those with defaults can be omitted.
 ```cpp
-int plus(int a,int b=1){ //b是一个默认参数
-    return a+b;
+int plus(int a,int b=1){ //b is a default parameter
+    return a+b;
 }
 
 int main(void){
-    int c=plus(1); //没有提供b的值，所以b初始化为1，结果是2
-    int d=plus(2,2); //a,b都初始化为2，结果是4
-    //int f=plus(1,2,3); //plus只有两个形参，也就是两个变量，没法保存三个值，所以编译错误
-    return 0;
+    int c=plus(1); // no value for b is provided, so b is initialized to 1, resulting in 2
+    int d=plus(2,2); //a,b are initialized to 2, resulting in 4
+    //int f=plus(1,2,3); //plus has only two formal parameters, i.e. two variables, so it can't hold three values, so it compiles incorrectly.
+    return 0;
 }
 ```
-和参数列表一样，返回值也是一个变量，这个变量会通过`return`语句返回给调用者，所以从内存操作来看，它是一个赋值操作。
+Like the argument list, the return value is a variable that is returned to the caller via a `return` statement, so in terms of memory manipulation, it is an assignment operation.
 ```cpp
 std::string msg(){
-    std::string input;
-    std::cin>>input;
-    return input;
+    std::string input;
+    std::cin>>input;
+    return input.
 }
 
 int main(void){
-    auto a=msg();
-    std::string b=msg();//msg返回的input复制到了b中
-    return 0;
+    auto a=msg();
+    std::string b=msg();//the input returned by msg is copied into b
+    return 0;
 }
 ```
-遗憾的是C++只支持单返回值，也就是一个函数调用最多只能返回一个值，假如有多个值就只能以形参形式返回了，这种方式对于函数调用就不是很友好，所以C++提出了新的解决思路。
-## 类
-随着业务的复杂度再次增加，函数形参个数可能会增加，或者可能需要返回多个值，然后在多个不同的函数间传递。这样会导致数据容易错乱，并且增加使用者的学习成本。
-为了解决这些问题，工程师们提出了面向对象——多个数据打包的技术。表现在语言层面上，就是**用类把一组操作和完成这组操作需要的数据打包在一起**。数据作为类的属性，操作作为类的方法，使用者通过方法操作内部数据，数据不再需要使用者自己传递，管理。这对于开发者无疑是大大简化了操作。我们称之为面向对象编程，而在函数间传递数据的方式称为面向过程编程。这两种方式底层逻辑其实是一致的，该传递的参数和函数调用一样都不少，但是面向对象的区别是这些繁琐、容易出错的工作交给编译器来做，开发者只需要按照面向对象的规则做好设计工作就好了，剩下的交给编译器。至此，我们的类型系统又向上提升了一级。类不仅是多个类型的聚合体，还是多个函数的聚合体，是比函数更高级的抽象。
-可以看下面面向过程编程和面向对象编程的代码对比
+Unfortunately, C++ only supports a single return value, that is, a function call can only return a maximum of one value, if there is more than one value can only be returned in the form of a formal parameter, this way for the function call is not very friendly, so C++ proposed a new solution.
+## Classes
+As the complexity of the business increases again, the number of formal parameters of a function may increase, or it may be necessary to return multiple values that are then passed between several different functions. This can lead to easily misplaced data and increased learning costs for the user.
+To solve these problems, engineers came up with object-oriented - multiple data packaging techniques. Expressed at the language level, it is **using classes to package together a set of operations and the data needed to complete this set of operations**. Data as a class attribute, operation as a class method, the user through the method to operate the internal data, data no longer need to pass the user, management. This is undoubtedly for the developer is greatly simplified operation. We call this object-oriented programming, and the way to pass data between functions is called procedure-oriented programming. The underlying logic of these two ways is in fact the same, the transfer of parameters and function calls are not less, but the difference between object-oriented is that these cumbersome, error-prone work to the compiler to do, the developer only needs to do a good job in accordance with the rules of the design of the object-oriented work on it, the rest to the compiler. At this point, we have moved up one level in our type system. Classes are not only aggregates of multiple types, they are also aggregates of multiple functions, a higher level of abstraction than functions.
+You can see the following code comparison between procedural and object-oriented programming
 ```cpp
 struct Computer{
-    bool booted;
-    friend std::ostream& operator<<(std::ostream& os,const Computer & c){
-        os<<"Computing";
-        return os;
-    }
+    bool booted;
+    friend std::ostream& operator<<(std::ostream& os,const Computer & c){
+        os<<"Computing";
+        return os.
+    }
 };
 
 void boot(Computer& c){
-    c.booted=true;
-    std::cout<<"Booting...";
+    c.booted=true;
+    std::cout<<"Booting..." ;
 }
 
 void compute(const Computer& c){
-    if(c.booted){
-       std::cout<<"Compute with "<<c;
-    }
+    if(c.booted){
+       std::cout<<"Compute with"<<c;
+    }
 }
 
 void shutdown(Computer& c){
-    c.booted=false;
-    std::cout<<"Shutdown...";
+    c.booted=false;
+    std::cout<<"Shutdown..." ;
 }
 
 int main(void){
-    auto c=Computer();
-    boot(c);
-    compute(c);
-    shutdown(c);
-    return 0;                                                                                                         
+    auto c=Computer();
+    boot(c).
+    compute(c).
+    shutdown(c).
+    return 0;  
 }
 ```
-面向过程最主要的表现就是，开发者需要在函数间传递数据，并维护数据状态，上面例子中的数据是`c`。
+The most significant manifestation of procedural orientation is that the developer needs to pass data between functions and maintain the data state, which in the above example is `c`.
 ```cpp
 struct Computer{
-    bool booted;
-    
-    friend std::ostream& operator<<(std::ostream& os,const Computer & c){
-        os<<"Computing";
-        return os;
-    }
+    bool booted;
+    
+    friend std::ostream& operator<<(std::ostream& os,const Computer & c){
+        os<<"Computing";
+        return os.
+    }
 
-    void boot(){
-        booted=true;
-        std::cout<<"Booting...";
-    }
+    void boot(){
+        booted=true;
+        std::cout<<"Booting..." ;
+    }
 
-    void compute(){
-        if(booted){
-            std::cout<<"Compute with "<<this;
-        }
-    }
+    void compute(){
+        if(booted){
+            std::cout<<"Compute with"<<this;
+        }
+    }
 
-    void shutdown(){
-        booted=false;
-        std::cout<<"Shutdown...";
-    }
+    void shutdown(){
+        booted=false;
+        std::cout<<"Shutdown..." ;
+    }
 };
 
 int main(void){
-    auto c=Computer();
-    c.boot();
-    c.compute();
-    c.shutdown();
-    return 0;
+    auto c=Computer();
+    c.boot();
+    c.compute();
+    c.shutdown();
+    return 0;
 }
 ```
-可以看出面向对象的代码最主要的变化是，方法的参数变少了，但是可以在方法里面直接访问到类定义的数据。另一个变化发生在调用端。调用端是用数据调用方法，而不是往方法里面传递数据。这也是面向对象的本质——以数据为中心。
-当然，类的封装功能只是类功能的一小部分，后面我们会涉及到更多的类知识。作为初学者，我们了解到这一步就能读懂大部分代码了。
-## 总结
-类型系统是一门语言的基本构成部分，它支撑着整个系统的高级功能，很多高级特性都是在类型系统的基础上演化而来的。所以学习语言的类型系统有个从低到高，又从高到低的过程，从最基础的类型开始，学习如何从低级类型构筑出高级类型，然后站在高级类型的高度上，审视高级类型是怎样由低级类型构筑的。这一上一下，一高一低基本上就能把语言的大部分特性了解清楚了。
-低级类型更偏向于让编译器更好地工作，高级类型偏向于让开发者更好地工作，C++从普通类型，函数，类提供了各个层级的支持，让开发者有更多自由的选择，当然也就增加了开发者的学习难度。但是开发者并不是都需要所有选择的，所以我觉得正确的学习应该是以项目规模为指导的。一些项目，完全用不到面向对象，就可以把精力放在打造好用的函数集上。而有的项目，面向对象是很好的选择，就需要在类上花费时间。回到开头的积木例子，选用什么积木完全看我们想搭什么模型，要是没有合适的积木，我们可以自己创造。这就是C++的迷人之处。
+The most significant change that can be seen in object-oriented code is that methods have fewer parameters, but the data defined by the class can be accessed directly inside the method. Another change occurs on the calling side. Instead of passing data to the method, the caller calls the method with data. This is the essence of object-orientation - it is data-centric.
+Of course, the encapsulation function of the class is only a small part of the class function, we will cover more class knowledge later. As a beginner, we understand this step will be able to read most of the code.
+## Summary
+The type system is the basic component of a language, which supports the high-level functions of the whole system, and many high-level features are evolved on the basis of the type system. Therefore, learning the type system of a language is a process from low to high, and from high to low. Starting from the most basic types, we learn how to construct high-level types from the low-level types, and then stand on the height of high-level types, and examine how the high-level types are constructed from the low-level types. This up and down, high and low basically makes most of the features of the language clear.
+Low-level types are more oriented towards making the compiler work better, and high-level types are more oriented towards making the developer work better. C++ provides various levels of support from common types, functions, and classes, which gives the developer more freedom of choice, and of course makes it more difficult for the developer to learn. But developers don't always need all the choices, so I think the right learning should be guided by the size of the project. Some projects, which don't use object orientation at all, can focus on building function sets that work well. And there are projects where object orientation is a good choice, and time needs to be spent on classes. Going back to the building blocks example at the beginning, the choice of building blocks depends entirely on what we want to model, and if we don't have the right ones, we can create our own. That's the beauty of C++.
+

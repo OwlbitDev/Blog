@@ -1,0 +1,33 @@
+import { json } from '@sveltejs/kit'
+import type { Blog } from '$lib/types'
+
+async function getPosts() {
+	let posts: Blog[] = []
+
+	const paths = import.meta.glob('/src/content/blog/**/*.md', { eager: true })
+
+	for (const path in paths) {
+		const file = paths[path]
+
+		const index = path.lastIndexOf('/')
+		const subdir =path.substring(0, index)
+		const slug = subdir.split('/').at(-1)
+		
+		if (file && typeof file === 'object' && 'metadata' in file && slug) {
+			const metadata = file.metadata as Omit<Blog, 'slug'>
+			const post = { ...metadata, slug } satisfies Blog
+			!post.draft && posts.push(post)
+		}
+	}
+
+	posts = posts.sort(
+		(first, second) => new Date(second.date).getTime() - new Date(first.date).getTime()
+	)
+
+	return posts
+}
+
+export async function GET() {
+	const posts = await getPosts()
+	return json(posts)
+}
