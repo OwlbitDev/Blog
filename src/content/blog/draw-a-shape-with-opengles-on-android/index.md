@@ -22,15 +22,15 @@ draft: false
 ## OpenGLES系统
 OpenGLES系统很容易明确的是输出，它的**总是输出颜色值**，从而我们也明确了这个系统的功能——产生颜色值。但是为了实现这个功能，OpenGLES定义了一套规则，能将所有合法的输入，通过适当的转换，产出颜色值。所以从这方面来看，**OpenGLES是一个按一定规则产生颜色值的系统**。
 
-![OpenGLES workflow](opengles-workflow.jpeg)
+![OpenGLES workflow](./opengles-workflow.jpeg)
 
 这个规则怎么产生呢，虽然我们不知道，但是我们可以根据生活经验猜测：我们的输出是固定的颜色类型，无论最初的输入是什么形式，越靠近输出的状态值就应该会越接近颜色值，不然最终功能肯定无法完成。按照这个推论，如果我们把这个系统划分成多个子系统，前一个子系统输出的值作为后一个子系统的输入，每个子系统都产生某种固定的中间值，那么我们就把复杂的大系统转化为了更简单一些的小系统了。所以一个基本的指导思想就浮出水面，**将系统的转换过程划分为几个阶段，每个阶段又是个独立的子系统，有自己的输入和输出，负责特定的功能，产生特定的值**。
 
-![OpenGLES subsystem](opengles-subsystem.jpeg)
+![OpenGLES subsystem](./opengles-subsystem.jpeg)
 
 OpenGLES将这种子系统划分称为渲染管线，每个子系统称为着色器，着色器间前后依赖，后一个着色器输入依赖前一个着色器的输出。
 
-![LearnOpenGL盗的图](opengles-pipeline.png)
+![LearnOpenGL盗的图](./opengles-pipeline.png)
 
 这张图就是这个系统的子系统划分方式，箭头方向就是数据流转方向，上一个系统产生的输出可以供后面系统直接使用。就是靠这种方式，一组顶点数据才能转换成各种颜色。在图的上半部分是关于如何将一组顶点数据转化为坐标信息的，其中关键部分就是顶点着色器，我们可以通过编程来让它接收合适的数据，然后产生有用的输出。至于图的下半部分，关键则是片段着色器，它利用前面产生的坐标信息和中间计算值，生成颜色值。
 
@@ -43,14 +43,14 @@ OpenGLES将这种子系统划分称为渲染管线，每个子系统称为着色
 
 数据存在显存里一直不用肯定不行，于是我们给它安排了一个程序，让程序去读取显存中一组一组的信息，然后组成程序的输入，这就是顶点着色器，并称输入为顶点属性。根据数据形式的不同，顶点着色器会定义不同的属性，也可能会定义片段着色器可能需要的属性作为输出。
 
-![OpenGLES vertex attribute](vertex-attribute.jpeg)
+![OpenGLES vertex attribute](./vertex-attribute.jpeg)
 
 顶点着色器的魔法在于**坐标变换，如旋转，缩放，平移**等都在这个阶段完成。
 
 ## 片段着色器
 片段着色器的输入可以有两方面，一种是统一变量（uniform），另一种是来自顶点着色器的输出，也就是坐标值。它的主要功能就是输出颜色值。
 
-![OpenGLES fragment](fragment.jpeg)
+![OpenGLES fragment](./fragment.jpeg)
 
 相比顶点着色器，片段着色器是魔法产生的地方，各种滤镜，特效都是由它完成的。关于它我们先知道它是根据坐标算颜色值的就够了，魔法暂不展开。
 
@@ -180,7 +180,7 @@ GLES30.glVertexAttribPointer(0,3,GLES30.GL_FLOAT,false,0,buffer)
 
 终于，最难的部分我们已经闯过去了。目前为止，画图的程序，画图的数据都准备好了，终于可以画三角形了。画图只需要一个指令`GLES30.glDrawArrays(GLES30.GL_TRIANGLES,0,3)`。这个API最关键的参数是第一个，它决定了怎样组织顶点着色器输出的点，是绘制一个一个的点，还是绘制这些点组成的线，还是三点构成的三角形。可以看看不同不同参数下，它们的不同效果
 
-![GL_TRIANGLES](opengles-triangle.png) ![GL_LINE_LOOP](opengles-line-loop.png)![GL_POINTS](opengles-points.png)
+![GL_TRIANGLES](./opengles-triangle.png) ![GL_LINE_LOOP](./opengles-line-loop.png)![GL_POINTS](./opengles-points.png)
 
 可接受的值有这一些， GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY, GL_PATCHES，感兴趣的可慢慢研究。
 

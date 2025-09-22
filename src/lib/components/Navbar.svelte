@@ -20,7 +20,7 @@
   <nav class="container mx-auto px-6 flex justify-between items-center">
     <a href="/" class="flex flex-col items-center text-2xl font-serif font-bold text-primary dark:text-dark-primary">
         <img src="/favicon.svg" alt="logo" class="size-6" />
-        <span>Lanal</span>
+        <span>lovol</span>
     </a>
 
     <!-- Desktop Navigation -->

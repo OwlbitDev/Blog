@@ -19,7 +19,7 @@ draft: false
 Not long ago, in one of my projects, I need to show a horizontal scrolling tab, which supports horizontal mouse drag and click to switch. In the process of realization, I found that this small feature needs to use the front-end of the three carriages at the same time, but the realization of the difficulty is not high, and the final result is not bad, is a rare beginner project, so the idea of writing this article was born, I hope that beginners can help. At the same time, in order to avoid beginners to learn the framework, I intend to use a purely native way to realize it.
 
 Our final result should be similar to the following:
-! [last_version](last_version.png)
+![last_version](./last_version.png)
 ## Requirements analysis
 Requirements analysis is to refine the functions we need to complete, the completion of a certain function requires the participation of which technology. For beginners, requirement analysis is crucial, it can help us clarify our thoughts and find a breakthrough to solve the problem, so it should be given enough attention. Taking the goal of this article as an example, the requirement analysis of the tab page can be like the following:
 
@@ -72,7 +72,7 @@ With the basic structure, the next step is of course to draw the page. It is not
 </ul>
 ```
 So we had the original tabs. But the tabs were vertical and had ugly little black dots that didn't fit the bill.
-![pure_html](pure_html.png)
+![pure_html](./pure_html.png)
 Having identified these problems, the next step is of course to solve them, which is of course the strong point of CSS. The first problem is to make the list horizontal. The first problem is getting the list to go sideways, which changes the relative position of the elements, and corresponds to the layout function of CSS. Speaking of layout, there are a number of CSS layout methods, such as `float`, `position`, and so on. Tabs are arranged horizontally in close proximity, one next to the other, so of course you use `flex`. As for the pesky little black dots, this is something new and I need to look it up. I found that `ul` has an attribute `list-style-type`, just set it to `none` to get rid of the black dots.
 At this point, all the tabs on the page are tightly aligned. To make it more like a tab, you need to center it, limit the width, add a background color, and add some padding. here's the code after changing the style
 ```css

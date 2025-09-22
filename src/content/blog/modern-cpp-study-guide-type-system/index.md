@@ -38,7 +38,7 @@ int b=a; // new value, exists at address 2
 b=2; //change new value, change address 2
 // At this point a is still 1 and b becomes 2
 ```
-![Pass by value](pass-by-value.jpg)
+![Pass by value](./pass-by-value.jpg)
 
 So what if we need to modify the old value, there are two ways to do this, one is a pointer and the other is a reference.
 Pointers are the magic inside C/C++, everything is a pointer. A pointer has two aspects, on the one hand it refers to a block of memory and on the other hand it can refer to the operations that are allowed to be performed on that block of memory. The value of a pointer is a block of memory address, and by manipulating a pointer, you manipulate the block of address it points to.
@@ -49,7 +49,7 @@ int* b=&a; //& stands for fetch address, read from right to left, fetch address 
 *b=2; //* is dereferencing, meaning take out the value that exists at address 2(b) and change the value at that address (address 1) to 2
 // At this point a, *b becomes 2
 ```
-![Pass by pointer](pass-by-pointer.jpg)
+![Pass by pointer](./pass-by-pointer.jpg)
 References are an improved version of pointers. References avoid invalid references, but they cannot be reset and lack a certain degree of flexibility over pointers.
 ```cpp
 int a=1; //old value, exists at address 1
@@ -57,7 +57,7 @@ int& b=a; //& appears at the position of the variable declaration, which means t
 b=2; // you can manipulate a reference variable like a normal variable, and at the same time, operations on it will be reflected on the original object
 // At this point a, b becomes 2
 ```
-![Pass by reference](pass-by-reference.jpg)
+![Pass by reference](./pass-by-reference.jpg)
 ## Variable definitions
 A type is just a syntactic definition, and to actually use that definition, we need to define variables in terms of types, i.e. variable definitions.
 C++ variable definitions are of the following form:

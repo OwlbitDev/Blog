@@ -107,7 +107,7 @@ android {
 
 当你创建完后，Android Studio会在文件标签页下方提示你项目需要同步，点击`Sync Now`按钮，同步完成后，你可以在侧边工具中中找到`Build Variants`工具窗口，这时候，`Active Build Variant`中就会多一个`alpha`的构建选项
 
-![build variant preview](build-variant-preview.png)
+![build variant preview](./build-variant-preview.png)
 
 这就是告诉你，你可以发布`alpha`环境的包了。
 
@@ -144,8 +144,8 @@ app
 
 `strings.xml`定义了三个键相同，值不同的字符串资源，下面就是`alpha`,`release`环境下的运行效果。
 
-![build alpha](build-alpha.png) 
-![build release](build-release.png)
+![build alpha](./build-alpha.png) 
+![build release](./build-release.png)
 
 当然，除了这些普通资源，代码也可以配置，只需要在上面目录结构的基础上，加上`java`目录，然后在对应包下添加文件，就好像直接写在`main`目录下的包中一样，只不过这些类只在目标构建类型和目录匹配时才会生效。
 

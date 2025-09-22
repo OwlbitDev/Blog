@@ -33,7 +33,7 @@
 
       <!-- 次要导航 -->
       <nav class="flex flex-wrap justify-center space-x-6">
-        {#each ['Work', 'Blog', 'About', 'Contact'] as item}
+        {#each ['Work', 'Blog', 'About'] as item}
           <a
             href={`/${item.toLowerCase()}`}
             class="text-sm text-text-light hover:text-primary transition-colors"

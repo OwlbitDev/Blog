@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-cloudflare-workers';
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import relativeImages from "mdsvex-relative-images";
 
@@ -33,7 +33,7 @@ const mdsvexOptions = {
 			return `{@html \`${html}\` }`
 		}
 	},
-	remarkPlugins: [relativeImages,[remarkToc,{tight: true}],genTOC],
+	remarkPlugins: [relativeImages,[remarkToc,{tight: true}]],
 	rehypePlugins: [rehypeSlug]
 }
 

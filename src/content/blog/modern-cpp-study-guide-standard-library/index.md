@@ -34,10 +34,10 @@ Of course, these are not all, the standard library is constantly expanding and i
 A container class is a class that helps manage a set of data, and depending on how it is implemented, it is divided into ordered lists, unordered lists, and maps.
 Ordered in an ordered list means that the data set is stored in a contiguous area of memory, and can be directly located to the original data by the index at the time of insertion. Because the data is stored sequentially, if you need to delete or add data in the middle of the process, the data on the right side of the operation position will need to be moved, and the operation will be more expensive. It can also be seen that their advantages are sequential insertion and tail modification, as well as direct lookup, which is represented by `array` and `vector`.
 `array` is the encapsulation of the original array, and solves the problem of passing arrays as pointers, but the disadvantage is that its size is fixed, and it is suitable for use in cases where the amount of data is known. `vector` is an enhancement of `array` that not only does all the operations of `array`, but also has a variable size, so in most cases, `vector` is the ideal choice.
-![vector](vector.jpg)
+![vector](./vector.jpg)
 The elements of the unordered list are stored separately, with each other using pointers to find neighboring elements, because pointers can be easily modified to point to the finger, so the modification of neighboring elements becomes very fast. By the same token, finding neighboring elements can only be done by pointer jumps, find a value need to start looking from a pointer, a jump a piece of data, until the target is found or no data until. So the advantage of unordered lists is to delete and insert new data quickly, not suitable for lookup, which is represented by `list`, `forward_list`. Obviously, ordered and unordered lists are complementary, and we should **determine which container to choose based on the operation of the data in the actual project.**
 
-![list](list.jpg)
+![list](./list.jpg)
 
 A **map, on the other hand, combines the advantages of both ordered and unordered lists, allowing for fast insertion and deletion as well as fast lookups**. To fulfill various usage scenarios, C++ provides `map`, `multimap`, `unordered_map`, `unordered_multimap`. You can tell the difference between them by their names. To visualize it, I've made a direct table
 
@@ -49,9 +49,9 @@ A **map, on the other hand, combines the advantages of both ordered and unordere
 | unordered_multimap | ✅ | ✅ | ❤️❤️❤️ |
 
 A map stores two values, which are implemented differently for different types. Since `map` is required to be sorted, it is usually implemented as a kind of balanced binary tree, with the keys being the basis for its sorting.
-![map](map.jpg)
+![map](./map.jpg)
 An `unordered_map` does not need to be ordered, so its implementation is usually a hash table, i.e., it determines the index location and then the storage location based on the hash function.
-![unordered_map](unordered_map.jpg)
+![unordered_map](./unordered_map.jpg)
 In summary, the container class provides an interface to manipulate multiple data of the same type, and the developer can realize the addition, deletion, modification and checking of the data inside the container by calling the container class methods. In most cases, `vector` is a reliable choice, it provides a full-featured data manipulation interface, supports dynamic length, indexed queries, and is simple and efficient. If frequent insertion or deletion operations are required, you can also consider `list` or `forward_list`. `map` keeps data organized, `unorderer_map` is a better choice if you need more speed than sorting, and `multi` can be used if the same value occurs more than once. Container classes are also a good resource for learning about data structures. C++'s container classes provide almost all forms of data structures, and the more familiar you are with data structures, the better container class you can choose.
 ## Arithmetic
 The reason why the algorithms are placed after the container classes is that the algorithms are mostly enhancements to the container class operations, and the algorithms are defined in the `algorithm` file header. These algorithms are short and concise, which can greatly increase code readability and properly handle many easily forgotten boundary issues. Functionality can be divided into add, delete, change and check several operations, you can actually have the need to check the documentation, you can refer to [here](https://cplusplus.com/reference/algorithm/)
@@ -90,9 +90,9 @@ This is probably one of the more common problems encountered by novices, of cour
 This example uses Ptr in only one place, the actual project Ptr often need to be used many times, we can not guarantee that we will not forget to use the reference type of the situation, in this case re-apply for memory is not applicable, so this time you need to smart pointers to help.
 Now think about another scenario, where we have to expose our pointers for external use for certain operations, and as the nesting and call chaining of operations increases, many times we forget or are unsure of when to call `delete` to free the memory. This is also a scenario where smart pointers are used. Both of these scenarios require shared pointers, which correspond to `shared_ptr` in smart pointers.
 As the name `shared_ptr` suggests, it helps developers to accomplish the problem of sharing pointers, and perfectly solves the problems of releasing them early, not knowing when to release them, and who is responsible for releasing them. It corresponds to a one-to-many relationship, where an actual memory can be shared by more than one `shared_ptr`.
-![shared_ptr](shared_ptr.jpg)
+![shared_ptr](./shared_ptr.jpg)
 Another scenario is that we want **a pointer to belong to only one object at a time** from the beginning, and an external party wants to use it either through the object method that owns the pointer or by transferring ownership of the pointer to itself, which corresponds to `unique_ptr` in smart pointers.
-![unique_ptr](unique_ptr.jpg)
+![unique_ptr](./unique_ptr.jpg)
 The correspondence of `unique_ptr` is one-to-one; at any given moment, only one manager can have the pointer, and it is the only one responsible for releasing it. If you want to transfer this correspondence, you can only do so with the `std::move` operation, but after this operation, the pointer to the original object is invalidated, and it is no longer responsible for managing it; all the tasks are transferred to the new object. This feature is particularly suitable for resource-sensitive applications.
 ## Thread
 Besides memory, threads are another important topic in development. The difficulty with threads is that not only do you have to manage the thread objects, but you also have to manage the resources managed by the thread objects and ensure data synchronization between threads. Of course the standard library has done a good enough job, we need to understand is the problem of the use of the scene. The thread library consists of a thread object `thread`, a condition object `condition_variable`, and a lock object `mutex`.

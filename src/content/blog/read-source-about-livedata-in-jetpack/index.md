@@ -55,4 +55,4 @@ draft: false
 
 补充说明
 虽然前面讲了那么多，还有一些内容是没有讲到的，比如数据的异步更新，`Observer`的注册过程，等等，但是已经不妨碍我们理解主流程了。为了加深印象，我还整理一个UML图，可以对照着图再次理解，回顾。
-![livedata UML](livedata.webp)
+![livedata UML](./livedata.webp)

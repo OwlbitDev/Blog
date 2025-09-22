@@ -39,13 +39,13 @@ After laying the groundwork, we have clarified the tasks ahead, but before forma
 * Python - Parsing data
 ### Connecting Test Device and PC
 Many people may wonder, isn't it enough to simply plug the phone into the PC with a data cable and configure the adb environment variables? Isn't there anything worth elaborating on? Actually, there is. Directly connecting via a data cable, although simple and quick, has a significant impact on performance testing. Firstly, it does not allow for obtaining power consumption data. Secondly, due to the charging state, the frequency of the CPU and GPU may differ greatly from when using the battery, making the entire set of test data unreliable. Therefore, wireless connection methods need to be used. There are two options for wireless connections. One is the wireless debugging feature available on Android 11 and above. I found this feature unstable and it has system limitations, so I use the second method. The second method involves using the ADB WiFi plugin, which can be downloaded and installed directly from the plugin market. The following is its detail page.
-![adb Wi-Fi](adb-wifi.png "ADB Wi-Fi")
+![adb Wi-Fi](./adb-wifi.png "ADB Wi-Fi")
 This plugin needs to be connected once with a data cable upon first use, and after clicking the Wi-Fi icon on the right side of the screen, the page will display as follows:
-![adb Wi-Fi no device connect](adb-wifi-no-device-connected.png "ADB Wi-Fi no device connected")
+![adb Wi-Fi no device connect](./adb-wifi-no-device-connected.png "ADB Wi-Fi no device connected")
 It will show two devices, one with a signal icon representing a wired connection, and one with a Wi-Fi icon representing a wireless connection. Now click the connect button to the right of the device with the Wi-Fi icon to start the connection. After the connection is complete, the page status will change to Disconnect, as shown below:
-![adb Wi-Fi connnected a device](adb-wifi-connected-a-device.png "adb Wi-Fi connnected a device")
+![adb Wi-Fi connnected a device](./adb-wifi-connected-a-device.png "adb Wi-Fi connnected a device")
 At this point, it means the device connection has been successful. Remove the data cable and run the `adb devices` command again, which will display the connected device. The result is similar to the following image:
-![adb devices command](adb-devices-command.png "adb devices command")
+![adb devices command](./adb-devices-command.png "adb devices command")
 This indicates that adb preparation is complete.
 ### Preparation of Python Scripts
 Since each metric is obtained through an adb command, the result will also be echoed back by adb, and executing a command once yields a metric data. These are fixed and repetitive tasks that can be placed in a script, so let's analyze the structure of the script first. To clarify the script's task, let's first analyze the scenario—at a certain moment during the test, the script needs to execute an adb command, read the output after the command execution, then parse the output, and finally save the parsed result in a csv file.
@@ -159,26 +159,26 @@ class CPURecord(Record):
 `CPURecord` overrides two methods, the corresponding explanations have already been mentioned above.
 
 ## GPU Utilization Rate
-For GPU utilization rate, many articles online suggest using the `adb shell dumpsys gfxinfo xxx` command to obtain it, but this command cannot actually retrieve the GPU utilization rate; it can only get GPU frame information. So we need to use other methods. After much searching and experimentation, I found no suitable commands, but discovered a useful tool called [snapdragon profiler](www.qualcomm.com/developer/software/snapdragon-profiler).
+For GPU utilization rate, many articles online suggest using the `adb shell dumpsys gfxinfo xxx` command to obtain it, but this command cannot actually retrieve the GPU utilization rate; it can only get GPU frame information. So we need to use other methods. After much searching and experimentation, I found no suitable commands, but discovered a useful tool called [snapdragon profiler](https://www.qualcomm.com/developer/software/snapdragon-profiler).
 ### Using Snapdragon Profiler
 Snapdragon Profiler can not only obtain CPU, GPU, and various other information but also offers rich configuration options to meet the data acquisition needs of many metrics. However, note that some configuration items vary depending on the system version of the currently connected device. For example, in my testing, GPU Busy was not available on Android 9, whereas it was fully displayed on Android 14. In this example, we only want to obtain the GPU utilization rate, i.e., GPU Busy. 
 Open Snapdragon Profiler, where many configurations are grayed out; you need to connect a device first.
-![Snapdragon profiler no device connect](snapdragon-profiler-no-device-connect.png "Snapdragon profiler no device connect")
+![Snapdragon profiler no device connect](./snapdragon-profiler-no-device-connect.png "Snapdragon profiler no device connect")
 Click "Start a Session"
 If an Android device is connected at this point, it will display the following interface:
-![Snapdragon profiler device avaliable](snapdragon-profiler-device-avaliable.png "Snapdragon profiler device avaliable")
+![Snapdragon profiler device avaliable](./snapdragon-profiler-device-avaliable.png "Snapdragon profiler device avaliable")
 Click "Connect" to start the connection
-![Snapdragon profiler connect device](snapdragon-profiler-connect-device.png "Snapdragon profiler connect device")
+![Snapdragon profiler connect device](./snapdragon-profiler-connect-device.png "Snapdragon profiler connect device")
 Wait a few seconds, and if everything goes smoothly, the three options below will become available:
-![Snapdragon profiler avaliable options](snapdragon-profiler-avaliable-options.png "Snapdragon profiler avaliable options")
+![Snapdragon profiler avaliable options](./snapdragon-profiler-avaliable-options.png "Snapdragon profiler avaliable options")
 Select the second option "Real-time performance analysis," enter the package name in the filter box to select the target application
-![Snapdragon profiler realtime performance analysis](snapdragon-profiler-realtime-performance-analysis.png "Snapdragon profiler realtime performance analysis")
+![Snapdragon profiler realtime performance analysis](./snapdragon-profiler-realtime-performance-analysis.png "Snapdragon profiler realtime performance analysis")
 Then double-click the corresponding GPU Busy metric in the box below
-![Snapdragon profiler filter](snapdragon-profiler-filter.png "Snapdragon profiler filter")
+![Snapdragon profiler filter](./snapdragon-profiler-filter.png "Snapdragon profiler filter")
 The GPU utilization rate of the current application will be plotted in real-time in the upper right corner of the page.
-![Snapdragon profiler gpu busy](snapdragon-profiler-gpu-busy.png "Snapdragon profiler gpu busy")
+![Snapdragon profiler gpu busy](./snapdragon-profiler-gpu-busy.png "Snapdragon profiler gpu busy")
 If you need to export data, click the following button:
-![Snapdragon profiler export](snapdragon-profiler-export.png "Snapdragon profiler export")
+![Snapdragon profiler export](./snapdragon-profiler-export.png "Snapdragon profiler export")
 Then export it as a csv file, which can be used directly, or you can re-parse it with Python.
 ## Memory Utilization Rate
 For memory utilization rate, the corresponding command is `adb shell dumpsys meminfo com.xxx` to obtain it. Since the application package name is specified directly at the end of the command, the output information pertains only to the designated application, eliminating the need for further filtering. Here is a small tip regarding the `adb shell dumpsys` command: ***if the application package name is specified at the end of the command, the data will be limited to the specified application.***
@@ -332,5 +332,5 @@ Performance testing involves many metrics, and different metrics require differe
 
 ## References
 1. [dumpsys](https://developer.android.com/tools/dumpsys)
-2. [snapdragon profiler](www.qualcomm.com/developer/software/snapdragon-profiler)
+2. [snapdragon profiler](https://www.qualcomm.com/developer/software/snapdragon-profiler)
 3. [script](https://github.com/hongui/RealtimePerformanceTest.git)

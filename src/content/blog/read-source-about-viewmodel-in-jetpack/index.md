@@ -57,5 +57,5 @@ ViewModel用`ViewModelProvider.Factory`来管理创建过程。具体来说就�
 根据前面的梳理，我们知道，ViewModelStore是管理某个ViewModel组的，只要我们保证ViewModelStore存在，我们就可以保证ViewModel存活。再反推一步，要保证ViewModelStore存活，我们就要保证ViewModelStoreOwner在不同的地方都能返回同一个ViewModelStore对象，而ComponentActivity和Fragment是都实现了这个接口的。结合Activity的生命周期通常是大于Fragment这一事实，不难得出结论——***在某个Fragment里面，用Activity对象创建ViewModelProvider对象，就能保证获取到和Activity一样的ViewModelStore对象，也就能保证获取到相同的ViewModel对象。只要Activity没有销毁，该Activity下的所有Fragment都能获取到相同的ViewModel对象，然后通过更改状态能方式完成通信。***
 
 到此，对ViewModel的分析告一段落了，对创建过程的两次抽象是我觉得最精彩的环节，另外对现有条件（Activity和Fragment的生命周期）的利用也是它独到之处，真的是受益匪浅。青山不改，绿水长流，咱们下期见！
-![viewmodel](viewmodel.webp)
+![viewmodel](./viewmodel.webp)
 
