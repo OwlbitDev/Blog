@@ -1,9 +1,9 @@
 import { dev } from '$app/environment'
 
 export const ui = {
-    title: 'Litlab home page',
-    description: 'A home page for Litlab,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
-    website: 'Litlab',
+    title: 'lovol home page',
+    description: 'A home page for lovol,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
+    website: 'lovol',
     welcome: 'Welcome to my website',
     last_updates: 'Latest updates',
     load_more: 'Load more',
@@ -13,6 +13,6 @@ export const ui = {
     blog_description: 'The posts relate to Android,OpenGLES,Python,HTML/CSS etc.',
     blog_toc: 'In this article',
     about_title: 'About me',
-    about_description: 'About me,my(Litlab) personal resume'
+    about_description: 'About me,my(lovol) personal resume'
 }
-export const url = dev ? 'http://localhost:5173' : 'https://litlab.dev'
+export const url = dev ? 'http://localhost:5173' : 'https://lovol.dev'

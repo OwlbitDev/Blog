@@ -1,0 +1,16 @@
+{
+    "nav":{
+        "project": "Project",
+        "blog": "Blog",
+        "note":"Note",
+        "about": "About"
+    },
+    "about":{
+        "thinker":"Thinker",
+        "creator": "Creator",
+        "solver": "Problem solver",
+        "intro":"I am a product designer and developer specializing in digital experiences. I believe exceptional design stems from deep thinking, and technology serves as the bridge to bring ideas to life.",
+        "contact": "Contact me",
+        "project":"View project"
+    }
+}

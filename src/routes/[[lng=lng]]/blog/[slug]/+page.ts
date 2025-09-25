@@ -2,7 +2,8 @@ import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {
 	try {
-		const post = await import(`../../../content/blog/${params.slug}/index.md`)
+		const suffix=params.lng??''
+		const post = await import(`../../../../content/blog/${params.slug}/index${suffix}.md`)
 
 		return {
 			content: post.default,

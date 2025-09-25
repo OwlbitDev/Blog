@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>{note.title} | Litlab</title>
+	<title>{note.title} | lovol</title>
 	<meta name="description" content={note.description} />
 
 	<meta property="og:title" content={note.title} />

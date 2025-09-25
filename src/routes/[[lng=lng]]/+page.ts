@@ -1,6 +1,6 @@
 import type { Blog } from '$lib/types'
 
-export async function load({ fetch }) {
+export async function load({ fetch,params }) {
 	const response = await fetch('/api/blog')
 	const blogs: Blog[] = await response.json()
 	return { blogs:blogs.splice(0, 5) }

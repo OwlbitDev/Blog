@@ -1,7 +1,8 @@
 import { json } from '@sveltejs/kit'
 import type { Note } from '$lib/types'
+import { isMatchContent } from '$lib/content'
 
-async function getNotes() {
+async function getNotes(lng:string) {
     let notes: Note[] = []
 
     const paths = import.meta.glob(['/src/content/note/**/*.md'], { eager: true })
@@ -13,7 +14,7 @@ async function getNotes() {
         const subdir =path.substring(0, index)
         const slug = subdir.split('/').at(-1)
         
-        if (file && typeof file === 'object' && 'metadata' in file && slug) {
+        if (file && typeof file === 'object' && 'metadata' in file && slug && isMatchContent(lng,path.substring(index+1))) {
             const metadata = file.metadata as Omit<Note, 'slug'>
             const post = { ...metadata, slug } satisfies Note
             !post.draft && notes.push(post)
@@ -27,7 +28,8 @@ async function getNotes() {
     return notes
 }
 
-export async function GET() {
-    const notes = await getNotes()
+export async function GET(params) {
+    const lng=params.url.searchParams.get('lng')
+    const notes = await getNotes(lng)
     return json(notes)
 }
