@@ -1,10 +1,11 @@
 import * as config from '$lib/config'
 import type { Blog } from '$lib/types'
+import { contentUrl } from '$lib/api'
 
 export const prerender = true
 
-export async function GET({ fetch }) {
-	const response = await fetch('/api/blog')
+export async function GET({ fetch,params }) {
+	const response = await fetch(contentUrl('blog',params.lng))
 	const posts: Blog[] = await response.json()
 
 	const headers = { 'Content-Type': 'application/xml' }

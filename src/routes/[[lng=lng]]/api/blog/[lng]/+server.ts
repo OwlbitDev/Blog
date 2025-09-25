@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import type { Blog } from '$lib/types'
+import {defaultLocale} from '$lib/i18n'
 import { isMatchContent } from '$lib/content'
 
 async function getPosts(lng: string) {
@@ -28,8 +29,8 @@ async function getPosts(lng: string) {
 	return posts
 }
 
-export async function GET(param) {
-	const lng=param.url.searchParams.get('lng')
+export async function GET({params}) {
+	const lng = params.lng || defaultLocale
 	const posts = await getPosts(lng)
 	return json(posts)
 }

@@ -42,7 +42,7 @@
 
     <div class="text-center mt-12">
       <a
-        href="/work"
+        href="/project"
         class="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors"
       >
         View All Work

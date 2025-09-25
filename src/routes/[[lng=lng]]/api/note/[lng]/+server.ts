@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import type { Note } from '$lib/types'
+import {defaultLocale} from '$lib/i18n'
 import { isMatchContent } from '$lib/content'
 
 async function getNotes(lng:string) {
@@ -28,8 +29,8 @@ async function getNotes(lng:string) {
     return notes
 }
 
-export async function GET(params) {
-    const lng=params.url.searchParams.get('lng')
+export async function GET({params}) {
+    const lng = params.lng || defaultLocale
     const notes = await getNotes(lng)
     return json(notes)
 }

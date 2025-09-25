@@ -104,7 +104,7 @@
               {$_("about.contact")}
             </button>
             <a 
-              href="/work" 
+              href="/project" 
               class="border border-secondary dark:border-dark-secondary text-on-secondary px-8 py-3 rounded-lg font-medium hover:bg-surface-high hover:text-primary  dark:hover:text-dark-primary hover:border-primary dark:hover:border-dark-primary transition-all transform hover:scale-105"
             >
               {$_("about.project")}
@@ -274,7 +274,7 @@
           发送邮件
         </a>
         <a 
-          href="/work" 
+          href="/project" 
           class="border border-text text-text px-8 py-3 rounded-lg font-medium hover:bg-text hover:text-white transition-all transform hover:scale-105"
         >
           浏览作品
