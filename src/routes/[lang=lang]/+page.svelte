@@ -1,10 +1,10 @@
 <script>
   import Hero from '$lib/components/Hero.svelte';
-  import Work from '$lib/components/Work.svelte';
+  import Work from '$lib/components/Project.svelte';
   import LatestBlog from '$lib/components/LatestBlog.svelte';
   const {data}=$props()
 </script>
 
-<Hero />
-<Work />
-<LatestBlog blog={data.blogs}/>
+<Hero lang={data.lang}/>
+<Work lang={data.lang}/>
+<LatestBlog lang={data.lang} blog={data.blogs}/>

@@ -5,6 +5,20 @@
         "note": "笔记",
         "about": "关于"
     },
+    "hero":{
+        "intro":"<p>全新的数字<br />体验</p>",
+        "description":"我是lovol,一个喜欢思考的产品开发者。",
+        "project":"查看项目",
+        "blog":"浏览博客"
+    },
+    "project":{
+        "project": "我的项目",
+        "all":"浏览所有项目"
+    },
+    "last":{
+        "last":"博客的最近更新",
+        "all": "浏览所有文章"
+    },
     "about":{
         "thinker":"思考",
         "creator": "创造",

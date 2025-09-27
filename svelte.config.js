@@ -43,7 +43,23 @@ const config = {
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
 		adapter: adapter()
-	}
+	},
+	prerender: {
+      entries: [
+        '/en',
+        '/zh',
+		'/en/about',
+        '/zh/about',
+		'/en/blog',
+        '/zh/blog',
+		'/en/note',
+        '/zh/note',
+		'/en/project',
+        '/zh/project',
+		'/en/rss.xml',
+        '/zh/rss.xml',
+      ]
+    }
 }
 
 export default config

@@ -4,7 +4,7 @@
 	import { theme } from '$lib/theme.svelte'
 </script>
 
-<button on:click={theme.toggle} aria-label="Toggle theme">
+<button class="cursor-pointer" on:click={theme.toggle} aria-label="Toggle theme">
 	{#if theme.current === 'dark'}
 		<div in:fly={{ y: 10 }}>
 			<Sun />

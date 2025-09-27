@@ -5,6 +5,20 @@
         "note":"Note",
         "about": "About"
     },
+    "hero":{
+        "intro":"<p>Creating Digital<br />Experiences</p>",
+        "description":"I'm lovol, a product designer and full-stack developer.",
+        "project":"View Project",
+        "blog":"View Blog"
+    },
+    "project":{
+        "project":"My Projects",
+        "all":"View All projects"
+    },
+    "last":{
+        "last":"Latest from the Blog",
+        "all":"Browse All Articles"
+    },
     "about":{
         "thinker":"Thinker",
         "creator": "Creator",

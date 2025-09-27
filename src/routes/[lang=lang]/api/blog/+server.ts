@@ -30,7 +30,7 @@ async function getPosts(lng: string) {
 }
 
 export async function GET({params}) {
-	const lng = params.lng || defaultLocale
-	const posts = await getPosts(lng)
+	const lang = params.lang
+	const posts = await getPosts(lang)
 	return json(posts)
 }

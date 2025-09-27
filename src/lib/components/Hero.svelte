@@ -1,5 +1,7 @@
 <script>
-  // 这里可以导入你的图片或动态图形
+  import {_} from 'svelte-i18n'
+  import {formatPath} from '$lib/i18n/path'
+  const {lang}=$props()
 </script>
 
 <section class="min-h-screen flex items-center py-20">
@@ -7,21 +9,21 @@
     <!-- 文案区 -->
     <div class="space-y-8">
       <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight">
-        Creating Digital<br />Experiences
+        {@html $_('hero.intro')}
       </h1>
       <p class="text-xl text-text-light">
-        I'm lovol, a product designer and full-stack developer.
+        {$_('hero.description')}
       </p>
       <div class="flex space-x-4">
         <a
-          href="/project"
+          href={formatPath(lang,"/project")}
           class="bg-primary dark:bg-dark-primary text-on-primary dark:text-dark-on-primary px-8 py-3 rounded-md font-medium hover:bg-primary/90 dark:hover:bg-dark-primary/90  transition-colors"
-          >View Project</a
+          >{$_('hero.project')}</a
         >
         <a
-          href="/blog"
+          href={formatPath(lang,"/blog")}
           class="border border-secondary dark:border-dark-secondary text-secondary dark:text-dark-secondary px-8 py-3 rounded-md font-medium hover:bg-secondary-container dark:hover:bg-dark-secondary-container hover:text-on-secondary-container dark:hover:text-dark-on-secondary-container transition-colors"
-          >Read Blog</a
+          >{$_('hero.blog')}</a
         >
       </div>
     </div>

@@ -13,16 +13,18 @@
 		window.addEventListener('scroll', handleScroll)
 		return () => window.removeEventListener('scroll', handleScroll)
 	})
+
+	const {lang}=$props()
 </script>
 
 <header
 	class="fixed top-0 w-full z-50 transition-all duration-300 {scrolled
-		? 'bg-surface-container/90 dark:bg-dark-surface-container/90  text-on-surface dark:text-dark-on-surface backdrop-blur-md shadow-sm py-2'
+		? 'bg-surface-container dark:bg-dark-surface-container  text-on-surface dark:text-dark-on-surface backdrop-blur-md shadow-sm py-2'
 		: 'bg-transparent py-4'}"
 >
 	<nav class="container mx-auto px-6 flex justify-between items-center">
 		<a
-			href={formatPath('/')}
+			href={formatPath(lang, '/')}
 			class="flex flex-col items-center text-2xl font-serif font-bold text-primary dark:text-dark-primary"
 		>
 			<img src="/favicon.svg" alt="logo" class="size-6" />
@@ -33,7 +35,7 @@
 		<div class="hidden md:flex items-center space-x-8">
 			{#each ['project', 'blog', 'note', 'about'] as item}
 				<a
-					href={formatPath(`/${item}`)}
+					href={formatPath(lang,`/${item}`)}
 					class="relative text-sm font-medium uppercase tracking-wider transition-colors hover:text-primary dark:hover:text-dark-primary"
 				>
 					{$_(`nav.${item}`)}
@@ -43,7 +45,7 @@
 				</a>
 			{/each}
 			<ThemeMode />
-			<I18n />
+			<I18n {lang}/>
 		</div>
 
 		<!-- Mobile menu button (简化版) -->
