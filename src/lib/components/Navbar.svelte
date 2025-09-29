@@ -4,7 +4,7 @@
 	import I18n from './I18n.svelte'
 	import { _ } from 'svelte-i18n'
 	import { formatPath } from '$lib/i18n/path'
-	let scrolled = false
+	let scrolled = $state(false)
 
 	onMount(() => {
 		const handleScroll = () => {

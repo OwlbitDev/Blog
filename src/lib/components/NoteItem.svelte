@@ -1,5 +1,6 @@
 <script>
-	const { note } = $props()
+	  import { formatPath } from '$lib/i18n/path'
+	const { lang,note } = $props()
 
 	const formatDate = (dateString) => {
 		const date = new Date(dateString)
@@ -7,7 +8,7 @@
 	}
 </script>
 
-<a href={`/note/${note.slug}`} class="group block">
+<a href={formatPath(lang,`/note/${note.slug}`)} class="group block">
 	<div class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-8">
 		<!-- 日期 -->
 		<div class="flex-shrink-0">

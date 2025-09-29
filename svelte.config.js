@@ -42,24 +42,8 @@ const config = {
 	extensions: ['.svelte', '.md', '.mdx', '.svx'],
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
-		adapter: adapter()
-	},
-	prerender: {
-      entries: [
-        '/en',
-        '/zh',
-		'/en/about',
-        '/zh/about',
-		'/en/blog',
-        '/zh/blog',
-		'/en/note',
-        '/zh/note',
-		'/en/project',
-        '/zh/project',
-		'/en/rss.xml',
-        '/zh/rss.xml',
-      ]
-    }
+		adapter: adapter({strict: false})
+	}
 }
 
 export default config

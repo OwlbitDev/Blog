@@ -8,7 +8,7 @@
 	<div class="container mx-auto px-6">
 		<div class="max-w-3xl mx-auto space-y-12">
 			{#each data.blogs as blog (blog.slug)}
-				<Blog {blog} />
+				<Blog lang={data.lang} {blog} />
 			{/each}
 		</div>
 	</div>

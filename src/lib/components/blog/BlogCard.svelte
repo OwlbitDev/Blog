@@ -1,5 +1,6 @@
 <script>
-  export let post;
+    import { formatPath } from '$lib/i18n/path'
+    const {lang,post}=$props()
   
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', { 
@@ -10,7 +11,7 @@
   };
 </script>
 
-<a href={`/blog/${post.slug}`} class="group block">
+<a href={formatPath(lang,`/blog/${post.slug}`)} class="group block">
   <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
     {#if post.coverImage}
       <div class="aspect-w-16 aspect-h-9 overflow-hidden">

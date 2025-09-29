@@ -82,10 +82,5 @@
 		border: none;
 		box-shadow: none;
 		overflow: hidden;
-
-		> * {
-			display: flex;
-			gap: var(--size-2);
-		}
 	}
 </style>

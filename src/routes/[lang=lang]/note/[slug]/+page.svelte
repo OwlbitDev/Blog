@@ -1,12 +1,13 @@
 <script>
 	import { onMount, tick } from 'svelte'
+	  import { formatPath } from '$lib/i18n/path'
 	import { fade } from 'svelte/transition'
 	import TableOfContents from '$lib/components/blog/TableOfContents.svelte'
 	import ShareButtons from '$lib/components/blog/ShareButtons.svelte'
 	import BlogCard from '$lib/components/blog/BlogCard.svelte'
 
 	const { data } = $props()
-	const { note, content: Content } = data
+	const { lang,note, content: Content } = data
 </script>
 
 <svelte:head>
@@ -33,7 +34,7 @@
 		<div class="container mx-auto px-6">
 			<nav class="mb-8">
 				<a
-					href="/note"
+					href={formatPath(lang,"/note")}
 					class="inline-flex items-center text-primary dark:text-dark-primary hover:opacity-80 transition-opacity group"
 				>
 					<svg
@@ -125,7 +126,7 @@
 								<div class="flex flex-wrap gap-2">
 									{#each note.tags as tag}
 										<a
-											href={`/blog?tag=${tag}`}
+											href={formatPath(lang,`/blog`)}
 											class="bg-gray-100 text-text-light text-sm px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-colors"
 										>
 											#{tag}

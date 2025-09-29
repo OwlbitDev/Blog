@@ -8,7 +8,7 @@
 	<div class="container mx-auto px-6">
 		<div class="max-w-3xl mx-auto space-y-12">
 			{#each data.notes as note (note.slug)}
-				<Note {note} />
+				<Note lang={data.lang} {note} />
 			{/each}
 		</div>
 	</div>

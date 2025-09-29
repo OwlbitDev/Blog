@@ -1,8 +1,12 @@
 <script>
   import { onMount } from 'svelte';
   import {_} from 'svelte-i18n'
+  import { formatPath } from '$lib/i18n/path'
   import { fade, scale, fly } from 'svelte/transition';
   
+  const {data}=$props()
+  const lang=data.lang
+
   // 技能数据
   let skills = [
     { name: '产品设计', level: 75, color: 'from-blue-400 to-cyan-400' },
@@ -47,8 +51,8 @@
     { name: '科技人文', emoji: '⚙️', description: '关注技术与社会交汇点' }
   ];
   
-  let animatedSkills = false;
-  let activeTimelineItem = 0;
+  let animatedSkills = $state(false);
+  let activeTimelineItem = $state(0);
   
   // 技能条动画
   onMount(() => {
@@ -98,13 +102,13 @@
           </p>
           <div class="flex flex-wrap gap-4">
             <button 
-              on:click={scrollToContact}
+              onclick={scrollToContact}
               class="bg-primary dark:bg-dark-primary text-on-primay dark:text-dark-on-primary px-8 py-3 rounded-lg font-medium hover:bg-primary/90 dark:hover:bg-dark-primary/90 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               {$_("about.contact")}
             </button>
             <a 
-              href="/project" 
+              href={formatPath(lang,"/project")} 
               class="border border-secondary dark:border-dark-secondary text-on-secondary px-8 py-3 rounded-lg font-medium hover:bg-surface-high hover:text-primary  dark:hover:text-dark-primary hover:border-primary dark:hover:border-dark-primary transition-all transform hover:scale-105"
             >
               {$_("about.project")}
@@ -197,9 +201,9 @@
           <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-primary/20 transform -translate-x-1/2"></div>
           
           {#each timeline as item, i}
-            <div 
+            <button 
               class="relative flex items-start mb-12 group cursor-pointer"
-              on:click={() => activeTimelineItem = i}
+              onclick={() => activeTimelineItem = i}
               in:fly={{ x: i % 2 === 0 ? -50 : 50, duration: 600, delay: i * 150 }}
             >
               <!-- 时间点 -->
@@ -229,7 +233,7 @@
                   <p class="text-text-light">{item.description}</p>
                 </div>
               </div>
-            </div>
+            </button>
           {/each}
         </div>
       </div>
@@ -274,7 +278,7 @@
           发送邮件
         </a>
         <a 
-          href="/project" 
+          href={formatPath(lang,"/project")} 
           class="border border-text text-text px-8 py-3 rounded-lg font-medium hover:bg-text hover:text-white transition-all transform hover:scale-105"
         >
           浏览作品
@@ -293,10 +297,5 @@
   
   .float-animation {
     animation: float 6s ease-in-out infinite;
-  }
-  
-  /* 确保滚动平滑 */
-  html {
-    scroll-behavior: smooth;
   }
 </style>
