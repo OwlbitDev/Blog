@@ -38,6 +38,7 @@
 		"@fontsource/jetbrains-mono": "5.2.6",
 		"@splinetool/runtime": "1.10.57",
 		"@tailwindcss/vite": "4.1.13",
+		"github-slugger": "^2.0.0",
 		"lucide-svelte": "0.544.0",
 		"rehype-slug": "6.0.0",
 		"remark-toc": "9.0.0",

@@ -1,7 +1,6 @@
 <script>
 	import Blog from '$lib/components/BlogItem.svelte'
 	const { data } = $props()
-
 </script>
 
 <section class="py-20 bg-surface dark:bg-dark-surface">

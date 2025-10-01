@@ -1,6 +1,7 @@
 export type Blog = {
 	title: string
 	description: string
+	cover: string
 	slug: string
 	date: string
 	tags: string[]

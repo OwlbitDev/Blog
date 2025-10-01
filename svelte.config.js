@@ -33,7 +33,7 @@ const mdsvexOptions = {
 			return `{@html \`${html}\` }`
 		}
 	},
-	remarkPlugins: [relativeImages,[remarkToc,{tight: true}]],
+	remarkPlugins: [relativeImages,[remarkToc,{tight: true}],genTOC],
 	rehypePlugins: [rehypeSlug]
 }
 

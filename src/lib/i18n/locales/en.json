@@ -1,30 +1,138 @@
 {
-    "nav":{
+    "nav": {
         "project": "Project",
         "blog": "Blog",
-        "note":"Note",
+        "note": "Note",
         "about": "About"
     },
-    "hero":{
-        "intro":"<p>Creating Digital<br />Experiences</p>",
-        "description":"I'm lovol, a product designer and full-stack developer.",
-        "project":"View Project",
-        "blog":"View Blog"
+    "hero": {
+        "intro": "<p>Creating Digital<br />Experiences</p>",
+        "description": "I'm lovol, a product designer and full-stack developer.",
+        "project": "View Project",
+        "blog": "View Blog"
     },
-    "project":{
-        "project":"My Projects",
-        "all":"View All projects"
+    "project": {
+        "project": "My Projects",
+        "all": "View All projects"
     },
-    "last":{
-        "last":"Latest from the Blog",
-        "all":"Browse All Articles"
+    "last": {
+        "last": "Latest from the Blog",
+        "all": "Browse All Articles"
     },
-    "about":{
-        "thinker":"Thinker",
+    "about": {
+        "thinker": "Thinker",
         "creator": "Creator",
         "solver": "Problem solver",
-        "intro":"I am a product designer and developer specializing in digital experiences. I believe exceptional design stems from deep thinking, and technology serves as the bridge to bring ideas to life.",
+        "intro": "I am a product designer and developer specializing in digital experiences. I believe exceptional design stems from deep thinking, and technology serves as the bridge to bring ideas to life.",
         "contact": "Contact me",
-        "project":"View project"
+        "project": "View project",
+        "zentitle": "Design Philosophy",
+        "zen": [
+            {
+                "icon": "💭",
+                "title": "Profound Reflection",
+                "desc": "Every design decision is rooted in deliberate logic and thoughtful rationale"
+            },
+            {
+                "icon": "🎯",
+                "title": "Human-Centric Focus",
+                "desc": "Placing user experience at the heart of the design process, always"
+            },
+            {
+                "icon": "⚡",
+                "title": "Powerful Simplicity",
+                "desc": "Conveying the richest meaning through the most essential elements"
+            }
+        ],
+        "skillstitle": "Skills",
+        "skills": [
+            {
+                "name": "Design",
+                "level": 75,
+                "color": "from-blue-400 to-cyan-400"
+            },
+            {
+                "name": "Web",
+                "level": 85,
+                "color": "from-purple-400 to-pink-400"
+            },
+            {
+                "name": "Android",
+                "level": 95,
+                "color": "from-green-400 to-teal-400"
+            },
+            {
+                "name": "Python",
+                "level": 82,
+                "color": "from-orange-400 to-red-400"
+            },
+            {
+                "name": "C++",
+                "level": 80,
+                "color": "from-yellow-400 to-red-400"
+            }
+        ],
+        "timelinetitle": "Timeline",
+        "timeline": [
+            {
+                "year": "2021",
+                "title": "SDK Development",
+                "description": "Transitioned from practitioner to architect, embracing the critical role of standards and specifications",
+                "icon": "🚀"
+            },
+            {
+                "year": "2019",
+                "title": "New Horizons",
+                "description": "Mastered full-stack technologies and embarked on the path of product design",
+                "icon": "💼"
+            },
+            {
+                "year": "2018",
+                "title": "Knowledge Cultivation",
+                "description": "Specialized in Android development with deep immersion in programming paradigms",
+                "icon": "🎨"
+            },
+            {
+                "year": "2016",
+                "title": "Inception",
+                "description": "Embarked on the coding journey upon university graduation",
+                "icon": "🎓"
+            }
+        ],
+        "intereststitle": "Interests",
+        "interests": [
+            {
+                "name": "Free-spirited Cycling",
+                "emoji": "🌬️",
+                "description": "Catching the ever-shifting vistas and inner serenity on the wind"
+            },
+            {
+                "name": "Profound Reading",
+                "emoji": "📖",
+                "description": "Tracing the contours of wisdom and its essence between the lines"
+            },
+            {
+                "name": "Contemplative Meditation",
+                "emoji": "💭",
+                "description": "Illuminating the origin of thoughts and deeper truths in quiet contemplation"
+            },
+            {
+                "name": "Poetic Programming",
+                "emoji": "💻",
+                "description": "Weaving logic into poetry to construct boundless possibilities in the digital realm"
+            }
+        ],
+        "talk":"Let's start our conversation.",
+        "talkme": "Have a project idea or just want to chat about design, technology, and creativity? I'd love to connect with you.",
+        "sendemail": "Send email",
+        "viewproject": "View projects"
+    },
+    "blog":{
+        "index":"Table of Contents",
+        "pageindex":"In this article",
+        "toc":"Table of Contents",
+        "collapse":"Collapse Table of Contents",
+        "extend":"Expand Table of Contents",
+        "emptyindex":"No table of contents."
     }
 }
