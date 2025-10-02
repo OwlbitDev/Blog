@@ -1,7 +1,6 @@
 ---
 title: "Modern C++ study guide-template"
 description: "Modern C++ study guide-template"
-cover: "cover.webp"
 
 date: 2022-10-31T21:33:38+08:00
 

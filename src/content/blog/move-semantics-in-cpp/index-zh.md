@@ -11,7 +11,6 @@ categories:
 tags:
  - C++
 
-cover: "cover.webp"
 draft: false
 ---
 

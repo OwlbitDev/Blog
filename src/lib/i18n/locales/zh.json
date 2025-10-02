@@ -1,9 +1,12 @@
 {
     "nav": {
+        "home":"主导航",
         "project": "项目",
         "blog": "博客",
         "note": "笔记",
-        "about": "关于"
+        "about": "关于",
+        "closemenu": "关闭菜单",
+        "openmenu": "打开菜单"
     },
     "hero": {
         "intro": "<p>全新的数字<br />体验</p>",

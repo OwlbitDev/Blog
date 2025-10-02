@@ -1,9 +1,12 @@
 {
     "nav": {
+        "home":"Home",
         "project": "Project",
         "blog": "Blog",
         "note": "Note",
-        "about": "About"
+        "about": "About",
+        "closemenu": "Close Menu",
+        "openmenu": "Open Menu"
     },
     "hero": {
         "intro": "<p>Creating Digital<br />Experiences</p>",

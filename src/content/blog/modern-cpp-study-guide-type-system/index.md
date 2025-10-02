@@ -1,7 +1,6 @@
 ---
 title: "Modern C++ Study Guide - Type Systems"
 description: "Modern C++ Study Guide - Type System"
-cover: "cover.webp"
 
 date: 2022-06-26T11:11:59+08:00
 

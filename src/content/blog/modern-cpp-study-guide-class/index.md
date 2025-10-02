@@ -1,7 +1,6 @@
 ---
 title: "Modern C++ study guide--Class"
 description: "Modern C++ study guide--Class"
-cover: "cover.webp"
 
 date: 2022-08-05T22:56:26+08:00
 

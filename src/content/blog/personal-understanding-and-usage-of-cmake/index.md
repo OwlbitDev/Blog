@@ -1,7 +1,6 @@
 ---
 title: "Personal understanding and useage of CMake"
 description: "Personal understanding and useage of CMake"
-cover: "cmake.webp"
 
 date: 2021-08-09T19:21:49+08:00
 

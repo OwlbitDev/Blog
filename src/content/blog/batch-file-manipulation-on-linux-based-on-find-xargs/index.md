@@ -136,7 +136,7 @@ At this point, `find` related things have been understood almost. However, in ma
 ## xargs
 `xargs`只有一个简单的功能，就是从标准输入读入内容，构建并执行命令。怎么理解呢？假设我们在执行`find`命令，`find`命令执行肯定是有过程，有逻辑的。按照一定的逻辑和过程，`find`对文件进行逐一评估，假如满足条件，就输出结果。随着命令的执行，结果可能越来越多。假如我们需要对产生的每个结果都执行一条命令呢，这该怎么办？按照一般的思路，当然是将结果保存起来，然后再写个脚本，读取每一条记录，然后执行相应。但是有了`xargs`，我们不用这么麻烦了，可以一步到位。我们利用管道符将结果从终端连接到`xargs`中，`xargs`接收到一条信息，就会将它作为构建命令的参数，就好像我们手动输入了命令那样，构建完成后还会自动执行。最终的结果就是，没产生一个输出，就会产生一条以这个输出为参数的命令，并且这条命令还自动执行，最终的效果就是实现了一条命令实现了多个功能。
 
-## Combining `find` with `xargs`
+## Combining find with xargs
 Now that we are challenged to upgrade, there is a requirement to extract all the header files in a directory to another directory. This requirement can be divided into two parts, one part is to find the header files, which can be done with the `find` command. The other part is to copy the found header files, which requires the involvement of xargs.
 
 The first step is to find the header file. A header file is a file ending in `.h` (ignoring `.hpp` for the moment), and this suffix appears in the name, so we can use the `-name "*. h"` option, and in order to avoid interference with certain directory names, we will qualify the type as well `-type f` to look for files only. This completes the first step.
