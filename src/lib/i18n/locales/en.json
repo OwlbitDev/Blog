@@ -1,6 +1,6 @@
 {
     "nav": {
-        "home":"Home",
+        "home": "Home",
         "project": "Project",
         "blog": "Blog",
         "note": "Note",
@@ -10,13 +10,52 @@
     },
     "hero": {
         "intro": "<p>Creating Digital<br />Experiences</p>",
-        "description": "I'm lovol, a product designer and full-stack developer.",
+        "description": "I'm owlnut, a product designer and full-stack developer.",
         "project": "View Project",
         "blog": "View Blog"
     },
     "project": {
         "project": "My Projects",
-        "all": "View All projects"
+        "all": "View All projects",
+        "live": "Now Live",
+        "allpro": "All",
+        "develop": "In Development",
+        "maintained": "Under Maintenance",
+        "archived": "Archived",
+        "curated": "Curated",
+        "access-project": "Access Project",
+        "link-forthcoming": "Link Forthcoming",
+        "my-projects": "My Projects",
+        "slogen": "A collection of my crafted digital products and open-source projects; each a testament to my passion for technology and design.",
+        "no-projects": "No Projects",
+        "no-result": "No Results",
+        "show-all": "Show All",
+        "projects": [
+            {
+                "id": 1,
+                "title": "Bored to space",
+                "description": "Website to kill your boredom",
+                "image": "/projects/boredto.png",
+                "tags": [
+                    "Next","Fun"
+                ],
+                "link": "https://boredto.space",
+                "featured": true,
+                "status": "live"
+            },
+            {
+                "id": 2,
+                "title": "FastAir",
+                "description": "Android application to transfer files between devices",
+                "image": "/projects/fastair.png",
+                "tags": [
+                    "Android","WIFI P2P"
+                ],
+                "link": "https://github.com/owlnut/fastair",
+                "featured": true,
+                "status": "live"
+            }
+        ]
     },
     "last": {
         "last": "Latest from the Blog",
@@ -125,17 +164,17 @@
                 "description": "Weaving logic into poetry to construct boundless possibilities in the digital realm"
             }
         ],
-        "talk":"Let's start our conversation.",
+        "talk": "Let's start our conversation.",
         "talkme": "Have a project idea or just want to chat about design, technology, and creativity? I'd love to connect with you.",
         "sendemail": "Send email",
         "viewproject": "View projects"
     },
-    "blog":{
-        "index":"Table of Contents",
-        "pageindex":"In this article",
-        "toc":"Table of Contents",
-        "collapse":"Collapse Table of Contents",
-        "extend":"Expand Table of Contents",
-        "emptyindex":"No table of contents."
+    "blog": {
+        "index": "Table of Contents",
+        "pageindex": "In this article",
+        "toc": "Table of Contents",
+        "collapse": "Collapse Table of Contents",
+        "extend": "Expand Table of Contents",
+        "emptyindex": "No table of contents."
     }
 }

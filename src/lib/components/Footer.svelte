@@ -1,8 +1,8 @@
 <script>
   import {Github,Mail} from "lucide-svelte"
   const socialLinks = [
-    { name: 'GitHub', url: 'https://github.com/lovoldev', icon: Github },
-    { name: 'Email', url: 'mailto:lovoldev@outlook.com', icon: Mail },
+    { name: 'GitHub', url: 'https://github.com/owlnut', icon: Github },
+    { name: 'Email', url: 'mailto:owlnutlee@outlook.com', icon: Mail },
   ];
 </script>
 
@@ -26,7 +26,7 @@
       </div>
       <!-- 版权信息 -->
       <div class="text-center text-sm text-text-light">
-        <p>© {new Date().getFullYear()} lovol. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} owlnut. All rights reserved.</p>
       </div>
     </div>
   </div>

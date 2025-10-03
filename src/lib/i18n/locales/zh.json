@@ -16,7 +16,46 @@
     },
     "project": {
         "project": "我的项目",
-        "all": "浏览所有项目"
+        "all": "浏览所有项目",
+        "allpro":"全部项目",
+        "live":"已上线",
+        "develop":"开发中",
+        "maintained":"维护中",
+        "archived":"已归档",
+        "curated":"精选",
+        "access-project":"访问项目",
+        "link-forthcoming":"暂无链接",
+        "my-projects": "我的项目",
+        "slogen":"探索我构建的数字产品和开源项目，每一个都是对技术和设计热情的体现",
+        "no-projects": "暂无项目",
+        "no-result":"当前筛选条件下没有找到项目",
+        "show-all":"查看所有项目",
+        "projects": [
+            {
+                "id": 1,
+                "title": "Bored to space",
+                "description": "消磨时间的地方",
+                "image": "/projects/boredto.png",
+                "tags": [
+                    "Next","Fun"
+                ],
+                "link": "https://boredto.space",
+                "featured": true,
+                "status": "live"
+            },
+            {
+                "id": 2,
+                "title": "快传",
+                "description": "在无网络的情况下快速传输文件的Android应用",
+                "image": "/projects/fastair.png",
+                "tags": [
+                    "Android","WIFI P2P"
+                ],
+                "link": "https://github.com/owlnut/fastair",
+                "featured": true,
+                "status": "live"
+            }
+        ]
     },
     "last": {
         "last": "博客的最近更新",

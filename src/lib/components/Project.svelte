@@ -2,16 +2,7 @@
   import {page} from '$app/state'
   import {formatPath} from '$lib/i18n/path'
   import {_} from 'svelte-i18n'
-  const projects = [
-    {
-      id: 1,
-      title: 'Boredto',
-      description: 'A space for the bored to pass the time',
-      tags: ['Fun', 'Web Development'],
-      image: '/boredto.png',
-      link: 'https://boredto.space'
-    }
-  ];
+  const projects = $_('project.projects')
 
   const {lang}=$props()
 </script>

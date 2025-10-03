@@ -45,8 +45,8 @@
 			class="flex items-center gap-3 text-xl font-serif font-bold text-primary dark:text-dark-primary hover:text-primary-container dark:hover:text-dark-primary-container transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface rounded-lg p-1"
 			on:click={closeMobileMenu}
 		>
-			<img src="/favicon.svg" alt="lovol logo" class="size-8" />
-			<span class="hidden sm:block">lovol</span>
+			<img src="/favicon.svg" alt="owlnut logo" class="size-8" />
+			<span class="hidden sm:block">owlnut</span>
 		</a>
 
 		<!-- Desktop Navigation -->
