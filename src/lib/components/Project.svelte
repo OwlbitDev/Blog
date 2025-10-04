@@ -1,8 +1,8 @@
 <script>
   import {page} from '$app/state'
   import {formatPath} from '$lib/i18n/path'
-  import {_} from 'svelte-i18n'
-  const projects = $_('project.projects')
+  import {_,json} from 'svelte-i18n'
+  const projects = $json('project.projects')
 
   const {lang}=$props()
 </script>
@@ -29,7 +29,7 @@
             <!-- 信息遮罩 -->
             <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <h3 class="font-bold text-lg mb-1">{project.title}</h3>
-              <p class="text-sm text-gray-200">{project.tags.join(' • ')}</p>
+              <p class="text-sm text-gray-200">{project.tags&&project.tags.join(' • ')}</p>
             </div>
           </div>
         </a>

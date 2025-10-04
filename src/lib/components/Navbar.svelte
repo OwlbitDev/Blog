@@ -36,14 +36,13 @@
 	class="fixed top-0 w-full z-50 transition-all duration-300 {scrolled
 		? 'bg-surface-container dark:bg-dark-surface-container shadow-sm py-3 backdrop-blur-md'
 		: 'bg-surface dark:bg-dark-surface py-5'}"
-	role="banner"
 >
 	<nav class="container mx-auto px-6 flex justify-between items-center" aria-label={$_('nav.home')}>
 		<!-- Logo -->
 		<a
 			href={formatPath(lang, '/')}
 			class="flex items-center gap-3 text-xl font-serif font-bold text-primary dark:text-dark-primary hover:text-primary-container dark:hover:text-dark-primary-container transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface rounded-lg p-1"
-			on:click={closeMobileMenu}
+			onclick={closeMobileMenu}
 		>
 			<img src="/favicon.svg" alt="owlnut logo" class="size-8" />
 			<span class="hidden sm:block">owlnut</span>
@@ -80,7 +79,7 @@
 			<!-- 移动端菜单按钮 -->
 			<button
 				class="p-2 rounded-lg text-on-surface-variant dark:text-dark-on-surface-variant hover:bg-surface-container-high dark:hover:bg-dark-surface-container-high hover:text-on-surface  dark:hover:text-dark-on-surface transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary"
-				on:click={toggleMobileMenu}
+				onclick={toggleMobileMenu}
 				aria-label={mobileMenuOpen ? $_('nav.closemenu') : $_('nav.openmenu')}
 				aria-expanded={mobileMenuOpen}
 				aria-controls="mobile-menu"
@@ -113,7 +112,7 @@
 						<a
 							href={formatPath(lang,`/${item}`)}
 							class="px-4 py-3 text-base font-medium uppercase tracking-wider text-on-surface dark:text-dark-on-surface rounded-lg hover:bg-surface-container-high dark:hover:bg-dark-surface-container-high hover:text-on-surface dark:hover:text-dark-on-surface transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:bg-surface-container-high dark:focus:bg-dark-surface-container-high"
-							on:click={closeMobileMenu}
+							onclick={closeMobileMenu}
 							role="menuitem"
 						>
 							{$_(`nav.${item}`)}
