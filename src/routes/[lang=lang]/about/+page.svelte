@@ -1,15 +1,16 @@
 <script>
 	import { onMount } from 'svelte'
-	import { _, json } from 'svelte-i18n'
 	import { formatPath } from '$lib/i18n/path'
 	import { fade, scale, fly } from 'svelte/transition'
 	import FilledButtom from '$lib/components/FilledButton.svelte'
 	import OutlinedButton from '$lib/components/OutlinedButton.svelte'
 	import Brain from '$lib/components/Brain.svelte'
 	import Zen from '$lib/components/Zen.svelte'
+	import Lang from '$lib/i18n/locales'
 
 	const { data } = $props()
 	const lang = data.lang
+	const locale = Lang(lang)
 
 	let animatedSkills = $state(false)
 	let activeTimelineItem = $state(0)
@@ -61,19 +62,19 @@
 				<!-- 文案区域 -->
 				<div in:fade={{ duration: 800 }}>
 					<h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight">
-						{$_('about.thinker')},<br />
-						<span class="text-primary dark:text-dark-primary">{$_('about.creator')}</span>,<br />
-						{$_('about.solver')}
+						{locale.about.thinker},<br />
+						<span class="text-primary dark:text-dark-primary">{locale.about.creator}</span>,<br />
+						{locale.about.solver}
 					</h1>
 					<p class="text-xl text-text-light mb-8 leading-relaxed">
-						{$_('about.intro')}
+						{locale.about.intro}
 					</p>
 					<div class="flex flex-wrap gap-4">
 						<FilledButtom onclick={scrollToContact}>
-							{$_('about.contact')}
+							{locale.about.contact}
 						</FilledButtom>
 						<OutlinedButton href={formatPath(lang, '/project')}>
-							{$_('about.project')}
+							{locale.about.project}
 						</OutlinedButton>
 					</div>
 				</div>
@@ -85,17 +86,17 @@
 	<section class="py-20 bg-surface/50 dark:bg-dark-surface/50 backdrop-blur-sm">
 		<div class="container mx-auto px-6">
 			<div class="max-w-4xl mx-auto text-center">
-				<h2 class="text-3xl font-serif font-bold mb-8" in:fade>{$_('about.zentitle')}</h2>
-				<Zen items={$_('about.zen')} />
+				<h2 class="text-3xl font-serif font-bold mb-8" in:fade>{locale.about.zentitle}</h2>
+				<Zen items={locale.about.zen} />
 			</div>
 		</div>
 	</section>
 
 	<section id="skills-section" class="py-20 bg-background dark:bg-dark-background">
 		<div class="container mx-auto px-6">
-			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{$_('about.skillstitle')}</h2>
+			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{locale.about.skillstitle}</h2>
 			<div class="max-w-2xl mx-auto space-y-6">
-				{#each $_('about.skills') as skill, i}
+				{#each locale.about.skills as skill, i}
 					<div class="group" in:fly={{ x: -50, duration: 600, delay: i * 100 }}>
 						<div class="flex justify-between mb-2">
 							<span class="font-medium text-text">{skill.name}</span>
@@ -116,7 +117,7 @@
 	<!-- 时间轴区域 -->
 	<section class="py-20">
 		<div class="container mx-auto px-6">
-			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{$_('about.timelinetitle')}</h2>
+			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{locale.about.timelinetitle}</h2>
 			<div class="max-w-4xl mx-auto">
 				<div class="relative">
 					<!-- 时间线 -->
@@ -124,7 +125,7 @@
 						class="absolute left-8 top-0 bottom-0 w-0.5 bg-primary dark:bg-dark-primary transform -translate-x-1/2"
 					></div>
 
-					{#each $_('about.timeline') as item, i}
+					{#each locale.about.timeline as item, i}
 						<button
 							class="relative flex items-start mb-12 group cursor-pointer"
 							onclick={() => (activeTimelineItem = i)}
@@ -173,9 +174,9 @@
 	<!-- 个人兴趣区域 -->
 	<section class="py-20">
 		<div class="container mx-auto px-6">
-			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{$_('about.intereststitle')}</h2>
+			<h2 class="text-3xl font-serif font-bold mb-12 text-center" in:fade>{locale.about.intereststitle}</h2>
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-				{#each $_('about.interests') as interest, i}
+				{#each locale.about.interests as interest, i}
 					<div
 						class="text-center p-6 rounded-lg bg-surface dark:bg-dark-surface hover:bg-surface-container dark:hover:bg-dark-surface-container transition-all duration-300 transform hover:scale-105 group"
 						in:scale={{ duration: 600, delay: i * 100 }}
@@ -200,18 +201,18 @@
 	<!-- 召唤行动区域 -->
 	<section id="contact-section" class="py-20">
 		<div class="container mx-auto px-6 text-center">
-			<h2 class="text-3xl font-serif font-bold mb-6" in:fade>{$_('about.talk')}</h2>
+			<h2 class="text-3xl font-serif font-bold mb-6" in:fade>{locale.about.talk}</h2>
 			<p class="text-xl text-text-light mb-8 max-w-2xl mx-auto">
-				{$_('about.talkme')}
+				{locale.about.talkme}
 			</p>
 			<div class="flex flex-wrap justify-center gap-4">
 
         <FilledButtom href="mailto:honguilee@outlook.com">
-          {$_('about.sendemail')}
+          {locale.about.sendemail}
         </FilledButtom>
 					
         <OutlinedButton href={formatPath(lang, '/project')}>
-          {$_('about.viewproject')}
+          {locale.about.viewproject}
         </OutlinedButton>
 			</div>
 		</div>

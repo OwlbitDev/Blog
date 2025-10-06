@@ -43,7 +43,6 @@
 		"rehype-slug": "6.0.0",
 		"remark-toc": "9.0.0",
 		"shiki": "3.12.2",
-		"svelte-i18n": "^4.0.1",
 		"tailwindcss": "4.1.13",
 		"unist-util-visit": "5.0.0"
 	}

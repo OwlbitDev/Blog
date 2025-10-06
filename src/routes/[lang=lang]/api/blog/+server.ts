@@ -1,6 +1,5 @@
 import { json } from '@sveltejs/kit'
 import type { Blog } from '$lib/types'
-import {defaultLocale} from '$lib/i18n'
 import { isMatchContent } from '$lib/content'
 
 async function getPosts(lng: string) {

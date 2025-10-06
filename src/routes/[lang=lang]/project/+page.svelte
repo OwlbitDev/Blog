@@ -1,20 +1,21 @@
 <script>
 	import ProjectCard from '$lib/components/ProjectCard.svelte'
 	import FilledButton from '$lib/components/FilledButton.svelte'
-	import { _, json } from 'svelte-i18n'
-
+	import Lang from '$lib/i18n/locales'
+	const {lang}=$props()
+	const locale = Lang(lang)
 	// 项目数据示例
-	const projects = $json('project.projects')
+	const projects = locale.project.projects
 
 	// 过滤状态
 	let activeFilter = $state('all')
 
 	const filters = [
-		{ id: 'all', label: $_('project.allpro') },
-		{ id: 'live', label: $_('project.live') },
-		{ id: 'development', label: $_('project.develop') },
-		{ id: 'maintained', label: $_('project.maintained') },
-		{ id: 'archived', label: $_('project.archived') }
+		{ id: 'all', label: locale.project.allpro },
+		{ id: 'live', label: locale.project.live },
+		{ id: 'development', label: locale.project.develop },
+		{ id: 'maintained', label: locale.project.maintained },
+		{ id: 'archived', label: locale.project.archived }
 	]
 
 	// 使用函数来计算过滤后的项目
@@ -43,12 +44,12 @@
 		<div class="container mx-auto max-w-6xl">
 			<div class="text-center">
 				<h1 class="text-4xl md:text-5xl font-bold text-on-surface dark:text-dark-on-surface mb-4">
-					{$_('project.my-projects')}
+					{locale.project['my-projects']}
 				</h1>
 				<p
 					class="text-xl text-on-surface-variant dark:text-dark-on-surface-variant max-w-2xl mx-auto leading-relaxed"
 				>
-					{$_('project.slogen')}
+					{locale.project.slogen}
 				</p>
 			</div>
 		</div>
@@ -92,11 +93,11 @@
 									d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
 								/>
 							</svg>
-							{$_('project.curated')}
+							{locale.project.curated}
 						</h2>
 						<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 							{#each getFeaturedProjects() as project}
-								<ProjectCard {project} featured={true} />
+								<ProjectCard {lang} {project} featured={true} />
 							{/each}
 						</div>
 					</div>
@@ -106,7 +107,7 @@
 				{#if getRegularProjects().length > 0}
 					<div class="regular-section">
 						<h2 class="text-2xl font-semibold text-on-surface dark:text-dark-on-surface mb-6">
-							{$_('project.allpro')}
+							{locale.project.allpro}
 						</h2>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{#each getRegularProjects() as project}
@@ -133,13 +134,13 @@
 							/>
 						</svg>
 						<h3 class="text-xl font-medium text-on-surface dark:text-dark-on-surface mb-2">
-							{$_('project.no-projects')}
+							{locale.project['no-projects']}
 						</h3>
 						<p class="text-on-surface-variant dark:text-dark-on-surface-variant mb-6">
-							{$_('project.no-result')}
+							{locale.project['no-result']}
 						</p>
 						<FilledButton onclick={() => (activeFilter = 'all')}>
-							{$_('project.show-all')}
+							{locale.project['show-all']}
 						</FilledButton>
 					</div>
 				{/if}

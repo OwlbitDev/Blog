@@ -33,7 +33,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <!-- 侧边栏 - 标题导航 -->
     <div class="lg:col-span-1">
-      <TableOfContents headings={headings} />
+      <TableOfContents {lang} headings={headings} />
     </div>
     
     <!-- 主内容区域 -->

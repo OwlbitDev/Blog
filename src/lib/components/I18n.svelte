@@ -3,10 +3,8 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
 	import { Earth } from 'lucide-svelte'
-	import { locale } from 'svelte-i18n'
 
 	const { lang } = $props()
-	const defaultLang = lang
 	let isOpen = $state(false)
 	const closeEvent = () => {
 		if (isOpen) {
@@ -16,9 +14,6 @@
 
 	const switchLanguage = async (lang: string) => {
 		// 2. 防重复点击：如果新语言与当前语言相同，则不做任何操作
-		// 3. 更新 svelte-i18n 的 locale store
-		locale.set(lang)
-
 		// 5. 智能路径格式化：根据是否为默认语言决定是否添加前缀
 		let newPath,
 			currentPath = page.url.pathname

@@ -1,8 +1,9 @@
 <script>
-  import {_} from 'svelte-i18n'
+  import Lang from '$lib/i18n/locales'
   import { createEventDispatcher } from 'svelte';
+  const {lang,headings = []} = $props();
+	const locale = Lang(lang)
   
-  const { headings = [] } = $props();
   const dispatch = createEventDispatcher();
   
   let activeId = $state('');
@@ -66,12 +67,12 @@
 <aside class="table-of-contents">
   <!-- 移动端标题和切换按钮 -->
   <div class="toc-header md:hidden flex items-center justify-between p-4 bg-surface-container dark:bg-dark-surface-container border-b border-outline-variant dark:border-dark-outline-variant">
-    <h3 class="text-lg font-semibold text-on-surface dark:text-dark-on-surface">{$_('blog.index')}</h3>
+    <h3 class="text-lg font-semibold text-on-surface dark:text-dark-on-surface">{locale.blog.index}</h3>
     <button
       class="p-2 rounded-lg hover:bg-surface-container-high dark:hover:bg-dark-surface-container-high transition-colors"
       onclick={() => isExpanded = !isExpanded}
       aria-expanded={isExpanded}
-      aria-label={isExpanded ? $_('blog.collapse') : $_('blog.expand')}
+      aria-label={isExpanded ? locale.blog.collapse : locale.blog.expand}
     >
       <svg 
         class="w-5 h-5 text-on-surface-variant dark:text-dark-on-surface-variant transition-transform {isExpanded ? 'rotate-180' : ''}" 
@@ -91,11 +92,11 @@
       <svg class="w-5 h-5 mr-2 text-primary dark:text-dark-primary" fill="currentColor" viewBox="0 0 20 20">
         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
       </svg>
-      <h3 class="text-lg font-semibold text-on-surface dark:text-dark-on-surface">{$_('blog.pageindex')}</h3>
+      <h3 class="text-lg font-semibold text-on-surface dark:text-dark-on-surface">{locale.blog.pageindex}</h3>
     </div>
     
     <!-- 导航列表 -->
-    <nav class="p-4" aria-label={$_('blog.toc')}>
+    <nav class="p-4" aria-label={locale.blog.toc}>
       <ul class="space-y-2">
         {#each headings as heading}
           <li class="toc-item" style="padding-left: {(heading.level - 2) * 16}px">
@@ -127,7 +128,7 @@
         <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <p>{$_('blog.emptyindex')}</p>
+        <p>{locale.blog.emptyindex}</p>
       </div>
     {/if}
   </div>

@@ -1,10 +1,11 @@
 <script>
-	import { _ } from 'svelte-i18n'
 	import { formatPath } from '$lib/i18n/path'
 	import FilledButtom from './FilledButton.svelte'
 	import OutlinedButton from './OutlinedButton.svelte'
 
 	const { lang } = $props()
+	import Lang from '$lib/i18n/locales'
+	const locale = Lang(lang)
 </script>
 
 <section class="min-h-screen flex items-center py-20">
@@ -12,18 +13,18 @@
 		<!-- 文案区 -->
 		<div class="space-y-8">
 			<h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight">
-				{@html $_('hero.intro')}
+				{@html locale.hero.intro}
 			</h1>
 			<p class="text-xl text-text-light">
-				{$_('hero.description')}
+				{locale.hero.description}
 			</p>
 			<div class="flex space-x-4">
 				<FilledButtom href={formatPath(lang, '/project')}>
-					{$_('hero.project')}
+					{locale.hero.project}
 				</FilledButtom>
 
 				<OutlinedButton href={formatPath(lang, '/blog')}>
-					{$_('hero.blog')}
+					{locale.hero.blog}
 				</OutlinedButton>
 			</div>
 		</div>

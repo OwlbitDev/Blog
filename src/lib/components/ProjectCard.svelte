@@ -1,15 +1,15 @@
 <script>
   import { fly } from 'svelte/transition';
-  import {_} from 'svelte-i18n' 
-  
-  const { project, featured = false } = $props();
+  import Lang from '$lib/i18n/locales'
+  const { lang,project, featured = false } = $props();
+	const locale = Lang(lang)  
   
   // 状态标签映射
   const statusLabels = {
-    live: { label: $_('project.live'), color: 'bg-primary-container text-on-primary-container' },
-    development: { label: $_('project.development'), color: 'bg-tertiary-container text-on-tertiary-container' },
-    maintained: { label: $_('project.maintained'), color: 'bg-secondary-container text-on-secondary-container' },
-    archived: { label: $_('project.archived'), color: 'bg-surface-variant text-on-surface-variant' }
+    live: { label: locale.project.live, color: 'bg-primary-container text-on-primary-container' },
+    development: { label: locale.project.develop, color: 'bg-tertiary-container text-on-tertiary-container' },
+    maintained: { label: locale.project.maintained, color: 'bg-secondary-container text-on-secondary-container' },
+    archived: { label: locale.project.archived, color: 'bg-surface-variant text-on-surface-variant' }
   };
 </script>
 
@@ -42,7 +42,7 @@
           <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
-          {$_('project.curated')}
+          {locale.project.curated}
         </div>
       </div>
     {/if}
@@ -79,7 +79,7 @@
           rel="noopener noreferrer"
         >
           <button class="w-full bg-primary dark:bg-dark-primary text-on-primary dark:text-dark-on-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-container dark:hover:bg-dark-primary-container hover:text-on-primary-container dark:hover:text-dark-on-primary-container transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:ring-offset-2">
-            {$_('project.access-project')}
+            {locale.project['access-project']}
           </button>
         </a>
       {/if}
@@ -102,7 +102,7 @@
           class="w-full bg-surface-variant dark:bg-dark-surface-variant text-on-surface-variant dark:text-dark-on-surface-variant px-4 py-2 rounded-lg text-sm font-medium cursor-not-allowed opacity-50"
           disabled
         >
-          {$_('project.link-forthcoming')}
+          {locale.project['link-forthcoming']}
         </button>
       {/if}
     </div>
