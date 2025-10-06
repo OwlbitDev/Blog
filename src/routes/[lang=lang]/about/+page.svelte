@@ -40,7 +40,7 @@
 </script>
 
 <svelte:head>
-	<title>About | owlnut</title>
+	<title>About | owlbit</title>
 	<meta
 		name="description"
 		content="Learn more about my journey, philosophy, and approach to design and development"

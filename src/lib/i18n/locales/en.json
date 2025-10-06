@@ -10,7 +10,7 @@
     },
     "hero": {
         "intro": "<p>Creating Digital<br />Experiences</p>",
-        "description": "I'm owlnut, a product designer and full-stack developer.",
+        "description": "I'm owlbit, a product designer and full-stack developer.",
         "project": "View Project",
         "blog": "View Blog"
     },
@@ -51,7 +51,7 @@
                 "tags": [
                     "Android","WIFI P2P"
                 ],
-                "link": "https://github.com/owlnut/fastair",
+                "link": "https://github.com/owlbit/fastair",
                 "featured": true,
                 "status": "live"
             }

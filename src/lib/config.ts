@@ -1,9 +1,9 @@
 import { dev } from '$app/environment'
 
 export const ui = {
-    title: 'owlnut home page',
-    description: 'A home page for owlnut,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
-    website: 'owlnut',
+    title: 'owlbit home page',
+    description: 'A home page for owlbit,share some articles about Android,OpenGLES,Python,HTML/CSS etc.',
+    website: 'owlbit',
     welcome: 'Welcome to my website',
     last_updates: 'Latest updates',
     load_more: 'Load more',
@@ -13,6 +13,6 @@ export const ui = {
     blog_description: 'The posts relate to Android,OpenGLES,Python,HTML/CSS etc.',
     blog_toc: 'In this article',
     about_title: 'About me',
-    about_description: 'About me,my(owlnut) personal resume'
+    about_description: 'About me,my(owlbit) personal resume'
 }
-export const url = dev ? 'http://localhost:5173' : 'https://owlnut.com'
+export const url = dev ? 'http://localhost:5173' : 'https://owlbit.com'

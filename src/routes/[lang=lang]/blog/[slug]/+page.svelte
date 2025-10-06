@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-	<title>{blog.title} | owlnut</title>
+	<title>{blog.title} | owlbit</title>
 	<meta name="description" content={blog.description} />
 
 	<meta property="og:title" content={blog.title} />

@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>{note.title} | owlnut</title>
+	<title>{note.title} | owlbit</title>
 	<meta name="description" content={note.description} />
 
 	<meta property="og:title" content={note.title} />
