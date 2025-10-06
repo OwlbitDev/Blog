@@ -1,8 +1,8 @@
 <script>
   import {Github,Mail} from "lucide-svelte"
   const socialLinks = [
-    { name: 'GitHub', url: 'https://github.com/owlbit', icon: Github },
-    { name: 'Email', url: 'mailto:owlnutlee@outlook.com', icon: Mail },
+    { name: 'GitHub', url: 'https://github.com/owlbitdev', icon: Github },
+    { name: 'Email', url: 'mailto:honguilee@outlook.com', icon: Mail },
   ];
 </script>
 
