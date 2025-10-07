@@ -6,6 +6,7 @@
 	import OutlinedButton from '$lib/components/OutlinedButton.svelte'
 	import Brain from '$lib/components/Brain.svelte'
 	import Zen from '$lib/components/Zen.svelte'
+	import Meta from '$lib/components/Meta.svelte'
 	import Lang from '$lib/i18n/locales'
 
 	const { data } = $props()
@@ -40,13 +41,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>About | owlbit</title>
-	<meta
-		name="description"
-		content="Learn more about my journey, philosophy, and approach to design and development"
-	/>
-</svelte:head>
+<Meta {lang} cat="about"/>
 
 <div class="min-h-screen">
 	<section class="relative py-20 overflow-hidden">

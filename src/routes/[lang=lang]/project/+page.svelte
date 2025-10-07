@@ -1,6 +1,7 @@
 <script>
 	import ProjectCard from '$lib/components/ProjectCard.svelte'
 	import FilledButton from '$lib/components/FilledButton.svelte'
+	import Meta from '$lib/components/Meta.svelte'
 	import Lang from '$lib/i18n/locales'
 	const {data}=$props()
 	const lang=data.lang
@@ -38,7 +39,7 @@
 		return getFilteredProjects().filter((project) => !project.featured)
 	}
 </script>
-
+<Meta {lang} cat="project" />
 <div class="projects-page min-h-screen bg-surface dark:bg-dark-surface">
 	<!-- 页面头部 -->
 	<section

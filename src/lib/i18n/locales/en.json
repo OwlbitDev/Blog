@@ -1,4 +1,8 @@
 {
+    "home": {
+        "title": "Home page of owlbit",
+        "description": "Insightful deeply, plumb the depths of truth — with Athena's gaze, ponder every bit."
+    },
     "nav": {
         "home": "Home",
         "project": "Project",
@@ -15,6 +19,8 @@
         "blog": "View Blog"
     },
     "project": {
+        "title": "Projects of owlbit",
+        "description": "Projects of owlbit,including personal projects and open source projects.",
         "project": "My Projects",
         "all": "View All projects",
         "live": "Now Live",
@@ -37,7 +43,8 @@
                 "description": "Website to kill your boredom",
                 "image": "/projects/boredto.png",
                 "tags": [
-                    "Next","Fun"
+                    "Next",
+                    "Fun"
                 ],
                 "link": "https://boredto.space",
                 "featured": true,
@@ -49,9 +56,10 @@
                 "description": "Android application to transfer files between devices",
                 "image": "/projects/fastair.png",
                 "tags": [
-                    "Android","WIFI P2P"
+                    "Android",
+                    "WIFI P2P"
                 ],
-                "link": "https://github.com/owlbit/fastair",
+                "link": "https://github.com/owlbitdev/fastair",
                 "featured": true,
                 "status": "live"
             }
@@ -62,28 +70,30 @@
         "all": "Browse All Articles"
     },
     "about": {
+        "title": "About owlbit",
+        "description": "A coder. A thinker. A creator. I solves, builds, shares, and lives to create.",
         "thinker": "Thinker",
         "creator": "Creator",
         "solver": "Problem solver",
-        "intro": "I am a product designer and developer specializing in digital experiences. I believe exceptional design stems from deep thinking, and technology serves as the bridge to bring ideas to life.",
+        "intro": "A thinker who codes. Through thought, I explore, build, resolve, and share.",
         "contact": "Contact me",
         "project": "View project",
         "zentitle": "Design Philosophy",
         "zen": [
             {
                 "icon": "💭",
-                "title": "Profound Reflection",
-                "desc": "Every design decision is rooted in deliberate logic and thoughtful rationale"
+                "title": "Simplicity & Clearty",
+                "desc": "Simplicity is an aesthetic; cleanliness, a discipline."
             },
             {
                 "icon": "🎯",
-                "title": "Human-Centric Focus",
-                "desc": "Placing user experience at the heart of the design process, always"
+                "title": "Stability & Reliability",
+                "desc": "Every binary decision is backed by logic and reason."
             },
             {
                 "icon": "⚡",
-                "title": "Powerful Simplicity",
-                "desc": "Conveying the richest meaning through the most essential elements"
+                "title": "Speed & Efficiency",
+                "desc": "Swift in execution, relentless in the pursuit of efficiency."
             }
         ],
         "skillstitle": "Skills",
@@ -170,6 +180,8 @@
         "viewproject": "View projects"
     },
     "blog": {
+        "title": "Blog of owlbit",
+        "description": "A blog of owlbit,Share some interesting and insightful ideas about Android,Web,Audio&Video",
         "index": "Table of Contents",
         "pageindex": "In this article",
         "toc": "Table of Contents",
