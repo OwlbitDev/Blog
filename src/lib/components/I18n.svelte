@@ -28,9 +28,10 @@
 			newPath = '/'
 		}
 
+		console.log('newPath', newPath)
 		// 6. 执行跳转（仅在路径确实发生变化时）
 		if (newPath !== currentPath) {
-			await goto(newPath, { replaceState: true, keepFocus: true, noScroll: true })
+			window.location.href = newPath
 		}
 	}
 
@@ -59,9 +60,9 @@
 		{#each languages as [k,v]}
 			<li>
 				<button
-					onclick={() => {
-						switchLanguage(k)
-					}} class="px-4 py-2 cursor-pointer">{v}</button
+					onclick={async() => {
+						await switchLanguage(k)
+					}} class="p-6 cursor-pointer">{v}</button
 				>
 			</li>
 			{/each}

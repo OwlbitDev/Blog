@@ -43,7 +43,7 @@
 
 		<div class="text-center mt-12">
 			<a
-				href={formatPath(page.url.pathname, '/project')}
+				href={formatPath(lang, '/project')}
 				class="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors"
 			>
 				<svg

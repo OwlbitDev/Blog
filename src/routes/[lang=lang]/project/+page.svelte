@@ -2,10 +2,13 @@
 	import ProjectCard from '$lib/components/ProjectCard.svelte'
 	import FilledButton from '$lib/components/FilledButton.svelte'
 	import Lang from '$lib/i18n/locales'
-	const {lang}=$props()
+	const {data}=$props()
+	const lang=data.lang
 	const locale = Lang(lang)
 	// 项目数据示例
 	const projects = locale.project.projects
+
+	console.log(data,projects)
 
 	// 过滤状态
 	let activeFilter = $state('all')
@@ -111,7 +114,7 @@
 						</h2>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{#each getRegularProjects() as project}
-								<ProjectCard {project} />
+								<ProjectCard {lang} {project} />
 							{/each}
 						</div>
 					</div>
