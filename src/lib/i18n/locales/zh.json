@@ -188,5 +188,9 @@
         "collapse": "收起目录",
         "extend": "展开目录",
         "emptyindex": "暂无目录"
+    },
+    "note":{
+        "title": "owlbit的笔记列表",
+        "description":"记录开发过程中遇到的问题,提供可靠的解决方案，旨在快速解决问题"
     }
 }

@@ -188,5 +188,11 @@
         "collapse": "Collapse Table of Contents",
         "extend": "Expand Table of Contents",
         "emptyindex": "No table of contents."
+    },
+    "note":{
+        "note":{
+        "title": "Notes of owlbit",
+        "description":"Recording issues during the code process and providing reliable solutions to quickly resolve problems."
+    }
     }
 }
