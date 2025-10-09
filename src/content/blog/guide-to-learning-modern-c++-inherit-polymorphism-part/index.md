@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ Study Guide - Inheritance and Polymorphism"
-description: "Modern C++ Study Guide - Inheritance and Polymorphism"
+title: "Guide to learning modern C++ - Inheritance and Polymorphism part"
+description: "Include the basic knowledge of inheritance and polymorphism and how to use them"
 
 date: 2022-09-31T21:33:38+08:00
 

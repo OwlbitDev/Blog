@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ Study Guide-roadmap"
-description: "Modern C++ Study Guide-roadmap"
+title: "Guide to learning modern C++ - roadmap"
+description: "Guide to learning modern C++ - roadmap"
 
 date: 2022-06-25T08:51:01+08:00 
 

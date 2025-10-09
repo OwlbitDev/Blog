@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ Study Guide - Standard Library"
-description: "Modern C++ Study Guide - Standard Library"
+title: "Guide to learning modern C++ - standard library"
+description: "Guide to learning modern C++ - standard library"
 
 date: 2022-07-20T22:15:05+08:00
 

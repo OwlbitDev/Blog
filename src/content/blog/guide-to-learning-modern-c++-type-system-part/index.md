@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ Study Guide - Type Systems"
-description: "Modern C++ Study Guide - Type System"
+title: "Guide to learning modern C++ - Type System"
+description: "Guide to learning modern C++ - Type System"
 
 date: 2022-06-26T11:11:59+08:00
 

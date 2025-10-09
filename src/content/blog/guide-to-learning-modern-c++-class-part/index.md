@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ study guide--Class"
-description: "Modern C++ study guide--Class"
+title: "Guide to learning modern C++ - Class part"
+description: "Explaining the purpose of each component within a C++ class and how to leverage these features to achieve development objectives."
 
 date: 2022-08-05T22:56:26+08:00
 

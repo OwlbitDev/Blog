@@ -1,6 +1,6 @@
 ---
-title: "Modern C++ study guide-template"
-description: "Modern C++ study guide-template"
+title: "Guide to learning modern C++ -template"
+description: "Guide to learning modern C++ - template"
 
 date: 2022-10-31T21:33:38+08:00
 
