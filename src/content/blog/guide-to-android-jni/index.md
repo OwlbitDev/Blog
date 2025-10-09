@@ -1,6 +1,6 @@
 ---
-title: "A introduction to Android JNI"
-description: "JNI development concepts"
+title: "Guide to Android JNI"
+description: "This article introduces some concepts in JNI development and how to apply these concepts in practical development."
 
 date: 2021-09-12T21:34:45+08:00
 

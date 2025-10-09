@@ -1,5 +1,5 @@
 ---
-title: "Essential Concepts of Android NDK Development"
+title: "A introduction to Android ndk development"
 description: "An introduction to the essential concepts of Android NDK development."
 
 date: 2022-03-06T11:30:40+08:00

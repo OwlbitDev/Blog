@@ -1,6 +1,6 @@
 ---
-title: "Android-OpenGLES学习-画个颜色"
-description: "Android-OpenGLES学习-画个颜色"
+title: "使用OpenGLES在Androidd应用中显示颜色"
+description: "介绍了怎么OpenGLES工作流程，以及配置EGL环境，准备OpenGLES环境，并最终显示一个颜色"
 
 date: 2023-05-09T22:14:38+08:00
 

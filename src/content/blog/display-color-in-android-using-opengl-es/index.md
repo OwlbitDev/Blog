@@ -1,6 +1,6 @@
 ---
-title: "Android OpenGLES learning-draw a color"
-description: "Android OpenGLES learning-draw a color"
+title: "How to display a color in Android applications using OpenGL ES"
+description: "This article explains the OpenGL ES workflow, including configuring the EGL environment, preparing the OpenGL ES environment, and ultimately displaying a color."
 
 date: 2023-05-09T22:14:38+08:00
 

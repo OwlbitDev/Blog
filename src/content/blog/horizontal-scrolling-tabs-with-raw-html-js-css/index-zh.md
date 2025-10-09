@@ -1,6 +1,6 @@
 ---
 title: "用纯HTML，JS，CSS实现横向滚动标签页"
-description: "用纯HTML，JS，CSS实现横向滚动标签页"
+description: "记录一步一步使用HTML，JS，CSS实现横向滚动标签页的步骤"
 
 lastmod: 2022-02-12T09:23:30+08:00
 date: 2022-02-12T09:23:30+08:00

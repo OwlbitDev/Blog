@@ -1,6 +1,6 @@
 ---
-title: "Kotlin协程-从理论到实战"
-description: "Kotlin协程-从理论到实战"
+title: "使用Kotlin协程的典型流程"
+description: "怎么创建、调度、组合、取消协程"
 
 date: 2021-03-27T19:02:30+08:00
 

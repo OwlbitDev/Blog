@@ -1,6 +1,6 @@
 ---
-title: "Android-JNI开发概论"
-description: "JNI开发概念"
+title: "Android JNI开发指南"
+description: "本文介绍了JNI开发中的一些概念，以及怎么将这些概念应用到实际开发中"
 
 date: 2021-09-12T21:34:45+08:00
 

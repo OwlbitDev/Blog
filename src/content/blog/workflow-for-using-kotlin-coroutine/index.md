@@ -1,6 +1,6 @@
 ---
-title: "A introduction to Kotlin coroutine-from theory to practice"
-description: "A introduction to Kotlin coroutine-from theory to practice"
+title: "Workflow for using Kotlin coroutine"
+description: "How to create, schedule, combine, and cancel coroutines"
 
 date: 2021-03-27T19:02:30+08:00
 

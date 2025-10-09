@@ -1,9 +1,9 @@
 ---
-title: "horizontal scrolling tabs with plain HTML, JS, CSS"
-description: "horizontal scrolling tabs with plain HTML, JS, CSS"
+title: "horizontal scrolling tabs with raw HTML, JS, CSS"
+description: "Step-by-Step Guide to Implementing Horizontal Tabs Using HTML, JS, and CSS"
 
-lastmod: 2022-02-12T09:23:30+08:00
 date: 2022-02-12T09:23:30+08:00
+lastmod: 2022-02-12T09:23:30+08:00
 
 author: hongui
 

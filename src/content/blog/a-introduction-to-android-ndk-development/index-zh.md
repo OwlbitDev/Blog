@@ -1,6 +1,6 @@
 ---
-title: "Android NDK开发——基本概念"
-description: "Android NDk开发——基本概念  "
+title: "Android NDK开发概论"
+description: "Android NDK开发基本概念和使用流程"
 
 date: 2022-03-06T11:30:40+08:00
 

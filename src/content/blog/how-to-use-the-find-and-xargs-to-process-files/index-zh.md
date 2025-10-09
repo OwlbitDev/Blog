@@ -1,6 +1,6 @@
 ---
-title: "Linux批量文件操作——基于find,xargs"
-description: "Linux批量文件操作——基于find,xargs"
+title: "怎么使用find和xargs命令处理文件"
+description: "怎么使用find筛选文件,以及怎么使用xargs将筛选的文件进行进一步的处理"
 
 date:  2022-02-18T21:19:39+08:00
 

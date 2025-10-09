@@ -1,9 +1,9 @@
 ---
-title: "Build types,Product flavors和Build variants在项目中的实践"
+title: "Gradle中产物关系解析"
 description: "Gradle项目中配置Build types，Product flavors，Build variants可能遇到的问题以及解决方法"
 
 date:  2023-09-03T23:04:34+08:00
-
+ 
 author: "hongui"
 
 categories:

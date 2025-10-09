@@ -1,6 +1,6 @@
 ---
-title: "Linux batch file manipulation - based on find,xargs"
-description: "Linux batch file manipulation - based on find,xargs"
+title: "How to use the find and xargs commands to process files"
+description: "How to use find to filter files, and how to use xargs to perform further processing on the filtered files."
 
 date:  2022-02-18T21:19:39+08:00
 

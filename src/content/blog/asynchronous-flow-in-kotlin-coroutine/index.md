@@ -1,6 +1,6 @@
 ---
-title: "A introduction to Kotlin cotoutine-from zero to multiple"
-description: "A introduction to Kotlin cotoutine-from zero to multiple"
+title: "Asynchronous flow in Kotlin coroutine"
+description: "How to use Kotlin coroutine to handle asynchronous flow"
 
 date: 2021-03-30T19:10:30+08:00
 
