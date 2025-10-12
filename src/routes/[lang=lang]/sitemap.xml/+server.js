@@ -34,15 +34,12 @@ async function gen(target, alternate) {
                         ` : ''}
                 </url>`
     }).join('')
-    console.log(sitemap)
     return sitemap
 }
 export async function GET({ params }) {
     const lang = params.lang
     const alternate = ['en', 'zh'].find(item => item !== lang)
     const urls = await gen(lang, alternate)
-
-    console.log(urls)
 
     return new Response(
         `

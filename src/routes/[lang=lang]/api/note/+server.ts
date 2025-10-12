@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit'
-import { content } from '$lib/content'
+import { note } from '$lib/content'
 
 export async function GET({params}) {
     const lang = params.lang
-    const notes = await content(lang,'note')
+    const notes = await note(lang)
     return json(notes)
 }

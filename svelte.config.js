@@ -42,7 +42,10 @@ const config = {
 	extensions: ['.svelte', '.md', '.mdx', '.svx'],
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
-		adapter: adapter({strict: false})
+		adapter: adapter({strict: false}),
+		prerender: {
+			entries:['/zh/sitemap.xml', '/en/sitemap.xml']
+		}
 	}
 }
 
