@@ -48,7 +48,7 @@
 			class="flex items-center gap-3 text-xl font-serif font-bold text-primary dark:text-dark-primary hover:text-primary-container dark:hover:text-dark-primary-container transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface rounded-lg p-1"
 			onclick={closeMobileMenu}
 		>
-			<img src="/favicon.svg" alt="owlbit logo" class="size-8" />
+			<img src="/favicon.svg" alt="owlbit light logo,technology, minimalist, modern owl avatar" class="size-8 fill-primary dark:fill-dark-primary " />
 			<span class="hidden sm:block">owlbit</span>
 		</a>
 
@@ -153,6 +153,9 @@
 		animation: slideDown 0.3s ease-out;
 	}
 
+	.logo{
+		filter: invert(0);
+	}
 	@keyframes slideDown {
 		from {
 			opacity: 0;
